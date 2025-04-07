@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMEBOY NUTRITION RPG</title>
+<!-- Добавляем иконку вкладки (фавикон) -->
+<link rel="icon" type="image/png" href="favicon.png">
+<!-- Подключаем шрифты Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Подключаем ПИКСЕЛЬНЫЙ шрифт Press Start 2P -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Подключаем стили Choices.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"/>
+<!-- Дополнительные стили для страницы приветствия -->
+<link rel="stylesheet" href="welcome.css">
+<!-- Подключаем Feather Icons -->
+<script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="theme-light">
+
+<div class="title-container">
+    <h1 data-translation-key="GAMEBOY NUTRITION RPG">GAMEBOY NUTRITION RPG</h1>
+    <div class="header-buttons">
+        <div class="theme-switcher">
+            <button id="light-theme-btn" class="btn theme-btn active-theme" title="Светлая тема (GB)" data-theme="light" data-translation-key="СВЕТЛАЯ">☀️</button>
+            <button id="dark-theme-btn" class="btn theme-btn" title="Тёмная тема (GBP)" data-theme="dark" data-translation-key="ТЁМНАЯ">🌙</button>
+        </div>
+        <!-- Выпадающий список для языка -->
+        <div class="lang-select-wrapper" title="СМЕНИТЬ ЯЗЫК">
+             <label for="lang-select" class="visually-hidden">Выберите язык</label>
+             <select id="lang-select" class="btn">
+                 <option value="ru">RU</option>
+                 <option value="en">EN</option>
+             </select>
+         </div>
+        <button id="info-btn" class="btn btn-primary info-btn" title="ИНФОРМАЦИЯ О КВЕСТЕ">i</button>
+    </div>
+</div>
+
+<!-- Основной контейнер для создания персонажа -->
+<section id="character-creation" class="card">
+    <div class="section-header">
+        <h2 data-translation-key="СОЗДАНИЕ ПЕРСОНАЖА">СОЗДАНИЕ ПЕРСОНАЖА</h2>
+    </div>
+    
+    <!-- Выбор цели -->
+    <div class="goal-selection">
+        <h3 data-translation-key="ВЫБЕРИТЕ ЦЕЛЬ:">ВЫБЕРИТЕ ЦЕЛЬ:</h3>
+        <div class="goal-buttons">
+            <button id="lose-weight-btn" class="btn btn-primary goal-btn" data-goal="lose">
+                <span class="icon">🔥</span>
+                <span class="goal-text" data-translation-key="ПОХУДЕНИЕ">ПОХУДЕНИЕ</span>
+            </button>
+            <button id="gain-muscle-btn" class="btn btn-primary goal-btn" data-goal="gain">
+                <span class="icon">💪</span>
+                <span class="goal-text" data-translation-key="НАБОР МАССЫ">НАБОР МАССЫ</span>
+            </button>
+            <button id="maintain-btn" class="btn btn-primary goal-btn" data-goal="maintain">
+                <span class="icon">⚖️</span>
+                <span class="goal-text" data-translation-key="ПОДДЕРЖАНИЕ">ПОДДЕРЖАНИЕ</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Ввод параметров -->
+    <div class="character-params">
+        <h3>ТВОИ ПАРАМЕТРЫ</h3>
+        
+        <!-- Пол -->
+        <div class="form-group">
+            <label for="gender" data-translation-key="ПОЛ:">
+                <span class="icon">👤</span>
+                <span>Пол:</span>
+            </label>
+            <div class="gender-selection">
+                <button id="male-btn" class="btn btn-primary gender-btn" data-gender="male">
+                    <span class="icon">♂️</span>
+                    <span class="gender-text" data-translation-key="МУЖСКОЙ">МУЖСКОЙ</span>
+                </button>
+                <button id="female-btn" class="btn btn-primary gender-btn" data-gender="female">
+                    <span class="icon">♀️</span>
+                    <span class="gender-text" data-translation-key="ЖЕНСКИЙ">ЖЕНСКИЙ</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Возраст -->
+        <div class="form-group">
+            <label for="age" data-translation-key="ВОЗРАСТ:">
+                <span class="icon">🎂</span>
+                <span data-translation-key="ВОЗРАСТ:">Возраст:</span>
+            </label>
+            <input type="number" id="age" min="12" max="100" placeholder="Лет" autocomplete="off" data-translate-key-placeholder="Лет">
+        </div>
+        
+        <!-- Рост -->
+        <div class="form-group">
+            <label for="height" data-translation-key="РОСТ:">
+                <span class="icon">📏</span>
+                <span data-translation-key="РОСТ:">Рост:</span>
+            </label>
+            <input type="number" id="height" min="100" max="250" placeholder="см" autocomplete="off" data-translate-key-placeholder="СМ">
+        </div>
+        
+        <!-- Вес -->
+        <div class="form-group">
+            <label for="weight" data-translation-key="ВЕС (КГ):">
+                <span class="icon">⚖️</span>
+                <span data-translation-key="ВЕС (КГ):">Вес (кг):</span>
+            </label>
+            <input type="number" id="weight" min="30" max="300" step="0.1" placeholder="кг" autocomplete="off" data-translate-key-placeholder="КГ">
+        </div>
+        
+        <!-- Уровень активности -->
+        <div class="form-group">
+            <label for="activity-level" data-translation-key="АКТИВНОСТЬ:">
+                <span class="icon">🏃</span>
+                <span data-translation-key="АКТИВНОСТЬ:">Активность:</span>
+            </label>
+            <div class="activity-select-wrapper" title="ВЫБЕРИТЕ УРОВЕНЬ АКТИВНОСТИ" data-translate-key-title="ВЫБЕРИТЕ УРОВЕНЬ АКТИВНОСТИ">
+                <label for="activity-level" class="visually-hidden">Выберите уровень активности</label>
+                <select id="activity-level" class="btn">
+                    <option value="1.2" data-translation-key="Малоподвижный">Малоподвижный</option>
+                    <option value="1.375" data-translation-key="Легкая активность">Легкая активность</option>
+                    <option value="1.55" selected data-translation-key="Умеренная активность">Умеренная активность</option>
+                    <option value="1.725" data-translation-key="Высокая активность">Высокая активность</option>
+                    <option value="1.9" data-translation-key="Очень высокая активность">Очень высокая активность</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Кнопка расчета -->
+    <div class="button-container">
+        <button id="calculate-btn" class="btn btn-success" data-translation-key="РАССЧИТАТЬ">РАССЧИТАТЬ</button>
+    </div>
+</section>
+
+<!-- Результаты расчета (изначально скрыты) -->
+<section id="calculation-results" class="card hidden">
+    <div class="section-header">
+        <button id="recalculate-header-btn" class="btn btn-secondary recalculate-header" title="Назад" data-translation-key="НАЗАД">
+            <i data-feather="arrow-left"></i>
+        </button>
+        <h2 data-translation-key="ВАШИ РЕЗУЛЬТАТЫ">ВАШИ РЕЗУЛЬТАТЫ</h2>
+    </div>
+    
+    <div class="results-container">
+        <div class="calories-result">
+            <h3 data-translation-key="ДНЕВНАЯ НОРМА КАЛОРИЙ:">ДНЕВНАЯ НОРМА КАЛОРИЙ:</h3>
+            <div class="result-box">
+                <span class="icon">⚡</span>
+                <span id="calorie-result">0</span>
+                <span data-translation-key="ккал">ккал</span>
+            </div>
+        </div>
+        
+        <div class="macros-result">
+            <h3 data-translation-key="РЕКОМЕНДУЕМЫЕ БЖУ:">РЕКОМЕНДУЕМЫЕ БЖУ:</h3>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>🍖</th>
+                        <th>🧈</th>
+                        <th>🍞</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span id="protein-result">0</span><span data-translation-key="г"> г</span></td>
+                        <td><span id="fat-result">0</span><span data-translation-key="г"> г</span></td>
+                        <td><span id="carbs-result">0</span><span data-translation-key="г"> г</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="advice-container">
+            <h3 data-translation-key="СОВЕТЫ ПО ВАШЕЙ ЦЕЛИ:">СОВЕТЫ ПО ВАШЕЙ ЦЕЛИ:</h3>
+            <div id="advice-content" class="advice-content"></div>
+        </div>
+    </div>
+    
+    <!-- Кнопка перехода к основному калькулятору -->
+    <div class="button-container">
+        <button id="use-calculator-btn" class="btn btn-success" data-translation-key="ИСПОЛЬЗОВАТЬ КАЛЬКУЛЯТОР">НАЧАТЬ ПРИКЛЮЧЕНИЕ</button>
+        <button id="recalculate-btn" class="btn btn-primary" data-translation-key="ПЕРЕСЧИТАТЬ">ПЕРЕСЧИТАТЬ</button>
+    </div>
+</section>
+
+<!-- Модальное окно с информацией -->
+<div id="info-modal" class="modal">
+    <div class="modal-content info-modal-content card">
+        <h3 data-translation-key="ИНФОРМАЦИЯ">ИНФОРМАЦИЯ</h3>
+        <div class="info-text">
+            <p data-translation-key="СОЗДАЙТЕ ПЕРСОНАЖА, ЧТОБЫ РАССЧИТАТЬ ВАШУ ДНЕВНУЮ НОРМУ КАЛОРИЙ И ПОЛУЧИТЬ РЕКОМЕНДАЦИИ ПО ПИТАНИЮ.">СОЗДАЙТЕ ПЕРСОНАЖА, ЧТОБЫ РАССЧИТАТЬ ВАШУ ДНЕВНУЮ НОРМУ КАЛОРИЙ И ПОЛУЧИТЬ РЕКОМЕНДАЦИИ ПО ПИТАНИЮ.</p>
+            
+            <p data-translation-key="ВВЕДИТЕ ВАШИ ДАННЫЕ И ВЫБЕРИТЕ ЦЕЛЬ - ПОХУДЕНИЕ, ПОДДЕРЖАНИЕ ИЛИ НАБОР МАССЫ.">ВВЕДИТЕ ВАШИ ДАННЫЕ И ВЫБЕРИТЕ ЦЕЛЬ - ПОХУДЕНИЕ, ПОДДЕРЖАНИЕ ИЛИ НАБОР МАССЫ.</p>
+            
+            <p data-translation-key="ПОСЛЕ РАСЧЕТА ВЫ ПОЛУЧИТЕ ВАШУ ДНЕВНУЮ НОРМУ КАЛОРИЙ И МАКРОНУТРИЕНТОВ, А ТАКЖЕ СОВЕТЫ ПО ДОСТИЖЕНИЮ ЦЕЛИ.">ПОСЛЕ РАСЧЕТА ВЫ ПОЛУЧИТЕ ВАШУ ДНЕВНУЮ НОРМУ КАЛОРИЙ И МАКРОНУТРИЕНТОВ, А ТАКЖЕ СОВЕТЫ ПО ДОСТИЖЕНИЮ ЦЕЛИ.</p>
+        </div>
+        <button id="info-close-btn" class="btn btn-primary" title="ЗАКРЫТЬ РУКОВОДСТВО">OK</button>
+    </div>
+</div>
+
+<!-- Модальное окно для уведомлений -->
+<div id="alert-modal" class="modal">
+    <div class="modal-content card">
+        <p id="alert-message"></p>
+        <div class="modal-actions">
+            <button id="alert-ok-btn" class="btn btn-primary" title="OK">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Подключение скриптов -->
+<script src="welcome.js"></script>
+<script src="script.js"></script>
+<!-- Подключаем скрипт Choices.js -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
+<!-- Инициализируем Feather Icons -->
+<script>
+  feather.replace()
+</script>
+</body>
+</html> 

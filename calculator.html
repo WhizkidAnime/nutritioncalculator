@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMEBOY NUTRITION TRACKER</title>
+<!-- Добавляем иконку вкладки (фавикон) -->
+<link rel="icon" type="image/png" href="favicon.png">
+<!-- Подключаем шрифты Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Убираем старый шрифт Inter -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> -->
+<!-- Подключаем ПИКСЕЛЬНЫЙ шрифт Press Start 2P -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Подключаем стили Choices.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"/>
+</head>
+<body class="theme-light">
+
+<div class="title-container">
+    <a href="index.html" class="btn btn-primary back-btn" title="ВЕРНУТЬСЯ К СОЗДАНИЮ ПЕРСОНАЖА"><i data-feather="home"></i> <span class="visually-hidden">НАЗАД</span></a>
+    <h1>GAMEBOY NUTRITION RPG</h1>
+    <div class="header-buttons">
+        <button id="goal-tips-trigger" class="btn btn-primary back-btn" title="Советы для вашей цели"><i data-feather="star"></i> <span class="visually-hidden">Советы</span></button>
+        <div class="theme-switcher">
+            <button id="light-theme-btn" class="btn theme-btn" title="Светлая тема (GB)" data-theme="light">☀️</button>
+            <button id="dark-theme-btn" class="btn theme-btn" title="Тёмная тема (GBP)" data-theme="dark">🌙</button>
+        </div>
+        <!-- Выпадающий список для языка -->
+        <div class="lang-select-wrapper" title="СМЕНИТЬ ЯЗЫК">
+             <label for="lang-select" class="visually-hidden">Выберите язык</label> <!-- Скрытая метка для доступности -->
+             <select id="lang-select" class="btn"> <!-- Используем класс btn для базовых стилей -->
+                 <option value="ru">RU</option>
+                 <option value="en">EN</option>
+             </select>
+         </div>
+        <button id="info-btn" class="btn btn-primary info-btn" title="ИНФОРМАЦИЯ О КВЕСТЕ">i</button>
+    </div>
+</div>
+
+<!-- 5. Секция трекинга веса -->
+<section id="weight-tracking" class="card">
+    <div class="section-header">
+        <h2>СТАТИСТИКА ПЕРСОНАЖА</h2>
+    </div>
+    <div class="weight-input-group">
+        <div class="weight-input-row">
+            <div class="form-group weight-input-container">
+                <label for="current-weight">
+                    <span class="icon">⚖️</span>
+                    <span>Текущий вес (кг):</span>
+                </label>
+                <div class="input-with-tooltip">
+                    <input type="number" id="current-weight" placeholder="Например, 75.5" step="0.1" min="0" autocomplete="off">
+                    <div class="tooltip-container">
+                        <span class="info-icon">i</span>
+                        <span class="tooltip-text">Для самого точного результата взвешивайтесь утром натощак, сразу после пробуждения и посещения туалета.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group weight-input-container">
+                <label for="measurement-date">
+                    <span class="icon">📅</span>
+                    <span>Дата замера:</span>
+                </label>
+                <input type="date" id="measurement-date" autocomplete="off">
+            </div>
+        </div>
+        <div class="button-container">
+            <button id="save-weight-btn" class="btn btn-success" title="ЗАПИСАТЬ ВЕС! ПАРАМЕТРЫ ОБНОВЛЕНЫ.">СОХРАНИТЬ ВЕС</button>
+        </div>
+    </div>
+
+    <h3>ИСТОРИЯ ВЕСА</h3>
+    <div class="table-wrapper">
+        <table id="weight-history-table">
+            <thead>
+                <tr>
+                    <th>ДАТА ЗАМЕРА</th>
+                    <th>ВЕС (КГ)</th>
+                    <th>ДЕЙСТВИЕ</th> <!-- Добавим кнопку удаления -->
+                </tr>
+            </thead>
+            <tbody id="weight-history-tbody">
+                <!-- Строки истории веса будут добавлены сюда -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Контейнер для верхних секций (Лимиты, Добавление, Статус) -->
+<div class="top-sections">
+    <!-- 1. Секция установки дневных лимитов -->
+    <section id="limit-settings" class="card">
+        <h2>НАСТРОЙКА КВЕСТА</h2>
+        <!-- Группа полей ввода для лимитов -->
+        <div class="input-group">
+            <div class="form-group">
+                <label for="calories-limit">
+                    <span class="icon">⚡</span>
+                    <span>Калории (ккал):</span>
+                </label>
+                <input type="number" id="calories-limit" placeholder="Без лимита" min="0" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="protein-limit">
+                    <span class="icon">🍖</span>
+                    <span>Белки (г):</span>
+                </label>
+                <input type="number" id="protein-limit" placeholder="Без лимита" min="0" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="fat-limit">
+                    <span class="icon">🧈</span>
+                    <span>Жиры (г):</span>
+                </label>
+                <input type="number" id="fat-limit" placeholder="Без лимита" min="0" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="carbs-limit">
+                    <span class="icon">🍞</span>
+                    <span>Углеводы (г):</span>
+                </label>
+                <input type="number" id="carbs-limit" placeholder="Без лимита" min="0" autocomplete="off">
+            </div>
+        </div>
+        <!-- Добавляем контейнер для кнопок -->
+        <div class="button-container">
+            <button id="save-limit-btn" class="btn btn-success" title="СОХРАНИТЬ ПРОГРЕСС! ЛИМИТЫ ЗАПИСАНЫ.">СОХРАНИТЬ ИГРУ</button>
+            <button id="clear-limit-btn" class="btn btn-primary" title="ВНИМАНИЕ! ВЕСЬ ПРОГРЕСС СБРОШЕН.">СБРОСИТЬ ИГРУ</button>
+            <button id="recalculate-btn" class="btn btn-secondary" title="ВЕРНУТЬСЯ К СОЗДАНИЮ ПЕРСОНАЖА">ПЕРЕСОЗДАТЬ</button>
+        </div>
+    </section>
+
+    <!-- 2. Секция добавления съеденного продукта -->
+    <section id="input-product" class="card">
+        <h2>НОВАЯ ДОБЫЧА</h2>
+        <!-- Название продукта -->
+        <div class="form-group product-name-group">
+            <label for="product-name">
+                <span class="icon">📝</span>
+                <span>Название продукта:</span>
+            </label>
+            <input type="text" id="product-name" placeholder="Например, куриная грудка" autocomplete="off">
+        </div>
+        <!-- Группа полей для БЖУ и веса -->
+        <div class="nutrient-weight-group">
+            <div class="form-group">
+                <label for="protein100">
+                    <span class="icon">🍖</span>
+                    <span>Белки на 100г:</span>
+                </label>
+                <input type="number" id="protein100" placeholder="0" min="0" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="fat100">
+                    <span class="icon">🧈</span>
+                    <span>Жиры на 100г:</span>
+                </label>
+                <input type="number" id="fat100" placeholder="0" min="0" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="carbs100">
+                    <span class="icon">🍞</span>
+                    <span>Углеводы на 100г:</span>
+                </label>
+                <input type="number" id="carbs100" placeholder="0" min="0" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="weight">
+                    <span class="icon">⚖️</span>
+                    <span>Вес продукта (г):</span>
+                </label>
+                <input type="number" id="weight" placeholder="0" min="0" autocomplete="off">
+            </div>
+        </div>
+        <!-- Кнопка добавления -->
+        <div class="button-container">
+            <button id="add-product-btn" class="btn btn-success" title="ПРЕДМЕТ ДОБЫТ! +ОПЫТ">СОБРАТЬ ПРЕДМЕТ</button>
+        </div>
+    </section>
+
+    <!-- 3. Секция отображения итогов и остатков за день -->
+    <section id="daily-status" class="card">
+        <h2>ХАРАКТЕРИСТИКИ ГЕРОЯ</h2>
+        <!-- Блок с итогами съеденного -->
+        <div class="status-block totals-block">
+            <label>
+                <span class="icon">📊</span>
+                <span>Собрано:</span>
+            </label>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>⚡</th>
+                        <th>🍖</th>
+                        <th>🧈</th>
+                        <th>🍞</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span id="total-calories">0</span> ккал</td>
+                        <td><span id="total-protein">0</span> г</td>
+                        <td><span id="total-fat">0</span> г</td>
+                        <td><span id="total-carbs">0</span> г</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Блок с остатками до лимита -->
+        <div class="status-block remaining-block">
+            <label>
+                <span class="icon">🎯</span>
+                <span>До цели:</span>
+            </label>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>⚡</th>
+                        <th>🍖</th>
+                        <th>🧈</th>
+                        <th>🍞</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span id="remaining-calories">N/A</span> ккал</td>
+                        <td><span id="remaining-protein">N/A</span> г</td>
+                        <td><span id="remaining-fat">N/A</span> г</td>
+                        <td><span id="remaining-carbs">N/A</span> г</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Кнопка сброса дня теперь после обоих блоков -->
+        <div class="button-container">
+            <button id="reset-day-btn" class="reset-button btn btn-warning" title="ИГРОК ОТДОХНУЛ. СЧЁТЧИКИ ОБНУЛЕНЫ.">НОВЫЙ УРОВЕНЬ</button>
+        </div>
+    </section>
+</div>
+
+<!-- 4. Секция с историей съеденных продуктов -->
+<section id="history" class="card">
+    <div class="history-header">
+        <h2>ЖУРНАЛ ПРИКЛЮЧЕНИЙ</h2>
+        <button id="export-history-btn" class="btn btn-primary" title="СОХРАНИТЬ ЖУРНАЛ ПРИКЛЮЧЕНИЙ">ЭКСПОРТ</button>
+    </div>
+    
+    <!-- Добавляем поле поиска для фильтрации истории -->
+    <div class="search-container">
+        <div class="form-group">
+            <label for="history-search">
+                <span class="icon">🔍</span>
+                <span>Поиск по названию:</span>
+            </label>
+            <input type="text" id="history-search" placeholder="Введите название продукта..." autocomplete="off">
+        </div>
+        
+        <!-- Добавляем контейнер для навигации по дням -->
+        <div class="date-navigation">
+            <button id="prev-day-btn" class="btn btn-secondary date-nav-btn" title="ПРЕДЫДУЩИЙ ДЕНЬ">
+                <span class="date-nav-icon">◀</span>
+            </button>
+            <div class="date-picker-container" id="date-picker-trigger">
+                <span class="icon">📅</span>
+                <input type="date" id="history-date" class="date-input">
+                <span id="current-date-display" class="current-date-display"></span>
+            </div>
+            <button id="next-day-btn" class="btn btn-secondary date-nav-btn" title="СЛЕДУЮЩИЙ ДЕНЬ">
+                <span class="date-nav-icon">▶</span>
+            </button>
+            <button id="all-days-btn" class="btn btn-secondary" title="ПОКАЗАТЬ ВСЕ ДНИ">🌐</button>
+        </div>
+    </div>
+    
+    <!-- Обертка для таблицы для обеспечения горизонтальной прокрутки на малых экранах -->
+    <div class="table-wrapper">
+        <table id="history-table">
+            <thead>
+                <tr>
+                    <th>НАЗВАНИЕ</th>
+                    <th>БЕЛКИ (Г)</th>
+                    <th>ЖИРЫ (Г)</th>
+                    <th>УГЛЕВОДЫ (Г)</th>
+                    <th>КАЛОРИИ (ККАЛ)</th>
+                    <th>ВЕС (Г)</th>
+                    <th>ДАТА</th>
+                    <th>ВРЕМЯ</th>
+                    <th>ДЕЙСТВИЕ</th>
+                </tr>
+            </thead>
+            <tbody id="history-tbody">
+                <!-- Строки истории будут динамически добавлены сюда с помощью JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Модальное окно подтверждения -->
+<div id="confirmation-modal" class="modal">
+    <div class="modal-content card">
+        <p id="modal-message">Вы уверены?</p>
+        <div class="modal-actions">
+            <button id="modal-confirm-btn" class="btn btn-danger" title="ПОДТВЕРДИТЬ ВЫБОР">ДА</button>
+            <button id="modal-cancel-btn" class="btn btn-secondary" title="ОТМЕНИТЬ ДЕЙСТВИЕ">НЕТ</button>
+            <button id="modal-ok-btn" class="btn btn-primary" title="ПРИНЯТЬ ИНФОРМАЦИЮ">ОК</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно с информацией -->
+<div id="info-modal" class="modal">
+    <div class="modal-content info-modal-content card">
+        <h3>✧ РУКОВОДСТВО ПРИКЛЮЧЕНЦА ✧</h3>
+        <div class="info-text">
+            <p class="info-paragraph"><span class="info-title">Цель:</span> Отслеживай еду и вес в стиле RPG. Балансируй КБЖУ, контролируй вес.</p>
+            
+            <p class="info-paragraph"><span class="info-title">Секции:</span></p>
+            <ul class="info-list">
+                <li><span class="info-highlight">СТАТИСТИКА ПЕРСОНАЖА</span> - ввод и история веса.</li>
+                <li><span class="info-highlight">НАСТРОЙКА КВЕСТА</span> - установка дневных лимитов КБЖУ. Пусто = без лимита.</li>
+                <li><span class="info-highlight">НОВАЯ ДОБЫЧА</span> - добавление съеденной еды (БЖУ на 100г и вес).</li>
+                <li><span class="info-highlight">ХАРАКТЕРИСТИКИ ГЕРОЯ</span> - итоги за день и сколько осталось до лимита.</li>
+                <li><span class="info-highlight">ЖУРНАЛ ПРИКЛЮЧЕНИЙ</span> - история съеденной еды. Фильтр по дате и поиск.</li>
+            </ul>
+            
+            <p class="info-paragraph"><span class="info-title">Действия:</span></p>
+            <ul class="info-list">
+                <li><span class="info-highlight">СОХРАНИТЬ ВЕС</span> - записать текущий вес и дату.</li>
+                <li><span class="info-highlight">СОХРАНИТЬ ИГРУ</span> - сохранить лимиты КБЖУ.</li>
+                <li><span class="info-highlight">СБРОСИТЬ ИГРУ</span> - удалить лимиты КБЖУ.</li>
+                <li><span class="info-highlight">СОБРАТЬ ПРЕДМЕТ</span> - добавить продукт в журнал.</li>
+                <li><span class="info-highlight">НОВЫЙ УРОВЕНЬ</span> - сбросить счетчики *текущего* дня (история останется).</li>
+                <li><span class="info-highlight">ЭКСПОРТ</span> - скачать журнал еды в CSV.</li>
+                <li><span class="info-highlight">◀ / ▶ / 📅</span> - навигация по дням в журнале еды.</li>
+                <li><span class="info-highlight">🌐 (Все дни)</span> - показать всю историю еды.</li>
+                <li><span class="info-highlight">❌ (в весе)</span> - удалить запись о весе.</li>
+                <li><span class="info-highlight">❌ (в еде)</span> - удалить запись о еде.</li>
+                <li><span class="info-highlight">RU/EN</span> - переключить язык.</li>
+                <li><span class="info-highlight">i</span> - открыть этот гайд.</li>
+                <li><span class="info-highlight">☀️/🌙</span> - переключить светлую/тёмную тему.</li>
+            </ul>       
+            <p class="info-paragraph">Прогресс сохраняется в браузере.</p>
+        </div>
+        <button id="info-close-btn" class="btn btn-primary" title="ЗАКРЫТЬ РУКОВОДСТВО">OK</button>
+    </div>
+</div>
+
+<!-- Модальное окно для советов -->
+<div id="tips-modal" class="modal">
+    <div class="modal-content info-modal-content card">
+        <h3 id="tips-title">✧ СОВЕТЫ ✧</h3>
+        <div class="info-text">
+            <ul id="tips-list" class="info-list"></ul>
+        </div>
+        <button id="tips-close-btn" class="btn btn-primary" title="ЗАКРЫТЬ СОВЕТЫ">OK</button>
+    </div>
+</div>
+
+<!-- Подключение основного скрипта -->
+<script src="script.js"></script>
+<!-- Подключаем скрипт Choices.js -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
+<!-- Подключаем Feather Icons -->
+<script src="https://unpkg.com/feather-icons"></script>
+<!-- Инициализируем Feather Icons -->
+<script>
+  feather.replace()
+</script>
+</body>
+</html> 

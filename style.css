@@ -1,0 +1,3143 @@
+/* :root псевдокласс для определения CSS переменных (Custom Properties) */
+:root {
+    /* Шрифты */
+    --font-family-sans-serif: 'Press Start 2P', cursive; /* ПИКСЕЛЬНЫЙ ШРИФТ */
+    --font-family-pixel: 'Press Start 2P', cursive; /* Явно задаем пиксельный шрифт */
+
+    /* Отступы и размеры - можно будет подкорректировать */
+    --base-padding: 0.5rem;     /* 8px */
+    --container-padding: 1.25rem; /* 20px */
+    --section-padding: 1rem;    /* 16px */
+    --gap: 0.75rem;             /* 12px */
+    --border-radius: 0;  /* УБИРАЕМ СКРУГЛЕНИЕ */
+    --card-border-radius: 0; /* УБИРАЕМ СКРУГЛЕНИЕ */
+    --input-height: 2.5rem;     /* 40px */
+}
+
+/* --- Темы --- */
+
+/* Светлая тема (Game Boy - Зеленая) */
+body.theme-light {
+    /* Аутентичная GameBoy цветовая палитра (4 оттенка) */
+    --lightest: #E0F8D0;
+    --light: #88C070;
+    --dark: #346856;
+    --darkest: #081820;
+
+    /* Функциональное назначение цветов */
+    --bg-color: var(--lightest);
+    --card-bg: var(--lightest);
+    --primary: var(--dark);
+    --primary-hover: var(--darkest);
+    --secondary: var(--dark);
+    --secondary-hover: var(--darkest);
+    --danger: var(--darkest);
+    --danger-hover: var(--dark);
+    --warning: var(--light);
+    --warning-hover: var(--dark);
+    --success: var(--light);
+    --success-hover: var(--dark);
+    --text-color: var(--darkest);
+    --text-muted: var(--dark);
+    --border-color: var(--darkest);
+    --table-header-bg: var(--light);
+    --scrollbar-track: #9bbc0f;
+    --scrollbar-thumb: #306230;
+    --scrollbar-thumb-hover: #3d813d;
+    --scrollbar-thumb-active: #4a8f4a;
+    --scrollbar-button-bg: #306230;
+    --scrollbar-border: #0f380f;
+    --scrollbar-shadow: #8bac0f;
+    --scrollbar-arrow: #0f380f;
+    --tooltip-bg: var(--darkest);
+    --tooltip-text: var(--lightest);
+    --tooltip-border: var(--dark);
+    --search-bg: #d2e7a2;
+    --search-border: #0f380f;
+    --search-input-bg: #e8f5d9;
+    --search-input-text: #0f380f;
+    --search-input-focus-bg: #f5f5e8;
+    --date-separator-bg: #9bbc0f;
+    --date-separator-text: #0f380f;
+    --date-picker-bg: #d2e7a2;
+    --date-picker-border: #0f380f;
+    --date-picker-text: #0f380f;
+    --lang-toggle-ru-active-bg: var(--light);
+    --lang-toggle-ru-active-text: var(--darkest);
+    --lang-toggle-ru-active-shadow: var(--lightest);
+    --lang-toggle-ru-inactive-bg: var(--dark);
+    --lang-toggle-ru-inactive-text: var(--lightest);
+    --lang-toggle-ru-inactive-shadow: var(--darkest);
+    --lang-toggle-en-active-bg: var(--light);
+    --lang-toggle-en-active-text: var(--darkest);
+    --lang-toggle-en-active-shadow: var(--lightest);
+    --lang-toggle-en-inactive-bg: var(--dark);
+    --lang-toggle-en-inactive-text: var(--lightest);
+    --lang-toggle-en-inactive-shadow: var(--darkest);
+    --background-dots: var(--darkest); /* Цвет точек фона */
+}
+
+/* Темная тема (Game Boy Pocket - Серая) */
+body.theme-dark {
+    /* GBP цветовая палитра (4 оттенка) - Обновлено на более темные */
+    --lightest: #A8A8A8;     /* Фон - темнее */
+    --light: #707070;       /* Акценты - темнее */
+    --dark: #404040;        /* Основные элементы - темнее */
+    --darkest: #181818;     /* Текст/Границы - чуть темнее */
+
+    /* Функциональное назначение цветов (остается прежним, использует новые переменные) */
+    --bg-color: var(--lightest);
+    --card-bg: var(--lightest);
+    --primary: var(--dark);
+    --primary-hover: var(--darkest);
+    --secondary: var(--dark);
+    --secondary-hover: var(--darkest);
+    --danger: var(--darkest);
+    --danger-hover: var(--dark);
+    --warning: var(--light);
+    --warning-hover: var(--dark);
+    --success: var(--light);
+    --success-hover: var(--dark);
+    --text-color: var(--darkest);
+    --text-muted: var(--dark);
+    --border-color: var(--darkest);
+    --table-header-bg: var(--light);
+    --scrollbar-track: var(--light);
+    --scrollbar-thumb: var(--dark);
+    --scrollbar-thumb-hover: var(--darkest);
+    --scrollbar-thumb-active: #303030; /* Еще темнее для active scrollbar */
+    --scrollbar-button-bg: var(--dark);
+    --scrollbar-border: var(--darkest);
+    --scrollbar-shadow: var(--light);
+    --scrollbar-arrow: var(--darkest);
+    --tooltip-bg: var(--darkest);
+    --tooltip-text: var(--lightest);
+    --tooltip-border: var(--dark);
+    --search-bg: #888888; /* Темнее */
+    --search-border: #181818;
+    --search-input-bg: #A8A8A8;
+    --search-input-text: #181818;
+    --search-input-focus-bg: #C0C0C0;
+    --date-separator-bg: var(--light);
+    --date-separator-text: var(--darkest);
+    --date-picker-bg: #888888; /* Темнее */
+    --date-picker-border: #181818;
+    --date-picker-text: #181818;
+    
+    /* Переопределяем переменные для переключателя языка с бóльшим контрастом */
+    /* Активное состояние RU - ОЧЕНЬ тёмный фон, яркий текст */
+    --lang-toggle-ru-active-bg: #282828;
+    --lang-toggle-ru-active-text: #FFFFFF;
+    --lang-toggle-ru-active-shadow: #000000;
+    
+    /* Неактивное состояние RU - светлее фон, тёмный текст */
+    --lang-toggle-ru-inactive-bg: #989898;
+    --lang-toggle-ru-inactive-text: #181818;
+    --lang-toggle-ru-inactive-shadow: #CCCCCC;
+    
+    /* Активное состояние EN - ОЧЕНЬ тёмный фон, яркий текст */
+    --lang-toggle-en-active-bg: #282828;
+    --lang-toggle-en-active-text: #FFFFFF;
+    --lang-toggle-en-active-shadow: #000000;
+    
+    /* Неактивное состояние EN - светлее фон, тёмный текст */
+    --lang-toggle-en-inactive-bg: #989898;
+    --lang-toggle-en-inactive-text: #181818;
+    --lang-toggle-en-inactive-shadow: #CCCCCC;
+    
+    --background-dots: var(--darkest); /* Цвет точек фона */
+}
+
+/* --- Базовые стили --- */
+body {
+    font-family: var(--font-family-sans-serif);
+    /* Добавляем свойство для рендеринга пиксельных шрифтов */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    margin: 0;
+    background-color: var(--bg-color); /* Используем переменную */
+    color: var(--text-color);          /* Используем переменную */
+    line-height: 1.6;
+    /* padding: var(--container-padding); */ /* Убрали общий padding */
+    padding-left: var(--container-padding); /* Оставили горизонтальный */
+    padding-right: var(--container-padding); /* Оставили горизонтальный */
+    font-size: 8px; /* Уменьшаем базовый размер для пиксельных шрифтов */
+    /* Добавляем пиксельный узор в виде точек как на экране GameBoy */
+    background-image: radial-gradient(var(--background-dots) 1px, transparent 1px); /* Используем переменную */
+    background-size: 4px 4px; /* Расстояние между точками */
+    background-position: -1px -1px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход для фона и текста */
+}
+
+h1, h2, h3 {
+    color: var(--text-color);
+    margin-bottom: var(--section-padding); /* Отступ снизу */
+    text-transform: uppercase; /* Верхний регистр для пиксельного стиля */
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--darkest);
+    text-shadow: 2px 2px 0 var(--lightest);
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+h2 {
+    font-size: 1.2rem; /* Уменьшаем с 1.5rem */
+    font-weight: 600;
+    margin-top: 0;
+    position: relative;
+    padding-left: 5px; /* Небольшой отступ слева для иконки */
+}
+
+h3 {
+    font-size: 1rem; /* Уменьшаем */
+    font-weight: 600;
+    margin-top: 0;
+}
+
+/* Стили для заголовков секций */
+.card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none; /* Убираем стандартную границу */
+    text-shadow: 1px 1px 0 var(--lightest);
+    
+    /* Пиксельная рамка */
+    box-shadow: 
+        /* Внешняя рамка */
+        0 0 0 4px var(--border-color), /* Используем переменную */
+        inset 0 0 0 4px var(--dark);    /* Используем переменную */
+    
+    /* Дополнительный отступ */
+    margin: 4px auto;
+    margin-bottom: calc(var(--container-padding) + 4px);
+    padding: 14px;
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+/* Стили для иконок в заголовках - отключены */
+/* h2::before {
+    content: '[' attr(data-icon) ']';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: var(--darkest);
+    font-weight: bold;
+    background-color: var(--light);
+    padding: 1px 4px;
+    border: 2px solid var(--darkest);
+    border-radius: 0;
+    line-height: 1.2;
+    height: 20px;
+    width: 28px; 
+    border-style: inset;
+    box-shadow: inset 1px 1px 0 var(--darkest);
+    text-shadow: none;
+} */
+
+/* Удаляем анимацию пульсации для иконок в заголовках */
+@keyframes gameboy-pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.05); 
+        opacity: 0.9;
+    }
+}
+
+/* Общие стили для секций-карточек */
+.card {
+    background-color: var(--card-bg); /* Используем переменную */
+    border: none; /* Убираем обычную границу */
+    border-radius: var(--card-border-radius);
+    padding: var(--section-padding);
+    margin-bottom: var(--container-padding); /* Отступ под карточкой */
+    background-image: radial-gradient(var(--dark) 0.5px, var(--lightest) 0.5px); /* Используем переменные */
+    background-size: 4px 4px;
+    background-position: -1px -1px;
+    position: relative;
+    
+    /* Пиксельная рамка через box-shadow */
+    box-shadow: 
+        /* Внешняя рамка */
+        0 0 0 4px var(--border-color), /* Используем переменную */
+        inset 0 0 0 4px var(--dark);    /* Используем переменную */
+    
+    /* Дополнительный отступ для рамки */
+    margin: 4px;
+    padding: calc(var(--section-padding) + 4px);
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+/* Убираем псевдоэлементы, которые использовались для имитации объема */
+.card::before, .card::after {
+    content: none;
+}
+
+/* Добавляем пиксельные углы рамок */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    z-index: -1;
+    
+    /* Пиксельные углы */
+    background-image: 
+        /* Верхний левый угол */
+        linear-gradient(45deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px),
+        /* Верхний правый угол */
+        linear-gradient(-45deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px),
+        /* Нижний правый угол */
+        linear-gradient(-135deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px),
+        /* Нижний левый угол */
+        linear-gradient(135deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px);
+    
+    background-position: 
+        top left,
+        top right,
+        bottom right,
+        bottom left;
+    
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+/* --- Стили для форм и полей ввода --- */
+.form-group {
+    margin-bottom: 12px;
+    position: relative;
+}
+
+/* Стили для меток - теперь у нас больше места */
+label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;                 /* Увеличиваем размер шрифта для меток */
+    margin-bottom: 4px;
+    line-height: 1.2;
+    white-space: normal;               /* Разрешаем перенос текста если нужно */
+    color: var(--darkest);             /* Цвет текста */
+    font-weight: 600;                  /* Жирность */
+}
+
+/* Стиль для текста меток */
+label span:not(.icon) {
+    overflow: visible;                 /* Не скрываем переполнение */
+    text-overflow: clip;               /* Не обрезаем текст */
+    white-space: normal;               /* Разрешаем перенос */
+}
+
+/* Стиль для иконок в метках */
+label .icon {
+    display: inline-block;
+    width: 20px;                       /* Увеличиваем ширину для иконок */
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--dark);                /* Цвет иконки */
+    font-size: 1.2em;                  /* Увеличиваем размер иконок */
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] /* Добавляем date сюда */ {
+    width: 100%;                        /* Поле на всю ширину родителя */
+    padding: var(--base-padding);
+    border: none; /* Убираем стандартную границу */
+    border-radius: var(--border-radius);
+    box-sizing: border-box;             /* padding и border включаются в ширину */
+    height: var(--input-height);
+    font-size: 0.9rem;
+    transition: all 0.15s ease-in-out;
+    font-family: var(--font-family-sans-serif);
+    background-color: var(--lightest);
+    color: var(--darkest);
+    
+    /* Пиксельная рамка */
+    box-shadow: 
+        /* Внешняя рамка */
+        0 0 0 2px var(--darkest),
+        /* Внутренняя рамка */
+        inset 0 0 0 2px var(--dark);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus /* Добавляем date сюда */ {
+    outline: 0;
+    background-color: var(--lightest);
+    box-shadow: 
+        0 0 0 2px var(--primary),
+        inset 0 0 0 2px var(--light);
+}
+
+/* Стили для кастомизации стрелок в полях ввода number */
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield; /* Стандартное свойство */
+}
+
+/* Скрываем стандартные стрелки для Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Удаляем лишние стили - они не нужны, так как стандартные спиннеры скрыты */
+.form-group input[type="number"] {
+    padding-right: 10px; /* Возвращаем стандартный отступ */
+}
+
+.form-group::after {
+    display: none;
+}
+
+.form-group:hover::after {
+    display: none;
+}
+
+/* Добавляем кастомные кнопки для увеличения/уменьшения значения */
+.form-group .spinner-buttons {
+    display: none;
+    position: absolute;
+    right: 2px;
+    top: 1px;
+    bottom: 1px;
+    height: auto;
+    width: 14px;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.form-group:hover .spinner-buttons,
+.form-group.spin-buttons-active .spinner-buttons {
+    display: flex;
+}
+
+.form-group .spinner-up,
+.form-group .spinner-down {
+    flex: 1;
+    width: 14px;
+    background-color: #306230;
+    border: 1px solid #0f380f;
+    box-shadow: inset 0 0 0 1px #8bac0f;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* Разделитель между кнопками */
+.form-group .spinner-up {
+    border-bottom: none;
+}
+
+.form-group .spinner-down {
+    border-top: none;
+}
+
+/* Стрелка вверх */
+.form-group .spinner-up::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 5px solid #0f380f;
+}
+
+/* Стрелка вниз */
+.form-group .spinner-down::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 5px solid #0f380f;
+}
+
+/* Убираем старый псевдоэлемент, так как теперь используем реальные кнопки */
+.form-group.spin-buttons-active::after {
+    display: none;
+}
+
+/* Стили для ховера */
+.form-group .spinner-up:hover,
+.form-group .spinner-down:hover {
+    background-color: #3d813d;
+}
+
+/* Стили для активного состояния */
+.form-group .spinner-up:active,
+.form-group .spinner-down:active {
+    background-color: #4a8f4a;
+    box-shadow: inset 0 0 0 1px #9bbc1f;
+}
+
+/* --- Стили для кнопок --- */
+button {
+    padding: 0.5rem 1rem;
+    border: none; /* Убираем стандартную границу */
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+    line-height: 1.5;
+    font-family: var(--font-family-sans-serif);
+    position: relative;
+    overflow: hidden;
+    
+    /* Пиксельная рамка */
+    box-shadow: 
+        /* Внешняя рамка */
+        0 0 0 2px var(--darkest),
+        /* Внутренняя рамка - цвет будет меняться в зависимости от класса кнопки */
+        inset 0 0 0 2px var(--dark);
+}
+
+/* Разные цвета для разных типов кнопок */
+.btn-primary {
+    color: var(--lightest);
+    background-color: var(--primary);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-success {
+    color: var(--darkest);
+    background-color: var(--success);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--lightest);
+}
+
+.btn-success:hover {
+    background-color: var(--success-hover);
+}
+
+.btn-danger {
+    color: var(--lightest);
+    background-color: var(--danger);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-hover);
+}
+
+.btn-warning {
+    color: var(--darkest);
+    background-color: var(--warning);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--lightest);
+}
+
+.btn-warning:hover {
+    background-color: var(--warning-hover);
+}
+
+.btn-secondary {
+    color: var(--lightest);
+    background-color: var(--secondary);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-hover);
+}
+
+/* Эффект нажатия для кнопок */
+button:active {
+    transform: translateY(2px);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+/* Кнопка сброса дня */
+.reset-button {
+    /* Теперь будет использовать классы .btn .btn-warning */
+    display: block;
+    width: 100%;
+    margin-top: var(--section-padding);
+}
+
+/* Кнопка удаления в таблице - стилизуем под GameBoy */
+.delete-btn {
+    background-color: transparent;
+    color: var(--danger);
+    padding: calc(var(--base-padding) / 2);
+    font-size: 1.2em;
+    line-height: 1; /* Убираем line-height, он может мешать flex */
+    /* Делаем кнопку более похожей на GameBoy */
+    border: 2px solid var(--darkest);
+    background-color: var(--lightest);
+    /* Добавляем flex для центрирования */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Опционально: задаем размер кнопки, чтобы крестик был точно по центру */
+    width: 28px; /* Примерная ширина */
+    height: 28px; /* Примерная высота */
+}
+
+.delete-btn:hover {
+    color: var(--lightest);
+    background-color: var(--danger);
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* --- Специфичные стили раскладки --- */
+
+/* Контейнер для верхних секций (Лимиты, Добавление, Статус) */
+.top-sections {
+    display: grid;
+    /* Создает колонки: столько, сколько поместится (auto-fit), */
+    /* каждая мин. 280px (чуть больше), макс. 1fr */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--container-padding); /* Увеличим gap до основного */
+    margin-bottom: var(--container-padding);
+}
+
+/* Стили для каждой секции-карточки внутри .top-sections */
+.top-sections > section.card {
+    margin-bottom: 0; /* Убираем нижний отступ, т.к. есть gap */
+    /* Остальные стили .card применяются */
+}
+
+/* Заголовки внутри верхних секций */
+.top-sections > section.card h2 {
+    text-align: center;
+    margin-bottom: var(--section-padding);
+    align-items: flex-end;              /* Выравнивание по нижнему краю */
+    margin-top: auto;                   /* Прижимает группу к низу секции */
+    padding-top: var(--section-padding); /* Добавим отступ сверху для группы */
+}
+
+/* Группа полей ввода (используется в Лимитах и Добавлении) */
+.input-group {
+    display: flex;                      
+    flex-direction: column;            /* Меняем на вертикальное расположение */
+    gap: 10px;                          /* Увеличиваем отступ между элементами */
+    margin-top: auto;                   
+}
+
+/* Отдельная группа полей внутри .input-group */
+.input-group .form-group {
+    width: 100%;                       /* Ширина на всю доступную ширину */
+    margin-bottom: 0;                  
+    min-width: auto;                    /* Убираем минимальную ширину */
+}
+
+/* Поле для названия продукта - теперь не внутри .input-group, стиль не нужен */
+/* .input-group .product-name-group {
+    flex: 2 1 150px;                /* Базовая ширина больше и растет быстрее (flex-grow: 2) */
+/*    min-width: 130px;
+} */
+
+/* Кнопки внутри .input-group - Убираем это общее правило, т.к. кнопка теперь отдельно */
+/* .input-group button {
+    flex-shrink: 0;                 /* Кнопка не сжимается */
+/*    height: var(--input-height);    /* Высота как у полей ввода */
+/*    align-self: flex-end;           /* Выравнивание по нижнему краю */
+/*    margin-top: 0;
+} */
+
+/* Стили для секции Статуса дня */
+#daily-status {
+    background-color: transparent; /* Убираем фон, т.к. он у .card */
+}
+
+/* Внутренние блоки в секции статуса (Съедено, Осталось) */
+.status-block {
+    margin-bottom: var(--section-padding);
+}
+
+.status-block:last-child {
+    margin-bottom: 0;               /* Убираем отступ у последнего блока */
+}
+
+/* Элементы сумм и остатков */
+.summary-item, .remaining-item {
+    margin-bottom: calc(var(--base-padding) / 2);
+    font-size: 1.0em;
+}
+
+/* Кнопка "Новый день" внутри блока статуса */
+#daily-status .reset-button {
+     margin-top: var(--gap);
+}
+
+/* Стили для меток в блоках статуса */
+.status-block label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    line-height: 1.2;
+    color: var(--darkest);
+    font-weight: 600;
+}
+
+/* Отступ для таблиц в статусе */
+.status-block .summary-table {
+    margin-bottom: var(--section-padding);
+}
+
+/* Кнопка сброса дня */
+#daily-status .button-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#daily-status .reset-button {
+    width: auto;
+    min-width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Обертка для таблицы (для скролла) */
+.table-wrapper {
+    overflow-x: auto;               /* Включает горизонтальный скролл при необходимости */
+    margin-top: var(--section-padding);
+    /* border-radius и overflow убраны отсюда, т.к. они будут на самой таблице */
+}
+
+/* Сама таблица - стилизуем под GameBoy */
+#history-table {
+    width: 100%;
+    min-width: 600px; /* Оставляем для больших экранов */
+    border-collapse: separate; /* Используем separate для border-radius */
+    border-spacing: 0; /* Убираем промежутки */
+    color: var(--text-color);
+    font-size: 0.875rem; /* 14px */
+    border: none; /* Убираем стандартную границу */
+    border-radius: var(--card-border-radius); /* Скругления нет */
+    overflow: hidden; /* Обрезаем ячейки по рамке */
+    background-color: var(--lightest); /* Основной фон таблицы */
+    
+    /* Пиксельная рамка */
+    box-shadow: 
+        /* Внешняя рамка */
+        0 0 0 2px var(--darkest),
+        /* Внутренняя рамка */
+        inset 0 0 0 2px var(--dark);
+}
+
+/* Ячейки заголовков (th) и данных (td) */
+#history-table th, #history-table td {
+    border: 1px solid var(--dark); /* Границы чуть светлее для ячеек */
+    padding: var(--gap) var(--base-padding);
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-style: inset; /* 8-битный стиль */
+    border-width: 2px; /* Толще внутренние границы */
+    font-size: 0.8rem; /* Уменьшаем размер текста в ячейках */
+}
+
+/* Стили для ячеек заголовков */
+#history-table th {
+    background-color: var(--light); /* Светло-зелёный фон заголовков */
+    font-weight: 600; /* Делаем жирнее */
+    color: var(--darkest);
+    text-transform: uppercase; /* Заглавные буквы */
+    letter-spacing: 0.5px; /* Небольшой разрыв */
+    font-size: 1.1rem; /* Увеличиваем размер для эмодзи */
+    text-align: center;
+}
+
+/* Убираем границу у последней строки - больше не нужно */
+/* #history-table tr:last-child td { */
+/*    border-bottom: none; */
+/* } */
+
+/* --- Корректировка ширины и выравнивания колонок --- */
+
+/* Название (было 2, стало 1) */
+#history-table th:nth-child(1),
+#history-table td:nth-child(1) {
+    min-width: 120px;               /* Минимальная ширина */
+    white-space: normal;            /* Разрешаем перенос текста */
+}
+
+/* Белки, Жиры, Углеводы, Калории (были 3-6, стали 2-5) - можно оставить без стилей или задать ширину */
+/* (Пока уберем специфичные стили для них) */
+
+/* Дата (была 1, стала 6) */
+#history-table th:nth-child(6),
+#history-table td:nth-child(6) {
+    width: 90px; /* Ширина для даты */
+    text-align: center;
+}
+
+/* Время (было 2, стало 7) */
+#history-table th:nth-child(7),
+#history-table td:nth-child(7) {
+    width: 70px;                    /* Фиксированная ширина */
+    text-align: center;
+}
+
+/* Действие (остается последней, :last-child все еще работает) */
+#history-table th:last-child,
+#history-table td:last-child {
+    width: 60px;                    /* Фиксированная ширина */
+    text-align: center;
+}
+
+/* Скругление углов для ячеек таблицы истории */
+/* (Обновляем :last-child для thead, оставляем :first-child и :last-child для tbody) */
+#history-table thead th:first-child { /* Название */
+    border-top-left-radius: var(--card-border-radius);
+}
+#history-table thead th:last-child { /* Действие */
+    border-top-right-radius: var(--card-border-radius);
+}
+#history-table tbody tr:last-child td:first-child { /* Название */
+    border-bottom-left-radius: var(--card-border-radius);
+}
+#history-table tbody tr:last-child td:last-child { /* Действие */
+    border-bottom-right-radius: var(--card-border-radius);
+}
+
+/* --- Вспомогательные классы --- */
+
+/* Красный цвет для отрицательного остатка */
+.remaining-negative {
+    color: var(--darkest);
+    font-weight: bold;
+    /* Убираем эффект мигания */
+    animation: none;
+}
+
+@keyframes gb-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.5; }
+}
+
+/* Оранжевый цвет для низкого остатка (если раскомментировать в JS) */
+.remaining-low {
+    color: var(--warning);
+}
+
+/* --- Медиа-запросы для адаптивности --- */
+
+/* Убираем авто-расчет колонок Grid (auto-fit), т.к. он уже делает адаптацию */
+/*
+@media (max-width: 900px) { 
+    .top-sections {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) { 
+    .top-sections {
+        grid-template-columns: 1fr;
+        gap: var(--section-padding);
+    }
+}
+*/
+
+/* Адаптивные стили для маленьких экранов */
+@media (max-width: 768px) {
+    .input-group .form-group {
+        flex-basis: calc(50% - var(--gap) / 2);
+    }
+    .input-group .product-name-group {
+        flex-basis: 100%;
+    }
+    #history-table {
+        min-width: auto;
+    }
+    /* Удаляем пустой блок стилей */
+}
+
+/* Маленькие мобильные экраны */
+@media (max-width: 480px) {
+     body {
+         margin: 0; /* Убираем внешний отступ у body */
+         padding: 0 var(--gap); /* Уменьшаем боковые отступы */
+     }
+     h1 {
+         font-size: 1.5em;
+     }
+     h2 {
+         font-size: 1.2em;
+     }
+     /* Все поля ввода в input-group - одно под другим */
+    .input-group .form-group {
+        flex-basis: 100%;
+    }
+    /* Кнопка в input-group - на всю ширину */
+    .input-group button {
+        width: 100%;
+        margin-top: var(--gap);
+    }
+    .lang-toggle-wrapper {
+        width: 70px;
+        height: 32px;
+    }
+    
+    .lang-toggle-switch {
+        width: 20px;
+        height: 20px;
+        right: 42px;
+        top: 6px;
+    }
+    
+    .lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-switch {
+        right: 7px; 
+    }
+    
+    .lang-toggle-ru, .lang-toggle-en {
+        font-size: 0.9rem;
+        height: 26px;
+        line-height: 26px;
+    }
+    
+    .title-container {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .header-buttons {
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+}
+
+/* --- Стили для модального окна --- */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Фиксированное позиционирование */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    z-index: 1000; /* Поверх всего остального */
+    justify-content: center;
+    align-items: center;
+    /* Убираем анимацию отсюда */
+    /* opacity: 0; */
+    /* transform: scale(0.9); */
+    /* transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; */
+}
+
+.modal.show {
+    display: flex;
+}
+
+/* Убираем старое правило для .modal.visible */
+/*
+.modal.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+*/
+
+.modal-content {
+    max-width: 400px;
+    width: 90%;
+    padding: var(--container-padding);
+    text-align: center;
+    /* Добавляем анимацию сюда */
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    background-color: var(--lightest);
+    border: none; /* Убираем стандартную границу */
+    background-image: radial-gradient(var(--dark) 0.5px, var(--lightest) 0.5px);
+    background-size: 4px 4px;
+    
+    /* Пиксельная рамка */
+    box-shadow: 
+        /* Внешняя рамка */
+        0 0 0 4px var(--darkest),
+        /* Внутренняя рамка */
+        inset 0 0 0 3px var(--dark);
+    
+    /* Дополнительный отступ */
+    padding: calc(var(--container-padding) + 4px);
+}
+
+/* Конечное состояние анимации контента, когда у родителя есть класс .visible */
+.modal.visible .modal-content {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#modal-message {
+    margin-bottom: var(--section-padding);
+    font-size: 1.1rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--gap);
+}
+
+.modal-actions button {
+    min-width: 100px;
+}
+
+/* Скрываем кнопку ОК по умолчанию */
+#modal-ok-btn {
+    display: none;
+}
+
+/* Стили для режима уведомления */
+.modal.is-notice .modal-actions #modal-confirm-btn,
+.modal.is-notice .modal-actions #modal-cancel-btn {
+    display: none; /* Скрываем Да/Отмена */
+}
+
+.modal.is-notice .modal-actions #modal-ok-btn {
+    display: inline-block; /* Показываем ОК */
+}
+
+/* --- Стили для таблиц статуса --- */
+.summary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: calc(var(--base-padding) / 2);
+    margin-bottom: var(--section-padding);
+    font-size: 0.9375rem;
+    border: none; /* Убираем стандартную границу */
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    background-color: var(--lightest);
+    
+    /* Пиксельная рамка */
+    box-shadow: 
+        /* Внешняя рамка */
+        0 0 0 2px var(--darkest),
+        /* Внутренняя рамка */
+        inset 0 0 0 2px var(--dark);
+}
+
+.summary-table th,
+.summary-table td {
+    border: 2px solid var(--dark);
+    padding: var(--base-padding);
+    text-align: center;
+    width: 25%;
+    border-style: inset;
+    font-size: 0.8rem;
+}
+
+.summary-table th {
+    background-color: var(--light); /* Светло-зелёный фон заголовков */
+    font-weight: 600;
+    color: var(--darkest);
+    font-size: 1.2rem; /* Увеличиваем размер эмодзи */
+}
+
+/* Скругление углов для ячеек таблицы статуса */
+.summary-table thead th:first-child {
+    border-top-left-radius: var(--card-border-radius);
+}
+.summary-table thead th:last-child {
+    border-top-right-radius: var(--card-border-radius);
+}
+.summary-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--card-border-radius);
+}
+.summary-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--card-border-radius);
+}
+
+/* Удаляем правила, которые убирали части границ, т.к. теперь есть внешняя рамка */
+/* .card .summary-table { border: none; } */
+/* .card .summary-table th { border-top: none; } */
+/* .card .summary-table th:first-child { border-left: none; } */
+/* .card .summary-table th:last-child { border-right: none; } */
+/* .card .summary-table td:first-child { border-left: none; } */
+/* .card .summary-table td:last-child { border-right: none; } */
+/* .card .summary-table td { border-bottom: none; } */
+
+/* Добавляем специфичные стили для группы БЖУ+Вес */
+.nutrient-weight-group {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 10px; /* Отступ между элементами */
+    margin-top: 15px; /* Увеличиваем отступ сверху */
+}
+
+.nutrient-weight-group .form-group {
+    width: 100%; /* Полная ширина */
+    margin-right: 0; /* Убираем отступ справа */
+}
+
+/* Контейнер для кнопки Добавить */
+.button-container {
+    text-align: center;
+    margin-top: 20px; /* Увеличиваем отступ сверху */
+}
+
+/* Стили для кнопок в контейнере */
+.button-container button {
+    min-width: 180px; /* Минимальная ширина кнопок */
+    margin: 0 10px; /* Отступы между кнопками */
+}
+
+/* Улучшаем внешний вид полей ввода */
+input[type="text"],
+input[type="number"] {
+    height: calc(var(--input-height) * 0.9); /* Делаем поля ввода немного ниже */
+    font-size: 0.85rem; /* Уменьшаем размер текста в полях ввода */
+    padding: 6px 10px; /* Увеличиваем внутренние отступы */
+    transition: all 0.2s ease-in-out; /* Плавный переход при фокусе */
+}
+
+/* Эффект фокуса */
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: var(--light);
+    outline: 0;
+    background-color: var(--lightest);
+    border-width: 3px; /* Увеличиваем толщину границы при фокусе */
+}
+
+/* Стили для поля названия продукта */
+.product-name-group {
+    margin-bottom: 15px; /* Больший отступ после названия продукта */
+}
+
+/* Стиль для кнопки COLLECT ITEM */
+#add-product-btn {
+    margin-top: 5px; /* Отступ сверху кнопки */
+}
+
+/* --- Специфичные стили для добавления продукта --- */
+#input-product label {
+    font-size: 0.8rem; /* Увеличиваем размер шрифта для меток */
+    white-space: normal; /* Разрешаем перенос текста */
+    overflow: visible; /* Не скрываем переполнение */
+    text-overflow: clip; /* Не обрезаем текст */
+}
+
+/* Стиль для текста меток */
+label span:not(.icon) {
+    overflow: visible;                 /* Не скрываем переполнение */
+    text-overflow: clip;               /* Не обрезаем текст */
+    white-space: normal;               /* Разрешаем перенос */
+}
+
+/* Ещё сильнее уменьшаем метки в проблемных секциях */
+/* #limit-settings label,
+#input-product label {
+    font-size: 0.6rem;
+} */
+
+/* Корректируем расстояние между полями ввода */
+.nutrient-weight-group {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 10px; /* Отступ между элементами */
+    margin-top: 15px; /* Увеличиваем отступ сверху */
+}
+
+.nutrient-weight-group .form-group {
+    width: 100%; /* Полная ширина */
+    margin-right: 0; /* Убираем отступ справа */
+}
+
+/* Уменьшаем размер полей ввода для компактности */
+input[type="text"],
+input[type="number"] {
+    height: calc(var(--input-height) * 0.9); /* Делаем поля ввода немного ниже */
+    font-size: 0.85rem; /* Уменьшаем размер текста в полях ввода */
+}
+
+/* Меняем цвет и стиль текста в метках для большей контрастности */
+label {
+    color: var(--darkest); /* Более тёмный и контрастный цвет текста */
+    font-weight: 600; /* Делаем шрифт более жирным для лучшей читаемости */
+}
+
+/* Улучшаем контрастность и читаемость иконок */
+label .icon {
+    display: inline-block;
+    width: 20px;                       /* Увеличиваем ширину для иконок */
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--dark);                /* Цвет иконки */
+    font-size: 1.2em;                  /* Увеличиваем размер иконок */
+}
+
+/* Удаляем анимацию для остатков */
+.remaining-negative {
+    color: var(--darkest);
+    font-weight: bold;
+    /* Убираем эффект мигания */
+    animation: none;
+}
+
+@keyframes gb-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.5; }
+}
+
+/* Модификация стиля карточек для более аутентичного вида */
+.card {
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    height: 4px;
+    background-color: var(--light);
+    opacity: 0.5;
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    height: 3px;
+    background-color: var(--darkest);
+    opacity: 0.2;
+}
+
+/* Удаляем стили для прогресс-баров и счетчика уровня */
+/* Оставляем стиль для кнопки и карточек, но убираем анимацию */
+#reset-day-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+#reset-day-btn::before {
+    content: none; /* Убираем анимацию */
+}
+
+/* Добавляем отступ между группой полей ввода и кнопками */
+#limit-settings .button-container {
+    margin-top: 15px; /* Отступ сверху для кнопок */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#limit-settings .button-container button {
+    flex: 1;
+    min-width: 150px;
+    margin: 0;
+    white-space: normal; /* Разрешаем перенос текста на кнопке */
+    width: calc(33.333% - 7px); /* Фиксированная ширина для каждой кнопки (3 кнопки с учетом gap) */
+    box-sizing: border-box; /* Убедимся, что padding и border включены в ширину */
+    word-break: keep-all; /* Не разбиваем слова на части */
+    padding: 10px 6px; /* Увеличиваем вертикальный padding для размещения 2 строк текста */
+    min-height: 50px; /* Минимальная высота для кнопки */
+    line-height: 1.2; /* Уменьшаем межстрочный интервал */
+    height: auto; /* Высота подстраивается под контент */
+}
+
+/* Стиль для заголовка с кнопкой экспорта */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Применяем стили как у .card h2 */
+    padding: 10px var(--base-padding); /* Добавляем по 2px сверху и снизу (было 8px) */
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none;
+    text-shadow: 1px 1px 0 var(--lightest);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark);
+    margin: 4px; /* Отступ для рамки */
+    margin-bottom: var(--container-padding); /* Нижний отступ до таблицы */
+}
+
+.history-header h2 {
+    margin: 0; /* Убираем внешние отступы у H2 */
+    flex: 1; /* Растягиваем H2 */
+    /* Убираем стили фона/рамки отсюда */
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    text-shadow: none;
+    text-align: left; /* Возвращаем выравнивание */
+    font-size: 1.2rem;
+}
+
+/* Стиль для кнопки экспорта */
+.history-header button {
+    min-width: auto; /* Убираем мин. ширину */
+    margin-left: var(--gap); /* Отступ слева */
+    padding: 6px 12px; /* Подбираем padding */
+    font-size: 0.9rem; /* Уменьшаем шрифт */
+    font-weight: bold;
+    /* Стили кнопки */
+    background-color: var(--dark);
+    color: var(--lightest);
+    border: none;
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    transition: background-color 0.15s ease-in-out;
+}
+
+.history-header button:hover {
+    background-color: var(--darkest);
+    /* cursor: pointer; У курсора уже есть */
+}
+
+.history-header button:active {
+     transform: translateY(2px);
+     box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+/* Контейнер для заголовка и кнопки информации */
+.title-container {
+    display: flex; /* Меняем Grid на Flex для более простого размещения */
+    align-items: center;
+    justify-content: space-between; /* Распределяем элементы */
+    padding: 10px var(--base-padding); /* Отступы сверху/снизу и по бокам */
+    position: relative; /* Base position */
+    z-index: 100;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform, opacity, position, top, box-shadow; /* Add top */
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none;
+    text-shadow: 1px 1px 0 var(--lightest);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark);
+    margin: 4px auto var(--container-padding); /* Center horizontally, keep vertical margins */
+    width: auto; /* Let content or max-width define width */
+    max-width: 1200px; /* Consistent max-width */
+    top: 0; /* Define initial top */
+    opacity: 1; /* Initial opacity */
+    transform: translateY(0); /* Initial transform */
+}
+
+/* Стили для зафиксированного заголовка */
+.title-container.fixed {
+    position: fixed;
+    top: 10px; /* Position when fixed */
+    left: 10px; /* Use fixed offsets */
+    right: 10px; /* Use fixed offsets */
+    width: auto; /* Width determined by left/right/max-width */
+    max-width: 1200px; /* Consistent max-width */
+    opacity: 0.75;
+    transform: translateY(0); /* Ensure transform is reset or set */
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark),
+        0 4px 12px rgba(15, 56, 15, 0.3); /* Add shadow */
+    /* Remove margin-top/bottom for fixed */
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto; /* Keep centering within left/right offsets */
+    margin-right: auto;
+    transition: all 0.3s ease; /* Плавный переход состояний */
+    z-index: 1000; /* Убедимся, что заголовок всегда сверху */
+}
+
+/* При наведении делаем его полностью видимым и добавляем эффект подъема */
+.title-container.fixed:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark),
+        0 8px 16px rgba(15, 56, 15, 0.4);
+}
+
+/* Кнопки помещаем в третью (правую) колонку и выравниваем вправо */
+.header-buttons {
+    grid-column: 3 / 4; /* Занимает третью колонку */
+    justify-self: end; /* Выравниваем содержимое колонки вправо */
+    display: flex;
+    align-items: center;
+    gap: var(--gap); /* Отступ между кнопками */
+    margin: 0; /* Убираем лишние отступы */
+    padding-right: var(--base-padding); /* <-- Добавляем отступ справа */
+}
+
+/* Убираем старые стили для .header-buttons */
+/* .header-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 15px;
+} */
+
+
+/* Стили для тумблера языка - ПЕРЕДЕЛЫВАЕМ */
+.lang-toggle-wrapper {
+    position: relative; /* Убираем absolute */
+    display: inline-block; /* Чтобы был в потоке */
+    vertical-align: middle; /* Выравнивание по вертикали */
+    /* Убираем фиксированные размеры */
+    /* width: 80px; */
+    /* height: 36px; */
+    margin-right: 0; /* Убираем отступ, т.к. есть gap в .header-buttons */
+    z-index: 5; /* Можно пониже */
+}
+
+.lang-toggle-checkbox {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    margin: 0;
+}
+
+.lang-toggle-label {
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+    width: 100%;
+    height: 30px;
+    border-radius: 4px;
+    /* Добавляем четкую обводку */
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    /* Добавляем внутреннюю тень */
+    box-shadow: inset 0 0 0 2px var(--dark);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    /* Явно указываем отсутствие padding и зазоров */
+    padding: 0;
+    font-size: 0; /* Убираем возможные пробелы между inline элементами */
+}
+
+/* В темной теме используем зеленоватую обводку */
+body.theme-dark .lang-toggle-label {
+    border-color: var(--light);
+    box-shadow: inset 0 0 0 2px var(--dark);
+}
+
+/* Убираем сложную логику для .lang-toggle-inner */
+.lang-toggle-inner {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* Убираем любые зазоры между элементами */
+    font-size: 0; /* Убирает возможные пробелы между inline элементами */
+}
+
+/* Убираем стили для старого переключателя */
+/* .lang-toggle-switch { ... } */
+
+/* Убираем перемещение при :checked */
+/* .lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-inner { ... } */
+/* .lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-switch { ... } */
+
+/* Стили для элементов RU/EN */
+.lang-toggle-ru,
+.lang-toggle-en {
+    display: block;
+    /* width: 50%; */ /* Ширина авто */
+    height: 100%;
+    line-height: 30px; /* Выравниваем текст по вертикали */
+    font-size: 0.9rem; /* Подбираем размер шрифта */
+    font-weight: bold;
+    /* float: left; */ /* Убираем float */
+    padding: 0 10px; /* Отступы по бокам */
+    transition: background-color 0.2s, color 0.2s, text-shadow 0.2s; /* Плавный переход */
+    margin: 0; /* Явное указание отсутствия margin */
+    border: 0; /* Явное указание отсутствия border */
+}
+
+/* Используем переменные темы вместо жестко заданных цветов */
+.lang-toggle-ru {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    /* Убираем правую границу */
+    border-right: 0;
+    color: var(--lang-toggle-ru-active-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-ru-active-shadow);
+    background-color: var(--lang-toggle-ru-active-bg);
+}
+
+.lang-toggle-en {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    /* Убираем левую границу */
+    border-left: 0;
+    /* Смещаем элемент влево для уверенности, что не будет зазора */
+    margin-left: -1px;
+    color: var(--lang-toggle-en-inactive-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-en-inactive-shadow);
+    background-color: var(--lang-toggle-en-inactive-bg);
+}
+
+/* Цвета при :checked (состояние EN - checkbox IS checked) */
+.lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-ru {
+    /* БЫЛО: НЕактивный стиль для RU */
+    /* background-color: var(--lang-toggle-en-inactive-bg); */
+    /* color: var(--lang-toggle-en-inactive-text); */
+    /* text-shadow: 1px 1px 0 var(--lang-toggle-en-inactive-shadow); */
+    /* СТАЛО: НЕактивный стиль для RU (когда EN активен, т.е. checked) */
+    background-color: var(--lang-toggle-ru-inactive-bg);
+    color: var(--lang-toggle-ru-inactive-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-ru-inactive-shadow);
+}
+.lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-en {
+    /* БЫЛО: Активный стиль для EN */
+    /* background-color: var(--lang-toggle-en-active-bg); */
+    /* color: var(--lang-toggle-en-active-text); */
+    /* text-shadow: 1px 1px 0 var(--lang-toggle-en-active-shadow); */
+    /* СТАЛО: Активный стиль для EN */
+    background-color: var(--lang-toggle-en-active-bg);
+    color: var(--lang-toggle-en-active-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-en-active-shadow);
+}
+
+
+/* Убираем лишние стили для стрелки и эффектов hover */
+/* .lang-toggle-switch::before { ... } */
+/* .lang-toggle-wrapper:hover .lang-toggle-switch { ... } */
+/* .lang-toggle-wrapper::after { ... } */
+/* .lang-toggle-wrapper:hover::after { ... } */
+
+
+/* Стили для кастомного скролла */
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track); /* Переменная */
+    border-left: 2px solid var(--scrollbar-border); /* Переменная */
+    border-right: 2px solid var(--scrollbar-border); /* Переменная */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb); /* Переменная */
+    border: 2px solid var(--scrollbar-border); /* Переменная */
+    border-radius: 0;
+    box-shadow: inset 0 0 0 2px var(--scrollbar-shadow); /* Переменная */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover); /* Переменная */
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-thumb-active); /* Переменная */
+    box-shadow: inset 0 0 0 2px var(--scrollbar-shadow); /* Переменная */
+}
+
+::-webkit-scrollbar-button {
+    display: block;
+    height: 14px;
+    background-color: var(--scrollbar-button-bg); /* Переменная */
+    border: 2px solid var(--scrollbar-border); /* Переменная */
+    box-shadow: inset 0 0 0 2px var(--scrollbar-shadow); /* Переменная */
+}
+
+::-webkit-scrollbar-button:hover {
+    background-color: var(--scrollbar-thumb-hover); /* Используем цвет ховера ползунка */
+}
+
+::-webkit-scrollbar-button:active {
+    background-color: var(--scrollbar-thumb-active); /* Используем цвет активации ползунка */
+}
+
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+    /* Стрелка вверх */
+    background-image: linear-gradient(45deg, transparent 30%, var(--scrollbar-arrow) 30%, var(--scrollbar-arrow) 70%, transparent 70%),
+                      linear-gradient(135deg, transparent 30%, var(--scrollbar-arrow) 30%, var(--scrollbar-arrow) 70%, transparent 70%);
+    background-size: 8px 8px;
+    background-position: center 6px, center 6px;
+    background-repeat: no-repeat;
+}
+
+::-webkit-scrollbar-button:single-button:vertical:increment {
+    /* Стрелка вниз */
+    background-image: linear-gradient(45deg, transparent 30%, var(--scrollbar-arrow) 30%, var(--scrollbar-arrow) 70%, transparent 70%),
+                      linear-gradient(135deg, transparent 30%, var(--scrollbar-arrow) 30%, var(--scrollbar-arrow) 70%, transparent 70%);
+    background-size: 8px 8px;
+    background-position: center 4px, center 4px;
+    background-repeat: no-repeat;
+    transform: rotate(180deg);
+}
+
+/* Кнопка информации */
+.info-btn {
+    width: 34px;
+    height: 34px;
+    vertical-align: middle;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    background-color: var(--light);
+    color: var(--darkest);
+    cursor: pointer;
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+    /* animation: pixel-pulse 2s infinite; */ /* <-- УДАЛЯЕМ АНИМАЦИЮ */
+    transition: all 0.2s;
+}
+
+.info-btn:hover {
+    background-color: var(--dark);
+    color: var(--lightest);
+    transform: scale(1.1);
+}
+
+/* Пульсация кнопок - УДАЛЯЕМ ОПРЕДЕЛЕНИЕ */
+/* @keyframes pixel-pulse {
+    0%, 100% { 
+        transform: scale(1);
+    }
+    50% { 
+        transform: scale(1.1);
+    }
+} */
+
+/* Модальное окно информации */
+.info-modal-content {
+    max-width: 600px;
+    text-align: left;
+    padding: calc(var(--container-padding) + 10px);
+}
+
+.info-modal-content h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--dark);
+    text-shadow: 1px 1px 0 var(--darkest);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--light);
+    font-size: 1rem; /* Немного увеличиваем заголовок */
+    letter-spacing: 1px; /* Добавляем расстояние между буквами */
+}
+
+.info-text {
+    font-size: 0.8rem; /* Увеличиваем размер шрифта */
+    line-height: 2; /* Увеличиваем межстрочный интервал */
+    margin-bottom: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+    letter-spacing: 0.5px; /* Добавляем расстояние между буквами */
+}
+
+/* Новый класс для добавления фейда снизу */
+.fade-bottom {
+    -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+.info-paragraph {
+    margin-bottom: 20px; /* Увеличиваем отступ между параграфами */
+}
+
+.info-title {
+    color: var(--dark);
+    display: block;
+    margin-bottom: 8px; /* Увеличиваем отступ */
+    font-weight: bold;
+    font-size: 0.9rem; /* Немного больше чем основной текст */
+    letter-spacing: 1px; /* Увеличиваем расстояние между буквами в заголовках */
+}
+
+.info-list {
+    list-style-type: none;
+    padding-left: 10px;
+    margin-bottom: 20px; /* Увеличиваем отступ */
+}
+
+.info-list li {
+    margin-bottom: 16px; /* Увеличиваем расстояние между элементами списка */
+    position: relative;
+    padding-left: 18px; /* Увеличиваем отступ для маркера */
+}
+
+.info-list li:before {
+    content: '➤';
+    position: absolute;
+    left: 0;
+    color: var(--dark);
+}
+
+.info-highlight {
+    color: var(--darkest);
+    font-weight: bold;
+    letter-spacing: 0.5px; /* Увеличиваем расстояние между буквами */
+}
+
+#info-close-btn, #tips-close-btn {
+    margin: 10px auto 0; /* Добавляем отступ сверху */
+    display: block;
+    min-width: 100px;
+    font-size: 1rem; /* Увеличиваем размер текста кнопки */
+    padding: 8px 15px; /* Увеличиваем padding кнопки */
+}
+
+/* Используем переменные темы вместо жестко заданных цветов */
+.lang-toggle-ru {
+    color: var(--lang-toggle-ru-active-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-ru-active-shadow);
+    background-color: var(--lang-toggle-ru-active-bg);
+}
+
+.lang-toggle-en {
+    color: var(--lang-toggle-en-inactive-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-en-inactive-shadow);
+    background-color: var(--lang-toggle-en-inactive-bg);
+}
+
+/* Стили для поиска в истории */
+.search-container {
+    margin-bottom: 15px;
+    /* padding: 0 8px; <-- Убираем горизонтальный padding */
+}
+
+.search-container .form-group {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    background: var(--search-bg); /* Переменная */
+    border: 2px solid var(--search-border); /* Переменная */
+    border-radius: 4px;
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+.search-container label {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    padding: 8px;
+    white-space: nowrap;
+}
+
+.search-container input[type="text"] {
+    flex: 1;
+    width: 100%;
+    padding: 8px;
+    background: var(--search-input-bg); /* Переменная */
+    border: none;
+    border-left: 2px solid var(--search-border); /* Переменная */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: var(--search-input-text); /* Переменная */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+}
+
+.search-container input[type="text"]:focus {
+    outline: none;
+    background: var(--search-input-focus-bg); /* Переменная */
+}
+
+@media (max-width: 768px) {
+    .search-container .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-container label {
+        margin-right: 0;
+        border-bottom: 2px solid #0f380f;
+    }
+    
+    .search-container input[type="text"] {
+        border-left: none;
+    }
+}
+
+/* Стили для навигации по дням */
+.date-navigation {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    /* padding: 0 8px; <-- Убираем горизонтальный padding */
+}
+
+.date-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.date-nav-icon {
+    margin: 0;
+    padding: 0;
+}
+
+.date-picker-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    flex: 1;
+    margin: 0 10px;
+    background: var(--date-picker-bg);
+    border: 2px solid var(--date-picker-border);
+    border-radius: 4px;
+    padding: 0 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-height: 36px; /* Гарантируем минимальную высоту */
+    overflow: visible; /* Разрешаем содержимому выходить за границы */
+}
+
+.date-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.date-picker-container .icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+    color: var(--darkest);
+    vertical-align: middle;
+    z-index: 1; /* Добавляем z-index для иконки */
+    position: relative; /* Делаем, чтобы z-index работал */
+}
+
+.current-date-display {
+    position: absolute !important;
+    left: 40px !important; /* Место для иконки календаря */
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important; /* Центрируем по вертикали */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: var(--date-picker-text);
+    text-align: center !important;
+    transition: color 0.3s ease;
+    white-space: normal;
+    line-height: 1.2;
+    z-index: 1 !important;
+    pointer-events: none !important; /* Пропускаем клики через него */
+}
+
+/* Стили для нативного календаря */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#all-days-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin-left: 5px;
+    font-size: 16px;
+}
+
+/* Стили для разделителя дат в таблице */
+.date-separator {
+    background-color: var(--date-separator-bg); /* Переменная */
+    border-top: 2px solid var(--border-color); /* Переменная */
+    border-bottom: 2px solid var(--border-color); /* Переменная */
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+.date-separator td {
+    padding: 6px 8px;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--date-separator-text); /* Переменная */
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+    transition: color 0.3s ease; /* Плавный переход */
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .date-navigation {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .date-picker-container {
+        margin: 10px 0;
+    }
+    
+    .date-nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+}
+
+/* Увеличиваем размер иконки календаря */
+.date-picker-container .icon {
+    font-size: 1.2rem; /* Подбираем подходящий размер */
+    margin-right: 8px; /* Добавляем небольшой отступ справа */
+    color: var(--darkest); /* Убедимся, что цвет соответствует теме */
+    vertical-align: middle; /* Добавляем для лучшего центрирования */
+}
+
+/* --- Стили для секции трекинга веса --- */
+#weight-tracking {
+    margin-bottom: var(--container-padding); /* Добавляем отступ снизу */
+}
+
+#weight-tracking h3 {
+    margin-top: 25px; /* Отступ перед таблицей истории веса */
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Группа полей ввода веса и даты */
+.weight-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Контейнер для полей ввода */
+.weight-input-container,
+.weight-input-group .form-group:nth-child(2) {
+    width: 100%;
+    max-width: 240px;
+    margin-bottom: 15px;
+}
+
+/* Для полей ввода даты и веса */
+.weight-input-group input[type="number"],
+.weight-input-group input[type="date"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Для кнопки сохранения веса */
+.weight-input-group .button-container {
+    margin-top: 10px;
+}
+
+/* Таблица истории веса */
+#weight-history-table {
+    width: 100%;
+    margin-top: 10px; /* Отступ от заголовка H3 */
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    background-color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+#weight-history-table th,
+#weight-history-table td {
+    border: 1px solid var(--dark);
+    padding: var(--gap) var(--base-padding);
+    text-align: center; /* Центрируем текст */
+    vertical-align: middle;
+    white-space: nowrap;
+    border-style: inset;
+    border-width: 2px;
+    font-size: 0.8rem;
+}
+
+#weight-history-table th {
+    background-color: var(--light);
+    font-weight: 600;
+    color: var(--darkest);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem; /* Чуть меньше, чем у основной таблицы */
+}
+
+/* Выравнивание колонок в таблице веса */
+#weight-history-table th:nth-child(1),
+#weight-history-table td:nth-child(1) { /* Дата */
+    width: 60%;
+}
+
+#weight-history-table th:nth-child(2),
+#weight-history-table td:nth-child(2) { /* Вес */
+    width: 30%;
+}
+
+#weight-history-table th:last-child,
+#weight-history-table td:last-child { /* Действие */
+    width: 10%;
+    padding: 5px; /* Уменьшаем padding для кнопки */
+}
+
+/* Специфичные стили для инпута даты, чтобы текст был виден */
+input[type="date"] {
+    position: relative; /* Нужно для псевдоэлементов, если будем скрывать иконку */
+    color: var(--darkest); /* Цвет текста даты */
+    /* Попытка скрыть стандартную иконку календаря (может не работать везде) */
+    padding-left: 8px; /* Добавляем отступ слева для текста */
+    line-height: calc(var(--input-height) * 0.9 - 4px); /* Выравниваем текст по вертикали (высота - рамки) */
+    text-align: center; /* Центрируем текст даты */
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    /* display: none; */ /* Скрывать не будем, пусть будет */
+    opacity: 0.6; /* Сделаем иконку чуть прозрачнее */
+    cursor: pointer;
+}
+
+.weight-input-group .form-group label {
+    min-height: 2.4em; /* Примерная высота для двух строк текста (0.8rem * 1.2 * 2) */
+    /* Вы можете подстроить это значение при необходимости */
+    display: flex; /* Чтобы align-items сработало и для иконки внутри */
+    align-items: center; /* Выравниваем иконку и текст внутри label */
+}
+
+.weight-input-group .form-group {
+    width: 100%; /* Полная ширина */
+    margin-right: 0; /* Убираем отступ справа */
+    line-height: calc(var(--input-height) * 0.9 - 4px); /* Выравниваем текст по вертикали (высота - рамки) */
+    text-align: center; /* Центрируем текст даты */
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none; /* Скрываем стандартную иконку */
+    /* opacity: 0.6; <-- Убираем прозрачность, т.к. скрываем */
+    /* cursor: pointer; */
+}
+
+/* Уменьшаем placeholder для поля ввода веса */
+#current-weight::placeholder {
+    font-size: 0.75rem; /* Слегка уменьшаем шрифт плейсхолдера */
+    /* color: var(--text-muted); <-- Убираем */
+    /* opacity: 0.8; <-- Убираем */
+}
+
+/* Новый стиль для заголовка секции с кнопкой */
+.section-header {
+    display: flex;
+    justify-content: center; /* Центрируем по горизонтали */
+    align-items: center;    /* Центрируем по вертикали */
+    gap: var(--gap);        /* Отступ между заголовком и кнопкой */
+    margin-bottom: calc(var(--container-padding) + 4px); /* Отступ как у старого h2 */
+}
+
+.section-header h2 {
+    margin: 0; /* Убираем внешние отступы у H2 */
+    padding: 0; /* Убираем внутренние отступы */
+    box-shadow: none; /* Убираем тень/рамку */
+    background: none; /* Убираем фон */
+    text-shadow: none; /* Убираем тень текста */
+    flex-grow: 1; /* Позволяем заголовку растягиваться */
+    text-align: center; /* Центрируем текст заголовка */
+}
+
+.section-header .info-btn {
+    width: 28px; /* Уменьшаем размер кнопки */
+    height: 28px;
+    font-size: 1rem;
+    flex-shrink: 0; /* Запрещаем кнопке сжиматься */
+}
+
+/* Стиль для section-header в weight-tracking с обрамлением */
+#weight-tracking .section-header {
+    padding: 10px var(--base-padding);
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none;
+    text-shadow: 1px 1px 0 var(--lightest);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark);
+    margin: 4px;
+    margin-bottom: var(--container-padding);
+}
+
+.section-header h2 {
+    margin: 0; /* Убираем внешние отступы у H2 */
+    padding: 0; /* Убираем внутренние отступы */
+    box-shadow: none; /* Убираем тень/рамку */
+    background: none; /* Убираем фон */
+    text-shadow: none; /* Убираем тень текста */
+    flex-grow: 1; /* Позволяем заголовку растягиваться */
+    text-align: center; /* Центрируем текст заголовка */
+}
+
+/* Добавляем тень текста для h2 в секции weight-tracking */
+#weight-tracking .section-header h2 {
+    text-shadow: 1px 1px 0 var(--lightest);
+    color: var(--darkest);
+}
+
+.section-header .info-btn {
+    width: 28px; /* Уменьшаем размер кнопки */
+    height: 28px;
+    font-size: 1rem;
+    flex-shrink: 0; /* Запрещаем кнопке сжиматься */
+}
+
+/* Стили для информационной кнопки в поле ввода веса */
+.form-group .info-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    font-size: 0.8em;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+/* Увеличиваем отступ справа для поля ввода веса, чтобы кнопка не перекрывала текст */
+#current-weight {
+    padding-right: 40px;
+}
+
+/* Добавляем стиль для отображения элементов в строку */
+.weight-input-group .form-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.weight-input-group label {
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+/* Стили для информационной кнопки между меткой и полем ввода веса */
+.form-group .info-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    font-size: 0.8em;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+/* Настройка отображения в строку для form-group с весом */
+.weight-input-group .form-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.weight-input-group label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+/* Контейнер для поля ввода с кнопкой */
+.input-with-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-with-button input {
+    width: 100%;
+    padding-right: 40px; /* Место для кнопки */
+}
+
+.input-with-button .info-btn {
+    position: absolute;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 1rem;
+    background-color: var(--light);
+    color: var(--darkest);
+    border: 2px solid var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    z-index: 2;
+}
+
+.weight-input-container label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Отменяем предыдущие стили, которые могут конфликтовать */
+.weight-input-group .form-group {
+    display: block;
+}
+
+.weight-input-group label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Контейнер для поля ввода с тултипом */
+.input-with-tooltip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-with-tooltip input {
+    width: 100%;
+    padding-right: 36px; /* Место для иконки */
+}
+
+/* Контейнер тултипа */
+.tooltip-container {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none; /* Добавляем это свойство, чтобы контейнер не блокировал события мыши */
+}
+
+/* Иконка информации */
+.info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: var(--light);
+    color: var(--darkest);
+    border: 2px solid var(--dark);
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: help;
+    opacity: 0.5; /* Полупрозрачная иконка */
+    transition: opacity 0.3s;
+    pointer-events: auto; /* Возвращаем события мыши для иконки */
+}
+
+/* Делаем иконку непрозрачной при наведении */
+.tooltip-container:hover .info-icon {
+    opacity: 1;
+}
+
+/* Текст тултипа */
+.tooltip-text {
+    position: absolute;
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--tooltip-bg); /* Переменная */
+    color: var(--tooltip-text);          /* Переменная */
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    border: 2px solid var(--tooltip-border); /* Переменная */
+    right: 0;
+    top: 30px;
+    z-index: 3;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Треугольник над тултипом */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right: 8px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent var(--tooltip-bg) transparent; /* Используем фон тултипа */
+}
+
+/* Показываем тултип при наведении на иконку */
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Увеличиваем ширину полей ввода */
+.weight-input-container,
+.weight-input-group .form-group:nth-child(2) {
+    width: 100%;
+    max-width: 240px; /* Увеличиваем максимальную ширину */
+    margin: 0 auto 15px;
+}
+
+/* Выравниваем поля ввода */
+.weight-input-group .form-group {
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Плейсхолдер для веса с нормальной непрозрачностью */
+#current-weight::placeholder {
+    opacity: 1;
+}
+
+/* Стили для расположения полей ввода веса и даты в ряд */
+.weight-input-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px; /* Очень маленький отступ между полями */
+    width: 90%;
+    max-width: 480px;
+    margin: 0 auto 15px;
+}
+
+/* Контейнеры для полей ввода */
+.weight-input-container {
+    width: 220px;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+    .weight-input-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .weight-input-container {
+        width: 100%;
+        max-width: 240px;
+    }
+}
+
+/* Исправляем стиль для контейнера тултипа, чтобы он не блокировал ввод */
+.tooltip-container {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none; /* Добавляем это свойство, чтобы контейнер не блокировал события мыши */
+}
+
+/* Восстанавливаем события мыши только для самой иконки */
+.info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: var(--light);
+    color: var(--darkest);
+    border: 2px solid var(--dark);
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: help;
+    opacity: 0.5; /* Полупрозрачная иконка */
+    transition: opacity 0.3s;
+    pointer-events: auto; /* Возвращаем события мыши для иконки */
+}
+
+/* Уменьшаем расстояние между полями ввода веса и даты, используя отрицательные margin */
+.weight-input-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 0 auto;
+    width: auto;
+    max-width: 500px;
+}
+
+/* Устанавливаем фиксированную ширину и центрируем контейнеры */
+.weight-input-container {
+    width: 220px;
+    flex: 0 0 220px;
+    margin: 0;
+    padding: 0;
+}
+
+.weight-input-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* Маленький отступ между полями */
+    width: 100%;
+    max-width: 480px; /* Ограничиваем максимальную ширину */
+    margin: 0 auto 15px; /* Автоматические боковые отступы для центрирования */
+}
+
+/* Контейнеры для полей ввода */
+.weight-input-container {
+    width: 230px; /* Фиксированная ширина */
+    flex: 0 0 auto; /* Запрещаем сжиматься/растягиваться */
+    margin: 0;
+    padding: 0;
+}
+
+/* Делаем контейнер тултипа прозрачным для событий мыши */
+.tooltip-container {
+    pointer-events: none; /* Делаем весь контейнер прозрачным для мыши */
+}
+
+/* Но сама иконка должна реагировать на мышь */
+.info-icon {
+    pointer-events: auto; /* Восстанавливаем события для иконки */
+}
+
+/* Обеспечиваем полный доступ к полю ввода */
+.input-with-tooltip input {
+    z-index: 1; /* Поднимаем инпут выше */
+}
+
+/* Исправляем разницу в ширине полей ввода веса и даты */
+.input-with-tooltip input {
+    width: 100%;
+    padding-right: 36px; /* Место для иконки */
+    box-sizing: border-box; /* Учитываем padding в общей ширине */
+}
+
+/* Сделаем общий стиль для всех полей ввода в контейнере weight-input-container */
+.weight-input-container input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Уточняем одинаковую ширину для контейнеров */
+.weight-input-container {
+    width: 230px; /* Фиксированная ширина */
+    flex: 0 0 230px; /* Задаем точный размер flex-элемента */
+    margin: 0;
+    padding: 0;
+}
+
+/* Унифицируем высоту полей ввода веса и даты */
+.weight-input-container input,
+.input-with-tooltip input,
+input[type="date"] {
+    height: 42px; /* Фиксированная высота для всех полей */
+    box-sizing: border-box; /* Учитываем padding в размере */
+    padding: 8px; /* Одинаковый padding для всех полей */
+    font-size: 0.9rem; /* Одинаковый размер шрифта */
+    line-height: 1; /* Сбрасываем line-height, чтобы не влиял на высоту */
+    vertical-align: middle; /* Вертикальное выравнивание */
+}
+
+/* Стили для кнопок переключения темы */
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Небольшой отступ между кнопками темы */
+}
+
+.theme-btn {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Стилизуем как другие кнопки в шапке */
+    background-color: var(--secondary);
+    color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    opacity: 0.7; /* Неактивная кнопка полупрозрачна */
+    transition: opacity 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.theme-btn:hover {
+    opacity: 1;
+    background-color: var(--secondary-hover);
+}
+
+.theme-btn.active-theme {
+    opacity: 1;
+    background-color: var(--light); /* Активная кнопка светлее */
+    color: var(--darkest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--lightest); /* Внутренняя рамка светлее */
+    cursor: default; /* Убираем курсор pointer для активной */
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 480px) {
+    .header-buttons {
+        gap: 10px; /* Увеличиваем немного gap для мобильных */
+        flex-wrap: wrap; /* Разрешаем перенос кнопок */
+        justify-content: center; /* Центрируем кнопки при переносе */
+    }
+
+    .theme-switcher {
+        order: 1; /* Ставим переключатель темы первым */
+    }
+    .lang-toggle-wrapper {
+         order: 2; /* Переключатель языка вторым */
+    }
+    .info-btn {
+         order: 3; /* Кнопка инфо последней */
+    }
+}
+
+/* Класс для скрытия элементов доступно */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Временно скрываем новый селект */
+.lang-select-wrapper {
+    display: none; /* Позже уберем это */
+}
+
+#lang-select {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8em;
+    padding: 5px 8px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    min-width: 60px;
+}
+
+#lang-select:focus {
+    outline: 2px solid var(--focus-color);
+    box-shadow: none;
+}
+
+#lang-select option {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Скрываем старый тумблер */
+.lang-toggle-wrapper {
+    display: none; /* Скрываем старый */
+}
+
+/* Показываем новый селект (убираем display: none) */
+.lang-select-wrapper {
+    display: inline-block; /* Показываем новый */
+    vertical-align: middle; /* Выравниваем по вертикали с кнопками */
+}
+
+/* --- Стили для Choices.js --- */
+/* Общий контейнер */
+.choices {
+    font-family: var(--font-family-sans-serif);
+    font-size: 0.9rem; /* Размер шрифта как у кнопок */
+    margin: 0;
+    vertical-align: middle; /* Вертикальное выравнивание */
+    position: relative;
+    width: auto; /* Автоматическая ширина */
+    min-width: 70px; /* Минимальная ширина, чтобы вместить текст */
+}
+
+/* Внутренний элемент (видимая часть) - стилизуем как кнопку */
+.choices__inner {
+    display: flex; /* Используем flex для выравнивания */
+    align-items: center;
+    height: 34px; /* Высота как у соседних кнопок */
+    padding: 0 8px; /* Внутренние отступы (по бокам) */
+    padding-right: 25px; /* Место для стрелки */
+    border: none; /* Убираем стандартную границу */
+    border-radius: var(--border-radius); /* Без скругления */
+    background-color: var(--secondary); /* Цвет как у btn-secondary */
+    color: var(--lightest);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+    line-height: 1; /* Убираем лишнюю высоту строки */
+    min-height: auto; /* Сбрасываем мин. высоту от Choices */
+}
+
+/* Убираем паддинг по умолчанию */
+.choices__list--single {
+    padding: 0;
+    display: inline-block; /* Чтобы текст не растягивался */
+    vertical-align: middle;
+}
+
+/* При открытии списка */
+.choices.is-open .choices__inner {
+    background-color: var(--secondary-hover); /* Затемняем как при hover */
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest); /* Внутренняя тень темнее */
+}
+
+/* Стрелка вниз */
+.choices__inner::after {
+    content: '';
+    height: 0;
+    width: 0;
+    border-style: solid;
+    border-width: 5px 4px 0 4px; /* Размеры треугольника */
+    border-color: var(--lightest) transparent transparent transparent; /* Цвет стрелки */
+    position: absolute;
+    right: 10px; /* Позиционируем справа */
+    top: 50%;
+    margin-top: -2px; /* Центрируем по вертикали */
+    pointer-events: none; /* Не мешает клику */
+    transition: border-color 0.15s ease-in-out;
+}
+
+/* Цвет стрелки при открытии */
+.choices.is-open .choices__inner::after {
+     border-color: var(--darkest) transparent transparent transparent;
+}
+
+/* Выпадающий список */
+.choices__list--dropdown {
+    background-color: var(--card-bg); /* Фон как у карточек */
+    border: none;
+    border-radius: 0;
+    margin-top: 4px; /* Небольшой отступ сверху */
+    overflow: hidden; /* Скрываем вылезающие части */
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+    z-index: 10; /* Поверх других элементов */
+    padding: 0; /* Убираем внутренние отступы списка */
+}
+
+.choices__list[aria-expanded] {
+    padding: 0; /* Убираем padding у раскрытого списка */
+}
+
+/* Элементы списка */
+.choices__item {
+    font-size: 0.9rem;
+    padding: 8px 10px; /* Отступы внутри элемента */
+    color: var(--darkest);
+    background-color: var(--lightest); /* Фон элементов */
+    border-bottom: 2px solid var(--dark); /* Разделитель */
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.choices__item:last-child {
+    border-bottom: none; /* Убираем разделитель у последнего элемента */
+}
+
+/* Элемент списка при наведении или выделении */
+.choices__item--selectable.is-highlighted, 
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--light); /* Цвет фона при наведении */
+    color: var(--darkest);
+}
+
+/* Переопределение стилей для темной темы */
+body.theme-dark .choices__inner {
+    background-color: var(--secondary);
+    color: var(--lightest);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+body.theme-dark .choices.is-open .choices__inner {
+    background-color: var(--secondary-hover);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+body.theme-dark .choices__inner::after {
+    border-color: var(--lightest) transparent transparent transparent;
+}
+
+body.theme-dark .choices.is-open .choices__inner::after {
+     border-color: var(--lightest) transparent transparent transparent; /* Оставляем светлой */
+}
+
+body.theme-dark .choices__list--dropdown {
+    background-color: var(--card-bg);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+body.theme-dark .choices__item {
+    color: var(--darkest);
+    background-color: var(--lightest);
+    border-bottom: 2px solid var(--dark);
+}
+
+body.theme-dark .choices__item--selectable.is-highlighted,
+body.theme-dark .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--light); /* Цвет фона при наведении */
+    color: var(--darkest);
+}
+
+/* --- Стили для Choices.js --- */
+/* Общий контейнер */
+.lang-select-wrapper .choices {
+    font-family: 'Press Start 2P', var(--font-family-pixel); /* Явно задаем пиксельный шрифт */
+    font-size: 0.8rem; /* Немного уменьшим шрифт */
+    margin: 0;
+    vertical-align: middle;
+    position: relative;
+    width: auto;
+    min-width: 75px; /* Слегка увеличим мин. ширину */
+    box-sizing: border-box; /* Добавляем box-sizing */
+}
+
+/* Внутренний элемент (видимая часть) - стилизуем как кнопку */
+.lang-select-wrapper .choices__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Центрируем текст */
+    height: 34px;
+    padding: 0 25px 0 8px; /* Уточняем отступы (право для стрелки) */
+    border: none;
+    border-radius: 0; /* Убираем var(--border-radius) */
+    background-color: var(--secondary);
+    color: var(--lightest);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+    line-height: 30px; /* Подгоняем высоту строки под высоту блока */
+    min-height: auto;
+    overflow: hidden; /* Скрываем вылезающий текст */
+    box-sizing: border-box; /* Добавляем box-sizing */
+}
+
+/* Убираем паддинг по умолчанию и выравниваем текст */
+.lang-select-wrapper .choices__list--single {
+    padding: 0;
+    display: flex; /* Используем flex */
+    align-items: center; /* Выравниваем по центру */
+    height: 100%; /* Занимаем всю высоту */
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Выбранный элемент внутри видимой части */
+.lang-select-wrapper .choices__item--selectable {
+    line-height: normal; /* Возвращаем нормальную высоту строки для текста */
+    margin-bottom: 0; /* Убираем лишний отступ */
+    padding-right: 0; /* Убираем отступ справа от текста */
+}
+
+/* При открытии списка */
+.lang-select-wrapper .choices.is-open .choices__inner {
+    background-color: var(--secondary-hover);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+/* Стрелка вниз */
+.lang-select-wrapper .choices__inner::after {
+    content: '';
+    height: 0;
+    width: 0;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+    border-color: var(--lightest) transparent transparent transparent;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -3px; /* Корректируем позицию стрелки */
+    pointer-events: none;
+    transition: border-color 0.15s ease-in-out;
+}
+
+/* Цвет стрелки при открытии */
+.lang-select-wrapper .choices.is-open .choices__inner::after {
+     border-color: var(--darkest) transparent transparent transparent;
+}
+
+/* Выпадающий список */
+.lang-select-wrapper .choices__list--dropdown {
+    font-family: 'Press Start 2P', var(--font-family-pixel); /* Явно задаем пиксельный шрифт */
+    background-color: var(--lightest); /* Светлый фон */
+    border: none;
+    border-radius: 0;
+    margin-top: 4px;
+    overflow: hidden; /* Скрываем любой overflow */
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+    z-index: 10;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+    /* Убираем внутренний контейнер, который может давать скролл */
+    .choices__list {
+        max-height: none; /* Убираем ограничение высоты */
+        overflow-y: auto; /* Позволяем скролл, но скроем его ниже */
+        padding: 0; 
+        margin: 0; 
+        /* Скрываем скроллбар для Firefox */
+        scrollbar-width: none; 
+        /* Скрываем скроллбар для IE/Edge (старый) */
+        -ms-overflow-style: none; 
+    }
+}
+
+.lang-select-wrapper .choices__list[aria-expanded] {
+    padding: 0;
+}
+
+/* Элементы списка */
+.lang-select-wrapper .choices__item {
+    font-size: 0.8rem;
+    padding: 8px 10px; /* Немного увеличим вертикальные отступы */
+    color: var(--darkest);
+    background-color: transparent;
+    border-bottom: 2px solid var(--dark);
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    cursor: pointer;
+    line-height: 1.2; /* Слегка увеличим для читаемости */
+    text-align: center;
+    margin-bottom: 0;
+    white-space: nowrap; /* Запрещаем перенос текста */
+    overflow: hidden; /* Скрываем вылезающий текст (на всякий случай) */
+    text-overflow: ellipsis; /* Добавляем многоточие, если все же не влезет */
+}
+
+.lang-select-wrapper .choices__item:last-child {
+    border-bottom: none;
+}
+
+/* Элемент списка при наведении */
+.lang-select-wrapper .choices__item--selectable.is-highlighted, 
+.lang-select-wrapper .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--light); /* Светло-серый фон при наведении */
+    color: var(--darkest);
+}
+
+/* --- Темная тема --- */
+body.theme-dark .lang-select-wrapper .choices__inner {
+    background-color: var(--secondary); 
+    color: var(--lightest);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+body.theme-dark .lang-select-wrapper .choices.is-open .choices__inner {
+    background-color: var(--secondary-hover);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+body.theme-dark .lang-select-wrapper .choices__inner::after {
+    border-color: var(--lightest) transparent transparent transparent;
+}
+
+body.theme-dark .lang-select-wrapper .choices.is-open .choices__inner::after {
+     border-color: var(--lightest) transparent transparent transparent;
+}
+
+body.theme-dark .lang-select-wrapper .choices__list--dropdown {
+    background-color: var(--lightest); /* Фон списка остается светлым */
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+body.theme-dark .lang-select-wrapper .choices__item {
+    color: var(--darkest); /* Текст остается темным */
+    background-color: transparent;
+    border-bottom: 2px solid var(--dark); 
+}
+
+body.theme-dark .lang-select-wrapper .choices__item--selectable.is-highlighted,
+body.theme-dark .lang-select-wrapper .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--light); /* Фон при наведении остается светло-серым */
+    color: var(--darkest);
+}
+
+/* Скрываем скроллбар для WebKit (Chrome, Safari, Edge) - ПРИМЕНЯЕМ ОТДЕЛЬНО */
+.lang-select-wrapper .choices__list--dropdown .choices__list::-webkit-scrollbar {
+    display: none; /* Полностью скрываем */
+    width: 0;  /* Можно также установить ширину в 0 */
+    height: 0;
+}
+
+.lang-select-wrapper .choices__list[aria-expanded] {
+    padding: 0;
+}
+
+/* Выносим стили для .choices__list как отдельное правило */
+.lang-select-wrapper .choices__list--dropdown .choices__list {
+    max-height: none; /* Убираем ограничение высоты */
+    overflow-y: auto; /* Позволяем скролл, но скроем его ниже */
+    padding: 0; 
+    margin: 0; 
+    /* Скрываем скроллбар для Firefox */
+    scrollbar-width: none; 
+    /* Скрываем скроллбар для IE/Edge (старый) */
+    -ms-overflow-style: none; 
+}
+
+/* Для кнопки пересоздания, которая может быть под другими кнопками */
+#limit-settings #recalculate-btn {
+    order: 3; /* Установить порядок кнопки */
+}
+
+/* Удаляем стили для контейнера подсказок целей */
+/* .goal-tips-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+} */
+
+/* Удаляем стили для иконки советов */
+/* .goal-tips-icon {
+    cursor: pointer;
+    font-size: 20px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+} */
+
+/* .goal-tips-icon:hover {
+    background-color: #1abc9c;
+    transform: scale(1.1);
+} */
+
+/* Удаляем все стили тултипа */
+
+/* Стили для модального окна с советами */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--light);
+}
+
+.modal-close {
+    color: var(--dark);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: var(--darkest);
+}
+
+.modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Обновляем стили для инфо-модальных окон */
+.center-text {
+    text-align: center;
+}
+
+.info-modal-content .modal-header h3 {
+    margin-bottom: 0;
+    border-bottom: none;
+    flex-grow: 1;
+}
+
+/* Стили для зафиксированного заголовка */
+.title-container.fixed {
+    position: fixed;
+    top: 10px; /* Position when fixed */
+    left: 10px; /* Use fixed offsets */
+    right: 10px; /* Use fixed offsets */
+    width: auto; /* Width determined by left/right/max-width */
+    max-width: 1200px; /* Consistent max-width */
+    opacity: 0.75;
+    transform: translateY(0); /* Ensure transform is reset or set */
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark),
+        0 4px 12px rgba(15, 56, 15, 0.3); /* Add shadow */
+    /* Remove margin-top/bottom for fixed */
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto; /* Keep centering within left/right offsets */
+    margin-right: auto;
+    transition: all 0.3s ease; /* Плавный переход состояний */
+    z-index: 1000; /* Убедимся, что заголовок всегда сверху */
+}
+
+/* При наведении делаем его полностью видимым и добавляем эффект подъема */
+.title-container.fixed:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark),
+        0 8px 16px rgba(15, 56, 15, 0.4);
+}
+
+/* Стиль для кнопки возврата к созданию персонажа */
+.title-container .back-btn {
+    font-size: 0.9rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    height: 34px;
+    width: 34px;
+    border-radius: 0;
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+    background-color: var(--light);
+    color: var(--darkest);
+    text-shadow: 1px 1px 0 var(--lightest);
+    line-height: 1;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
+    border: none;
+    /* Пиксельный вид */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    /* Эффект нажатия */
+    position: relative;
+    top: 0;
+}
+
+/* Стили для иконки Feather внутри кнопки */
+.title-container .back-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+}
+
+.title-container .back-btn:hover {
+    background-color: var(--darkest);
+    color: var(--lightest);
+    text-shadow: 1px 1px 0 var(--dark);
+}
+
+.title-container .back-btn:active {
+    transform: translateY(2px);
+    box-shadow: 
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+    top: 2px;
+}
+
+/* Заголовок H1 центрируем */
+.title-container h1 {
+    margin: 0; /* Убираем лишние отступы */
+    padding: 0 var(--gap); /* Небольшие отступы по бокам */
+    text-align: center; /* Центрируем текст */
+    flex-grow: 1; /* Занимает доступное пространство */
+}
