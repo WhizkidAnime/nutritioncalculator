@@ -1,0 +1,88 @@
+/* --- Базовые стили --- */
+body {
+    font-family: var(--font-family-sans-serif);
+    /* Добавляем свойство для рендеринга пиксельных шрифтов */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    margin: 0;
+    background-color: var(--bg-color); /* Используем переменную */
+    color: var(--text-color);          /* Используем переменную */
+    line-height: 1.6;
+    padding-left: var(--container-padding); /* Оставили горизонтальный */
+    padding-right: var(--container-padding); /* Оставили горизонтальный */
+    font-size: 8px; /* Уменьшаем базовый размер для пиксельных шрифтов */
+    /* Добавляем пиксельный узор в виде точек как на экране GameBoy */
+    background-image: radial-gradient(var(--background-dots) 1px, transparent 1px); /* Используем переменную */
+    background-size: 4px 4px; /* Расстояние между точками */
+    background-position: -1px -1px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход для фона и текста */
+}
+
+h1, h2, h3 {
+    color: var(--text-color);
+    margin-bottom: var(--section-padding); /* Отступ снизу */
+    text-transform: uppercase; /* Верхний регистр для пиксельного стиля */
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--darkest);
+    text-shadow: 2px 2px 0 var(--lightest);
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+h2 {
+    font-size: 1.2rem; /* Уменьшаем с 1.5rem */
+    font-weight: 600;
+    margin-top: 0;
+    position: relative;
+    padding-left: 5px; /* Небольшой отступ слева для иконки */
+}
+
+h3 {
+    font-size: 1rem; /* Уменьшаем */
+    font-weight: 600;
+    margin-top: 0;
+}
+
+/* Заголовок H1 внутри title-container (возможно, перенести в layout.css?) */
+.title-container h1 {
+    margin: 0; /* Убираем лишние отступы */
+    padding: 0 var(--gap); /* Небольшие отступы по бокам */
+    text-align: center; /* Центрируем текст */
+    flex-grow: 1; /* Занимает доступное пространство */
+}
+
+/* --- Вспомогательные классы --- */
+
+/* Красный цвет для отрицательного остатка */
+.remaining-negative {
+    color: var(--darkest);
+    font-weight: bold;
+    /* Убираем эффект мигания */
+    animation: none; /* Или ссылка на @keyframes gb-blink в animations.css */
+}
+
+/* Оранжевый цвет для низкого остатка */
+.remaining-low {
+    color: var(--warning);
+}
+
+/* Класс для скрытия элементов доступно */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+} 

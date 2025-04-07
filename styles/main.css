@@ -1,0 +1,18 @@
+@import url('variables.css');
+@import url('theme.css');
+@import url('base.css');
+@import url('layout.css');
+@import url('forms.css');
+@import url('buttons.css');
+@import url('tables.css');
+@import url('modals.css');
+@import url('animations.css');
+
+/* Компоненты */
+@import url('components/scrollbar.css');
+@import url('components/lang-toggle.css');
+@import url('components/tooltip.css');
+@import url('components/datepicker.css');
+
+/* Адаптивность (должна быть последней) */
+@import url('responsive.css'); 

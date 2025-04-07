@@ -1,0 +1,116 @@
+/* --- Медиа-запросы для адаптивности --- */
+
+/* Адаптивные стили для средних экранов */
+@media (max-width: 768px) {
+    /* Формы */
+    .input-group .form-group {
+        flex-basis: calc(50% - var(--gap) / 2);
+    }
+    .input-group .product-name-group {
+        flex-basis: 100%;
+    }
+    /* Таблица истории */
+    #history-table {
+        min-width: auto;
+    }
+    /* Поиск */
+    .search-container .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-container label {
+        margin-right: 0;
+        border-bottom: 2px solid #0f380f;
+    }
+    .search-container input[type="text"] {
+        border-left: none;
+    }
+    /* Навигация по датам */
+    .date-navigation {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .date-picker-container {
+        margin: 10px 0;
+    }
+    .date-nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    /* Трекинг веса */
+    .weight-input-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .weight-input-container {
+        width: 100%;
+        max-width: 240px;
+    }
+}
+
+/* Маленькие мобильные экраны */
+@media (max-width: 480px) {
+    /* Базовые */
+     body {
+         margin: 0;
+         padding: 0 var(--gap);
+     }
+     h1 {
+         font-size: 1.5em;
+     }
+     h2 {
+         font-size: 1.2em;
+     }
+     /* Формы */
+    .input-group .form-group {
+        flex-basis: 100%;
+    }
+    .input-group button {
+        width: 100%;
+        margin-top: var(--gap);
+    }
+    /* Шапка */
+    .title-container {
+        justify-content: center;
+        text-align: center;
+    }
+    .header-buttons {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        gap: 10px; /* Увеличиваем немного gap для мобильных */
+        flex-wrap: wrap; /* Разрешаем перенос кнопок */
+        justify-content: center; /* Центрируем кнопки при переносе */
+    }
+    /* Компоненты шапки */
+    .theme-switcher {
+        order: 1;
+    }
+    .lang-select-wrapper { /* Используем новый селект */
+         order: 2;
+    }
+    .info-btn {
+         order: 3;
+    }
+    /* Старый переключатель языка (если еще используется) */
+    .lang-toggle-wrapper {
+        width: 70px;
+        height: 32px;
+        order: 2; /* Если он все еще нужен */
+    }
+    .lang-toggle-switch {
+        width: 20px;
+        height: 20px;
+        right: 42px;
+        top: 6px;
+    }
+    .lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-switch {
+        right: 7px;
+    }
+    .lang-toggle-ru, .lang-toggle-en {
+        font-size: 0.9rem;
+        height: 26px;
+        line-height: 26px;
+    }
+} 

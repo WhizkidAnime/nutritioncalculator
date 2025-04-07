@@ -1,0 +1,15 @@
+/* :root псевдокласс для определения CSS переменных (Custom Properties) */
+:root {
+    /* Шрифты */
+    --font-family-sans-serif: 'Press Start 2P', cursive; /* ПИКСЕЛЬНЫЙ ШРИФТ */
+    --font-family-pixel: 'Press Start 2P', cursive; /* Явно задаем пиксельный шрифт */
+
+    /* Отступы и размеры - можно будет подкорректировать */
+    --base-padding: 0.5rem;     /* 8px */
+    --container-padding: 1.25rem; /* 20px */
+    --section-padding: 1rem;    /* 16px */
+    --gap: 0.75rem;             /* 12px */
+    --border-radius: 0;  /* УБИРАЕМ СКРУГЛЕНИЕ */
+    --card-border-radius: 0; /* УБИРАЕМ СКРУГЛЕНИЕ */
+    --input-height: 2.5rem;     /* 40px */
+} 

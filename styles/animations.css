@@ -1,0 +1,22 @@
+/* Анимация Game Boy Pulse (если нужна) */
+@keyframes gameboy-pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.05); 
+        opacity: 0.9;
+    }
+}
+
+/* Анимация мигания (для .remaining-negative, если нужна) */
+@keyframes gb-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.5; }
+}
+
+/* Анимация для .remaining-negative, если будет использоваться */
+/* .remaining-negative {
+    animation: gb-blink 1s infinite; 
+} */ 

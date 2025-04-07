@@ -1,0 +1,449 @@
+/* --- Стили для форм и полей ввода --- */
+.form-group {
+    margin-bottom: 12px;
+    position: relative;
+}
+
+/* Стили для меток */
+label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    line-height: 1.2;
+    white-space: normal;
+    color: var(--darkest);
+    font-weight: 600;
+}
+
+/* Стиль для текста меток */
+label span:not(.icon) {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+}
+
+/* Стиль для иконок в метках */
+label .icon {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--darkest);
+    font-size: 1.2em;
+}
+
+/* Стили для полей ввода */
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: var(--base-padding);
+    border: none;
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+    height: var(--input-height);
+    font-size: 0.9rem;
+    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    font-family: var(--font-family-sans-serif);
+    background-color: var(--lightest);
+    color: var(--darkest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus {
+    outline: 0;
+    background-color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--dark),
+        inset 0 0 0 2px var(--dark);
+}
+
+/* Стили для кастомизации стрелок в полях ввода number */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Скрываем стандартные стрелки для Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Добавляем кастомные кнопки для увеличения/уменьшения значения */
+.form-group .spinner-buttons {
+    display: none;
+    position: absolute;
+    right: 2px;
+    top: 1px;
+    bottom: 1px;
+    height: auto;
+    width: 14px;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.form-group:hover .spinner-buttons,
+.form-group.spin-buttons-active .spinner-buttons {
+    display: flex;
+}
+
+.form-group .spinner-up,
+.form-group .spinner-down {
+    flex: 1;
+    width: 14px;
+    background-color: #245845;
+    border: 1px solid #071218;
+    box-shadow: inset 0 0 0 1px #78B060;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* Разделитель между кнопками */
+.form-group .spinner-up {
+    border-bottom: none;
+}
+
+.form-group .spinner-down {
+    border-top: none;
+}
+
+/* Стрелка вверх */
+.form-group .spinner-up::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 5px solid #071218;
+}
+
+/* Стрелка вниз */
+.form-group .spinner-down::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 5px solid #071218;
+}
+
+/* Стили для ховера */
+.form-group .spinner-up:hover,
+.form-group .spinner-down:hover {
+    background-color: #1a4535;
+}
+
+/* Стили для активного состояния */
+.form-group .spinner-up:active,
+.form-group .spinner-down:active {
+    background-color: #123025;
+    box-shadow: inset 0 0 0 1px #8bac0f;
+}
+
+/* Группа полей ввода (используется в Лимитах и Добавлении) */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+/* Отдельная группа полей внутри .input-group */
+.input-group .form-group {
+    width: 100%;
+    margin-bottom: 0;
+    min-width: auto;
+}
+
+/* Стили для меток в блоках статуса */
+.status-block label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    line-height: 1.2;
+    color: var(--darkest);
+    font-weight: 600;
+}
+
+/* Добавляем специфичные стили для группы БЖУ+Вес */
+.nutrient-weight-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.nutrient-weight-group .form-group {
+    width: 100%;
+    margin-right: 0;
+}
+
+/* Улучшаем внешний вид полей ввода */
+input[type="text"],
+input[type="number"] {
+    height: calc(var(--input-height) * 0.9);
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Эффект фокуса */
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: 0;
+    background-color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--primary),
+        inset 0 0 0 2px var(--light);
+}
+
+/* Стили для поля названия продукта */
+.product-name-group {
+    margin-bottom: 15px;
+}
+
+/* --- Специфичные стили для добавления продукта --- */
+#input-product label {
+    font-size: 0.8rem;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/* Стили для поиска в истории */
+.search-container {
+    margin-bottom: 15px;
+}
+
+.search-container .form-group {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    background: var(--search-bg);
+    border: 2px solid var(--search-border);
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.search-container label {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    padding: 8px;
+    white-space: nowrap;
+}
+
+.search-container input[type="text"] {
+    flex: 1;
+    width: 100%;
+    padding: 8px;
+    background: var(--search-input-bg);
+    border: none;
+    border-left: 2px solid var(--search-border);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: var(--search-input-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    height: auto; /* Сброс высоты */
+}
+
+.search-container input[type="text"]:focus {
+    outline: none;
+    background: var(--search-input-focus-bg);
+    box-shadow: none; /* Убираем стандартную тень фокуса */
+}
+
+/* Специфичные стили для инпута даты */
+input[type="date"] {
+    position: relative;
+    color: var(--darkest);
+    padding-left: 8px;
+    line-height: calc(var(--input-height) * 0.9 - 4px);
+    text-align: center;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.weight-input-group .form-group label {
+    min-height: 2.4em;
+    display: flex;
+    align-items: center;
+}
+
+.weight-input-group .form-group {
+    width: 100%;
+    margin-right: 0;
+    line-height: calc(var(--input-height) * 0.9 - 4px);
+    text-align: center;
+}
+
+/* Уменьшаем placeholder для поля ввода веса */
+#current-weight::placeholder {
+    font-size: 0.75rem;
+    opacity: 1;
+}
+
+/* Стили для информационной кнопки в поле ввода веса */
+.form-group .info-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    font-size: 0.8em;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+/* Увеличиваем отступ справа для поля ввода веса, чтобы кнопка не перекрывала текст */
+#current-weight {
+    padding-right: 40px;
+}
+
+/* Убираем стиль для отображения элементов в строку, он ломает лейбл для веса */
+/* .weight-input-group .form-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+} */
+
+/* Убираем стиль для метки, который ставит ее в строку */
+/* .weight-input-group label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 5px;
+    white-space: nowrap;
+} */
+
+/* Контейнер для поля ввода с кнопкой */
+.input-with-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-with-button input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.input-with-button .info-btn {
+    position: absolute;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 1rem;
+    background-color: var(--light);
+    color: var(--darkest);
+    border: 2px solid var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    z-index: 2;
+}
+
+/* Отменяем предыдущие стили, которые могут конфликтовать и возвращаем блочное отображение */
+.weight-input-group .form-group {
+    display: block;
+    width: 100%; /* Убедимся, что ширина установлена */
+    margin-bottom: 15px; /* Восстановим стандартный отступ */
+}
+
+.weight-input-group label {
+    display: flex; /* Оставляем flex для выравнивания иконки и текста внутри label */
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 4px; /* Стандартный отступ label */
+    /* Убираем конфликтующие стили */
+    /* min-height: 2.4em; */ 
+    /* white-space: nowrap; */
+    /* margin-right: 5px; */
+}
+
+/* Контейнер для поля ввода с тултипом */
+.input-with-tooltip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-with-tooltip input {
+    width: 100%;
+    padding-right: 36px;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+/* Сделаем общий стиль для всех полей ввода в контейнере weight-input-container */
+.weight-input-container input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Унифицируем высоту полей ввода веса и даты */
+.weight-input-container input,
+.input-with-tooltip input,
+input[type="date"] {
+    height: 42px;
+    box-sizing: border-box;
+    padding: 8px;
+    font-size: 0.9rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* Для select языка (если используется) */
+#lang-select {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8em;
+    padding: 5px 8px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--input-bg-color); /* Нужна переменная, например --card-bg */
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    min-width: 60px;
+}
+
+#lang-select:focus {
+    outline: 2px solid var(--primary); /* Используем --primary для фокуса */
+    box-shadow: none;
+}
+
+#lang-select option {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+} 

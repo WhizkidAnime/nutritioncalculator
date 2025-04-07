@@ -1,0 +1,75 @@
+/* --- Стили для навигации по дням и Date Picker --- */
+.date-navigation {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.date-picker-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    flex: 1;
+    margin: 0 10px;
+    background: var(--date-picker-bg);
+    border: 2px solid var(--date-picker-border);
+    border-radius: 4px;
+    padding: 0 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-height: 36px;
+    overflow: visible;
+}
+
+.date-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.date-picker-container .icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+    color: var(--darkest);
+    vertical-align: middle;
+    z-index: 1;
+    position: relative;
+}
+
+.current-date-display {
+    position: absolute !important;
+    left: 40px !important;
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: var(--date-picker-text);
+    text-align: center !important;
+    transition: color 0.3s ease;
+    white-space: normal;
+    line-height: 1.2;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+/* Стили для нативного календаря */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+}

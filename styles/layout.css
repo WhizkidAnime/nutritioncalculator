@@ -1,0 +1,357 @@
+/* Стили для заголовков секций */
+.card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none; /* Убираем стандартную границу */
+    text-shadow: 1px 1px 0 var(--lightest);
+
+    /* Пиксельная рамка */
+    box-shadow:
+        /* Внешняя рамка */
+        0 0 0 4px var(--border-color), /* Используем переменную */
+        inset 0 0 0 4px var(--dark);    /* Используем переменную */
+
+    /* Дополнительный отступ */
+    margin: 4px auto;
+    margin-bottom: calc(var(--container-padding) + 4px);
+    padding: 14px;
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+/* Общие стили для секций-карточек */
+.card {
+    background-color: var(--card-bg); /* Используем переменную */
+    border: none; /* Убираем обычную границу */
+    border-radius: var(--card-border-radius);
+    padding: var(--section-padding);
+    margin-bottom: var(--container-padding); /* Отступ под карточкой */
+    background-image: radial-gradient(var(--dark) 0.5px, var(--lightest) 0.5px); /* Используем переменные */
+    background-size: 4px 4px;
+    background-position: -1px -1px;
+    position: relative;
+
+    /* Пиксельная рамка через box-shadow */
+    box-shadow:
+        /* Внешняя рамка */
+        0 0 0 4px var(--border-color), /* Используем переменную */
+        inset 0 0 0 4px var(--dark);    /* Используем переменную */
+
+    /* Дополнительный отступ для рамки */
+    margin: 4px;
+    padding: calc(var(--section-padding) + 4px);
+    transition: background-color 0.3s ease; /* Плавный переход */
+}
+
+/* Добавляем пиксельные углы рамок */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    z-index: -1;
+
+    /* Пиксельные углы */
+    background-image:
+        /* Верхний левый угол */
+        linear-gradient(45deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px),
+        /* Верхний правый угол */
+        linear-gradient(-45deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px),
+        /* Нижний правый угол */
+        linear-gradient(-135deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px),
+        /* Нижний левый угол */
+        linear-gradient(135deg, transparent 6px, var(--light) 6px, var(--light) 10px, transparent 10px);
+
+    background-position:
+        top left,
+        top right,
+        bottom right,
+        bottom left;
+
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+/* Модификация стиля карточек для более аутентичного вида */
+.card::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    height: 3px;
+    background-color: var(--darkest);
+    opacity: 0.2;
+}
+
+/* --- Специфичные стили раскладки --- */
+
+/* Контейнер для верхних секций (Лимиты, Добавление, Статус) */
+.top-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--container-padding);
+    margin-bottom: var(--container-padding);
+}
+
+/* Стили для каждой секции-карточки внутри .top-sections */
+.top-sections > section.card {
+    margin-bottom: 0;
+}
+
+/* Заголовки внутри верхних секций */
+.top-sections > section.card h2 {
+    text-align: center;
+    margin-bottom: var(--section-padding);
+    align-items: flex-end;
+    margin-top: auto;
+    padding-top: var(--section-padding);
+}
+
+/* Стили для секции Статуса дня */
+#daily-status {
+    background-color: transparent;
+}
+
+/* Внутренние блоки в секции статуса (Съедено, Осталось) */
+.status-block {
+    margin-bottom: var(--section-padding);
+}
+
+.status-block:last-child {
+    margin-bottom: 0;
+}
+
+/* Элементы сумм и остатков */
+.summary-item, .remaining-item {
+    margin-bottom: calc(var(--base-padding) / 2);
+    font-size: 1.0em;
+}
+
+/* Отступ для таблиц в статусе */
+.status-block .summary-table {
+    margin-bottom: var(--section-padding);
+}
+
+/* Кнопка сброса дня */
+#daily-status .button-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#daily-status .reset-button {
+    width: auto;
+    min-width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Обертка для таблицы (для скролла) */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: var(--section-padding);
+}
+
+/* Контейнер для заголовка и кнопки информации */
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px var(--base-padding);
+    position: relative;
+    z-index: 100;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), top 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.5s cubic-bezier(0.23, 1, 0.32, 1), color 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform, opacity, position, top, box-shadow;
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none;
+    text-shadow: 1px 1px 0 var(--lightest);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark);
+    margin: 4px auto var(--container-padding);
+    width: auto;
+    max-width: 1200px;
+    top: 0;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Стили для зафиксированного заголовка */
+.title-container.fixed {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: 1200px;
+    opacity: 0.75;
+    transform: translateY(0);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark),
+        0 4px 12px rgba(15, 56, 15, 0.3);
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000;
+}
+
+/* При наведении делаем его полностью видимым и добавляем эффект подъема */
+.title-container.fixed:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark),
+        0 8px 16px rgba(15, 56, 15, 0.4);
+}
+
+/* Кнопки помещаем в третью (правую) колонку и выравниваем вправо */
+.header-buttons {
+    /* grid-column: 3 / 4; Убрано из-за flex */
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    margin: 0;
+    padding-right: var(--base-padding);
+}
+
+/* Стиль для заголовка с кнопкой экспорта */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px var(--base-padding);
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none;
+    text-shadow: 1px 1px 0 var(--lightest);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark);
+    margin: 4px;
+    margin-bottom: var(--container-padding);
+}
+
+.history-header h2 {
+    margin: 0;
+    flex: 1;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    text-shadow: none;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+/* Новый стиль для заголовка секции с кнопкой */
+.section-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap);
+    margin-bottom: calc(var(--container-padding) + 4px);
+}
+
+.section-header h2 {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background: none;
+    text-shadow: none;
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* Стиль для section-header в weight-tracking с обрамлением */
+#weight-tracking .section-header {
+    padding: 10px var(--base-padding);
+    background-color: var(--light);
+    color: var(--darkest);
+    border: none;
+    text-shadow: 1px 1px 0 var(--lightest);
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 4px var(--dark);
+    margin: 4px;
+    margin-bottom: var(--container-padding);
+}
+
+/* Добавляем тень текста для h2 в секции weight-tracking */
+#weight-tracking .section-header h2 {
+    text-shadow: 1px 1px 0 var(--lightest);
+    color: var(--darkest);
+}
+
+/* --- Стили для секции трекинга веса --- */
+#weight-tracking {
+    margin-bottom: var(--container-padding);
+}
+
+#weight-tracking h3 {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Группа полей ввода веса и даты */
+.weight-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Контейнер для полей ввода */
+.weight-input-container,
+.weight-input-group .form-group:nth-child(2) {
+    width: 100%;
+    max-width: 240px;
+    margin-bottom: 15px;
+}
+
+/* Для кнопки сохранения веса */
+.weight-input-group .button-container {
+    margin-top: 10px;
+}
+
+/* Стили для расположения полей ввода веса и даты в ряд */
+.weight-input-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    width: 90%;
+    max-width: 480px;
+    margin: 0 auto 15px;
+}
+
+/* Уточняем одинаковую ширину для контейнеров */
+.weight-input-container {
+    width: 230px;
+    flex: 0 0 230px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Для центровки текста в модальном */
+.center-text {
+    text-align: center;
+} 

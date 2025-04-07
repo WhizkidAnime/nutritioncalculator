@@ -1,0 +1,265 @@
+/* --- Стили для тумблера языка (Старый вариант, если используется) --- */
+.lang-toggle-wrapper {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0;
+    z-index: 5;
+}
+
+.lang-toggle-checkbox {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    margin: 0;
+}
+
+.lang-toggle-label {
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+    width: 100%;
+    height: 30px;
+    border-radius: 4px;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: inset 0 0 0 2px var(--dark);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    padding: 0;
+    font-size: 0;
+}
+
+body.theme-dark .lang-toggle-label {
+    border-color: var(--light);
+    box-shadow: inset 0 0 0 2px var(--dark);
+}
+
+.lang-toggle-inner {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+}
+
+.lang-toggle-ru,
+.lang-toggle-en {
+    display: block;
+    height: 100%;
+    line-height: 30px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0 10px;
+    transition: background-color 0.2s, color 0.2s, text-shadow 0.2s;
+    margin: 0;
+    border: 0;
+}
+
+.lang-toggle-ru {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-right: 0;
+    color: var(--lang-toggle-ru-active-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-ru-active-shadow);
+    background-color: var(--lang-toggle-ru-active-bg);
+}
+
+.lang-toggle-en {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-left: 0;
+    margin-left: -1px;
+    color: var(--lang-toggle-en-inactive-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-en-inactive-shadow);
+    background-color: var(--lang-toggle-en-inactive-bg);
+}
+
+/* Цвета при :checked (состояние EN) */
+.lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-ru {
+    background-color: var(--lang-toggle-ru-inactive-bg);
+    color: var(--lang-toggle-ru-inactive-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-ru-inactive-shadow);
+}
+.lang-toggle-checkbox:checked + .lang-toggle-label .lang-toggle-en {
+    background-color: var(--lang-toggle-en-active-bg);
+    color: var(--lang-toggle-en-active-text);
+    text-shadow: 1px 1px 0 var(--lang-toggle-en-active-shadow);
+}
+
+/* --- Стили для Choices.js (Новый селект) - Восстановлено по оригиналу --- */
+.lang-select-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.lang-select-wrapper .choices {
+    font-family: 'Press Start 2P', var(--font-family-pixel);
+    font-size: 0.8rem;
+    margin: 0;
+    vertical-align: middle;
+    position: relative;
+    width: auto;
+    min-width: 75px;
+    box-sizing: border-box;
+}
+
+.lang-select-wrapper .choices__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding: 0 25px 0 8px; /* Original padding */
+    border: none;
+    border-radius: 0;
+    background-color: var(--secondary);
+    color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    cursor: pointer;
+    line-height: 30px;
+    min-height: auto;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.lang-select-wrapper .choices__list--single {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* .lang-select-wrapper .choices__item--selectable { ... } */ /* Убрано, т.к. в оригинале этого правила не было для .lang-select-wrapper */
+
+.lang-select-wrapper .choices.is-open .choices__inner {
+    background-color: var(--secondary-hover);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+.lang-select-wrapper .choices__inner::after {
+    content: '';
+    height: 0;
+    width: 0;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+    border-color: var(--lightest) transparent transparent transparent;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -3px;
+    pointer-events: none;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.lang-select-wrapper .choices.is-open .choices__inner::after {
+     border-color: var(--darkest) transparent transparent transparent;
+}
+
+.lang-select-wrapper .choices__list--dropdown {
+    font-family: 'Press Start 2P', var(--font-family-pixel);
+    background-color: var(--lightest);
+    border: none;
+    border-radius: 0;
+    margin-top: 4px;
+    overflow: hidden;
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+    z-index: 10;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.lang-select-wrapper .choices__list--dropdown .choices__list {
+    max-height: none;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.lang-select-wrapper .choices__list--dropdown .choices__list::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.lang-select-wrapper .choices__list[aria-expanded] {
+    padding: 0;
+}
+
+.lang-select-wrapper .choices__item {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+    color: var(--darkest);
+    background-color: transparent; /* Фон элемента прозрачный */
+    border-bottom: 2px solid var(--dark);
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    cursor: pointer;
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lang-select-wrapper .choices__item:last-child {
+    border-bottom: none;
+}
+
+.lang-select-wrapper .choices__item--selectable.is-highlighted,
+.lang-select-wrapper .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--light); /* Фон при наведении */
+    color: var(--darkest);
+}
+
+/* --- Темная тема для Choices.js --- */
+body.theme-dark .lang-select-wrapper .choices__inner {
+    background-color: var(--secondary);
+    color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+body.theme-dark .lang-select-wrapper .choices.is-open .choices__inner {
+    background-color: var(--secondary-hover);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+body.theme-dark .lang-select-wrapper .choices__inner::after {
+    border-color: var(--lightest) transparent transparent transparent;
+}
+
+body.theme-dark .lang-select-wrapper .choices.is-open .choices__inner::after {
+     border-color: var(--lightest) transparent transparent transparent; /* Стрелка остается светлой */
+}
+
+body.theme-dark .lang-select-wrapper .choices__list--dropdown {
+    background-color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+body.theme-dark .lang-select-wrapper .choices__item {
+    color: var(--darkest);
+    background-color: transparent; /* Фон элемента прозрачный */
+    border-bottom: 2px solid var(--dark);
+}
+
+body.theme-dark .lang-select-wrapper .choices__item--selectable.is-highlighted,
+body.theme-dark .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--light); /* Фон при наведении */
+    color: var(--darkest);
+}

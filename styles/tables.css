@@ -1,0 +1,208 @@
+/* --- Стили для таблиц --- */
+
+/* Сама таблица истории */
+#history-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--text-color);
+    font-size: 0.875rem;
+    border: none;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    background-color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+/* Ячейки заголовков (th) и данных (td) */
+#history-table th, #history-table td {
+    border: 1px solid var(--dark);
+    padding: var(--gap) var(--base-padding);
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-style: inset;
+    border-width: 2px;
+    font-size: 0.8rem;
+}
+
+/* Стили для ячеек заголовков */
+#history-table th {
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    font-weight: 600;
+    color: var(--lightest); /* Светлее для лучшего контраста со сменой фона */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* --- Корректировка ширины и выравнивания колонок --- */
+
+/* Название */
+#history-table th:nth-child(1),
+#history-table td:nth-child(1) {
+    min-width: 120px;
+    white-space: normal;
+}
+
+/* Дата */
+#history-table th:nth-child(6),
+#history-table td:nth-child(6) {
+    width: 90px;
+    text-align: center;
+}
+
+/* Время */
+#history-table th:nth-child(7),
+#history-table td:nth-child(7) {
+    width: 70px;
+    text-align: center;
+}
+
+/* Действие */
+#history-table th:last-child,
+#history-table td:last-child {
+    width: 60px;
+    text-align: center;
+    padding: 5px;
+}
+
+/* Скругление углов для ячеек таблицы истории */
+#history-table thead th:first-child {
+    border-top-left-radius: var(--card-border-radius);
+}
+#history-table thead th:last-child {
+    border-top-right-radius: var(--card-border-radius);
+}
+#history-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--card-border-radius);
+}
+#history-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--card-border-radius);
+}
+
+/* --- Стили для таблиц статуса --- */
+.summary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: calc(var(--base-padding) / 2);
+    margin-bottom: var(--section-padding);
+    font-size: 0.9375rem;
+    border: none;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    background-color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+.summary-table th,
+.summary-table td {
+    border: 2px solid var(--dark);
+    padding: var(--base-padding);
+    text-align: center;
+    width: 25%;
+    border-style: inset;
+    font-size: 0.8rem;
+}
+
+.summary-table th {
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    font-weight: 600;
+    color: var(--lightest); /* Светлее для лучшего контраста со сменой фона */
+    font-size: 1.2rem;
+}
+
+/* Скругление углов для ячеек таблицы статуса */
+.summary-table thead th:first-child {
+    border-top-left-radius: var(--card-border-radius);
+}
+.summary-table thead th:last-child {
+    border-top-right-radius: var(--card-border-radius);
+}
+.summary-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--card-border-radius);
+}
+.summary-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--card-border-radius);
+}
+
+/* Стили для разделителя дат в таблице */
+.date-separator {
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    border-top: 2px solid var(--darkest);
+    border-bottom: 2px solid var(--darkest);
+    transition: background-color 0.3s ease;
+}
+
+.date-separator td {
+    padding: 6px 8px;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--lightest); /* Светлее для лучшего контраста */
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+    transition: color 0.3s ease;
+    border: none; /* Убираем стандартные границы ячейки */
+    border-style: none;
+}
+
+/* Таблица истории веса */
+#weight-history-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    background-color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+#weight-history-table th,
+#weight-history-table td {
+    border: 1px solid var(--dark);
+    padding: var(--gap) var(--base-padding);
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-style: inset;
+    border-width: 2px;
+    font-size: 0.8rem;
+}
+
+#weight-history-table th {
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    font-weight: 600;
+    color: var(--lightest); /* Светлее для лучшего контраста со сменой фона */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+/* Выравнивание колонок в таблице веса */
+#weight-history-table th:nth-child(1),
+#weight-history-table td:nth-child(1) { /* Дата */
+    width: 60%;
+}
+
+#weight-history-table th:nth-child(2),
+#weight-history-table td:nth-child(2) { /* Вес */
+    width: 30%;
+}
+
+#weight-history-table th:last-child,
+#weight-history-table td:last-child { /* Действие */
+    width: 10%;
+    padding: 5px;
+} 

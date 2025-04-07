@@ -1,0 +1,286 @@
+/* --- Стили для кнопок --- */
+button {
+    padding: 0.5rem 1rem;
+    border: none; /* Убираем стандартную границу */
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+    line-height: 1.5;
+    font-family: var(--font-family-sans-serif);
+    position: relative;
+    overflow: hidden;
+
+    /* Пиксельная рамка */
+    box-shadow:
+        /* Внешняя рамка */
+        0 0 0 2px var(--darkest),
+        /* Внутренняя рамка - цвет будет меняться в зависимости от класса кнопки */
+        inset 0 0 0 2px var(--dark);
+}
+
+/* Разные цвета для разных типов кнопок */
+.btn-primary {
+    color: var(--lightest);
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+.btn-primary:hover {
+    background-color: var(--darkest);
+}
+
+.btn-success {
+    color: var(--lightest); /* Светлый текст для лучшего контраста */
+    background-color: var(--dark); /* Темный фон для контраста */
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+.btn-success:hover {
+    background-color: var(--darkest);
+}
+
+.btn-danger {
+    color: var(--lightest);
+    background-color: var(--danger);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-hover);
+}
+
+.btn-warning {
+    color: var(--lightest); /* Светлый текст для лучшего контраста */
+    background-color: var(--dark); /* Темный фон для контраста */
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+.btn-warning:hover {
+    background-color: var(--darkest);
+}
+
+.btn-secondary {
+    color: var(--lightest);
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+}
+
+.btn-secondary:hover {
+    background-color: var(--darkest);
+}
+
+/* Эффект нажатия для кнопок */
+button:active {
+    transform: translateY(2px);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+/* Кнопка сброса дня */
+.reset-button {
+    /* Использует классы .btn .btn-warning */
+    display: block;
+    width: 100%;
+    margin-top: var(--section-padding);
+}
+
+/* Контейнер для кнопки Добавить */
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Стили для кнопок в контейнере */
+.button-container button {
+    min-width: 180px;
+    margin: 0 10px;
+}
+
+/* Стиль для кнопки COLLECT ITEM */
+#add-product-btn {
+    margin-top: 5px;
+}
+
+/* Добавляем отступ между группой полей ввода и кнопками */
+#limit-settings .button-container {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#limit-settings .button-container button {
+    flex: 1;
+    min-width: 150px;
+    margin: 0;
+    white-space: normal;
+    width: calc(33.333% - 7px);
+    box-sizing: border-box;
+    word-break: keep-all;
+    padding: 10px 6px;
+    min-height: 50px;
+    line-height: 1.2;
+    height: auto;
+}
+
+/* Для кнопки пересоздания, которая может быть под другими кнопками */
+#limit-settings #recalculate-btn {
+    order: 3; /* Установить порядок кнопки */
+}
+
+/* Стиль для кнопки экспорта */
+.history-header button {
+    min-width: auto;
+    margin-left: var(--gap);
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background-color: var(--dark);
+    color: var(--lightest);
+    border: none;
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    transition: background-color 0.15s ease-in-out;
+}
+
+.history-header button:hover {
+    background-color: var(--darkest);
+}
+
+.history-header button:active {
+     transform: translateY(2px);
+     box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+}
+
+/* Кнопка информации */
+.info-btn {
+    width: 34px;
+    height: 34px;
+    vertical-align: middle;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    color: var(--lightest); /* Светлее для лучшего контраста */
+    cursor: pointer;
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.info-btn:hover {
+    background-color: var(--darkest);
+    color: var(--lightest);
+    transform: scale(1.1);
+}
+
+#info-close-btn, #tips-close-btn {
+    margin: 10px auto 0;
+    display: block;
+    min-width: 100px;
+    font-size: 1rem;
+    padding: 8px 15px;
+}
+
+/* Стили для навигации по дням */
+.date-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.date-nav-icon {
+    margin: 0;
+    padding: 0;
+}
+
+#all-days-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin-left: 5px;
+    font-size: 16px;
+}
+
+/* Стиль для кнопки возврата к созданию персонажа */
+.title-container .back-btn {
+    font-size: 0.9rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    height: 34px;
+    width: 34px;
+    border-radius: 0;
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--dark);
+    background-color: var(--light);
+    color: var(--darkest);
+    text-shadow: 1px 1px 0 var(--lightest);
+    line-height: 1;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
+    border: none;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    position: relative;
+    top: 0;
+}
+
+/* Стили для иконки Feather внутри кнопки */
+.title-container .back-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+}
+
+.title-container .back-btn:hover {
+    background-color: var(--darkest);
+    color: var(--lightest);
+    text-shadow: 1px 1px 0 var(--dark);
+}
+
+.title-container .back-btn:active {
+    transform: translateY(2px);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--darkest);
+    top: 2px;
+}
+
+/* Кнопка в section-header */
+.section-header .info-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    flex-shrink: 0;
+} 

@@ -1,0 +1,181 @@
+/* --- Стили для модального окна --- */
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    max-width: 400px;
+    width: 90%;
+    padding: var(--container-padding);
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    background-color: var(--lightest);
+    border: none;
+    background-image: radial-gradient(var(--darkest) 0.5px, var(--lightest) 0.5px);
+    background-size: 4px 4px;
+    box-shadow:
+        0 0 0 4px var(--darkest),
+        inset 0 0 0 3px var(--dark);
+    padding: calc(var(--container-padding) + 4px);
+}
+
+/* Конечное состояние анимации контента */
+.modal.visible .modal-content {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#modal-message {
+    margin-bottom: var(--section-padding);
+    font-size: 1.1rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--gap);
+}
+
+.modal-actions button {
+    min-width: 100px;
+}
+
+/* Скрываем кнопку ОК по умолчанию */
+#modal-ok-btn {
+    display: none;
+}
+
+/* Стили для режима уведомления */
+.modal.is-notice .modal-actions #modal-confirm-btn,
+.modal.is-notice .modal-actions #modal-cancel-btn {
+    display: none;
+}
+
+.modal.is-notice .modal-actions #modal-ok-btn {
+    display: inline-block;
+}
+
+/* Модальное окно информации */
+.info-modal-content {
+    max-width: 600px;
+    text-align: left;
+    padding: calc(var(--container-padding) + 10px);
+}
+
+.info-modal-content h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--darkest);
+    text-shadow: none;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--dark);
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.info-text {
+    font-size: 0.8rem;
+    line-height: 2;
+    margin-bottom: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+    letter-spacing: 0.5px;
+}
+
+/* Класс для добавления фейда снизу */
+.fade-bottom {
+    -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+.info-paragraph {
+    margin-bottom: 20px;
+}
+
+.info-title {
+    color: var(--darkest);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.info-list {
+    list-style-type: none;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.info-list li {
+    margin-bottom: 16px;
+    position: relative;
+    padding-left: 18px;
+}
+
+.info-list li:before {
+    content: '➤';
+    position: absolute;
+    left: 0;
+    color: var(--darkest);
+}
+
+.info-highlight {
+    color: var(--darkest);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* Стили для модального окна с советами */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--dark);
+}
+
+.modal-close {
+    color: var(--darkest);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: var(--darkest);
+}
+
+.modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.info-modal-content .modal-header h3 {
+    margin-bottom: 0;
+    border-bottom: none;
+    flex-grow: 1;
+} 

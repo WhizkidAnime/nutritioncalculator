@@ -1,0 +1,173 @@
+/* --- Темы --- */
+
+/* Светлая тема (Game Boy - Зеленая) - с улучшенным контрастом для доступности */
+body.theme-light {
+    /* Аутентичная GameBoy цветовая палитра (4 оттенка) с корректировкой для лучшего контраста */
+    --lightest: #E8F8D8; /* Немного светлее для лучшего фона */
+    --light: #78B060;    /* Темнее для лучшего контраста с фоном */
+    --dark: #245845;     /* Темнее для лучшего контраста с фоном */
+    --darkest: #071218;  /* Немного темнее для лучшего контраста с фоном */
+
+    /* Функциональное назначение цветов */
+    --bg-color: var(--lightest);
+    --card-bg: var(--lightest);
+    --primary: var(--dark);
+    --primary-hover: var(--darkest);
+    --secondary: var(--dark);
+    --secondary-hover: var(--darkest);
+    --danger: var(--darkest);
+    --danger-hover: var(--dark);
+    --warning: var(--dark); /* Используем темный цвет вместо light для предупреждений */
+    --warning-hover: var(--darkest);
+    --success: var(--dark); /* Используем темный цвет вместо light для успеха */
+    --success-hover: var(--darkest);
+    --text-color: var(--darkest);
+    --text-muted: var(--dark);
+    --border-color: var(--darkest);
+    --table-header-bg: var(--dark); /* Темнее для лучшего контраста с текстом */
+    --scrollbar-track: #8bac0f;
+    --scrollbar-thumb: #245845; /* Темнее для лучшего контраста */
+    --scrollbar-thumb-hover: #1a4535;
+    --scrollbar-thumb-active: #123025;
+    --scrollbar-button-bg: #245845;
+    --scrollbar-border: #071218;
+    --scrollbar-shadow: #8bac0f;
+    --scrollbar-arrow: #071218;
+    --tooltip-bg: var(--darkest);
+    --tooltip-text: var(--lightest);
+    --tooltip-border: var(--dark);
+    --search-bg: #d2e7a2;
+    --search-border: #071218;
+    --search-input-bg: #e8f5d9;
+    --search-input-text: #071218;
+    --search-input-focus-bg: #f5f5e8;
+    --date-separator-bg: #78B060; /* Темнее для лучшего контраста с текстом */
+    --date-separator-text: #071218;
+    --date-picker-bg: #d2e7a2;
+    --date-picker-border: #071218;
+    --date-picker-text: #071218;
+    --lang-toggle-ru-active-bg: var(--dark);
+    --lang-toggle-ru-active-text: var(--lightest);
+    --lang-toggle-ru-active-shadow: var(--darkest);
+    --lang-toggle-ru-inactive-bg: var(--dark);
+    --lang-toggle-ru-inactive-text: var(--lightest);
+    --lang-toggle-ru-inactive-shadow: var(--darkest);
+    --lang-toggle-en-active-bg: var(--dark);
+    --lang-toggle-en-active-text: var(--lightest);
+    --lang-toggle-en-active-shadow: var(--darkest);
+    --lang-toggle-en-inactive-bg: var(--dark);
+    --lang-toggle-en-inactive-text: var(--lightest);
+    --lang-toggle-en-inactive-shadow: var(--darkest);
+    --background-dots: var(--darkest); /* Цвет точек фона */
+}
+
+/* Темная тема (Game Boy Pocket - Серая) - с улучшенным контрастом для доступности */
+body.theme-dark {
+    /* GBP цветовая палитра (4 оттенка) - обновлено для лучшего контраста */
+    --lightest: #C0C0C0;     /* Светлее для лучшего контраста с текстом */
+    --light: #707070;        /* Без изменений */
+    --dark: #303030;         /* Темнее для лучшего контраста со светлым фоном */
+    --darkest: #0D0D0D;      /* Темнее для максимального контраста с фоном */
+
+    /* Функциональное назначение цветов */
+    --bg-color: var(--lightest);
+    --card-bg: var(--lightest);
+    --primary: var(--dark);
+    --primary-hover: var(--darkest);
+    --secondary: var(--dark);
+    --secondary-hover: var(--darkest);
+    --danger: var(--darkest);
+    --danger-hover: var(--dark);
+    --warning: var(--dark);  /* Темнее для лучшего контраста */
+    --warning-hover: var(--darkest);
+    --success: var(--dark);  /* Темнее для лучшего контраста */
+    --success-hover: var(--darkest);
+    --text-color: var(--darkest);
+    --text-muted: var(--dark);
+    --border-color: var(--darkest);
+    --table-header-bg: var(--dark);
+    --scrollbar-track: var(--light);
+    --scrollbar-thumb: var(--dark);
+    --scrollbar-thumb-hover: var(--darkest);
+    --scrollbar-thumb-active: #202020; /* Еще темнее для active scrollbar */
+    --scrollbar-button-bg: var(--dark);
+    --scrollbar-border: var(--darkest);
+    --scrollbar-shadow: var(--light);
+    --scrollbar-arrow: var(--darkest);
+    --tooltip-bg: var(--darkest);
+    --tooltip-text: var(--lightest);
+    --tooltip-border: var(--dark);
+    --search-bg: #888888;
+    --search-border: #0D0D0D;
+    --search-input-bg: #C0C0C0;
+    --search-input-text: #0D0D0D;
+    --search-input-focus-bg: #DADADA;
+    --date-separator-bg: var(--dark);
+    --date-separator-text: var(--lightest);
+    --date-picker-bg: #888888;
+    --date-picker-border: #0D0D0D;
+    --date-picker-text: #0D0D0D;
+
+    /* Переопределяем переменные для переключателя языка с бóльшим контрастом */
+    /* Активное состояние RU - ОЧЕНЬ тёмный фон, яркий текст */
+    --lang-toggle-ru-active-bg: #0D0D0D;
+    --lang-toggle-ru-active-text: #FFFFFF;
+    --lang-toggle-ru-active-shadow: #000000;
+
+    /* Неактивное состояние RU - светлее фон, тёмный текст */
+    --lang-toggle-ru-inactive-bg: #404040;
+    --lang-toggle-ru-inactive-text: #FFFFFF;
+    --lang-toggle-ru-inactive-shadow: #000000;
+
+    /* Активное состояние EN - ОЧЕНЬ тёмный фон, яркий текст */
+    --lang-toggle-en-active-bg: #0D0D0D;
+    --lang-toggle-en-active-text: #FFFFFF;
+    --lang-toggle-en-active-shadow: #000000;
+
+    /* Неактивное состояние EN - светлее фон, тёмный текст */
+    --lang-toggle-en-inactive-bg: #404040;
+    --lang-toggle-en-inactive-text: #FFFFFF;
+    --lang-toggle-en-inactive-shadow: #000000;
+
+    --background-dots: var(--darkest); /* Цвет точек фона */
+}
+
+/* Стили для кнопок переключения темы */
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Небольшой отступ между кнопками темы */
+}
+
+.theme-btn {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Стилизуем как другие кнопки в шапке */
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    color: var(--lightest);
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--light);
+    opacity: 0.7; /* Неактивная кнопка полупрозрачна */
+    transition: opacity 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.theme-btn:hover {
+    opacity: 1;
+    background-color: var(--darkest);
+}
+
+.theme-btn.active-theme {
+    opacity: 1;
+    background-color: var(--dark); /* Темнее для лучшего контраста */
+    color: var(--lightest); /* Светлее для лучшего контраста */
+    box-shadow:
+        0 0 0 2px var(--darkest),
+        inset 0 0 0 2px var(--lightest); /* Внутренняя рамка светлее */
+    cursor: default; /* Убираем курсор pointer для активной */
+} 
