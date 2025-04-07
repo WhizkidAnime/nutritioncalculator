@@ -10,6 +10,120 @@ document.addEventListener('DOMContentLoaded', function() {
     const infoModal = document.getElementById('info-modal');
     const infoCloseBtn = document.getElementById('info-close-btn');
     
+    // Модальное окно для уведомлений
+    const alertModal = document.getElementById('alert-modal');
+    const alertMessage = document.getElementById('alert-message');
+    const alertOkBtn = document.getElementById('alert-ok-btn');
+    
+    // Секции
+    const characterCreation = document.getElementById('character-creation');
+    const calculationResults = document.getElementById('calculation-results');
+    
+    // --- Переменная для хранения элемента, открывшего модальное окно ---
+    let modalTriggerElement = null;
+    
+    // --- Вспомогательные функции для управления фокусом в модальных окнах ---
+    // (Копируем из script.js, так как файлы изолированы)
+    
+    // Получить все фокусируемые элементы внутри контейнера
+    function getFocusableElements(container) {
+      return Array.from(
+        container.querySelectorAll(
+          'button, [href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter(el => !el.disabled && el.offsetWidth > 0 && el.offsetHeight > 0);
+    }
+    
+    // Ловушка фокуса внутри модального окна
+    function trapFocus(modalElement, event) {
+      if (event.key !== 'Tab') return;
+
+      const focusableElements = getFocusableElements(modalElement);
+       if (focusableElements.length === 0) {
+            event.preventDefault();
+            return;
+       }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) { // Shift + Tab
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          event.preventDefault();
+        }
+      } else { // Tab
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          event.preventDefault();
+        }
+      }
+    }
+    
+    // Функция для открытия модального окна с управлением фокусом
+    function openModal(modalElement) {
+        if (!modalElement) return;
+        modalTriggerElement = document.activeElement; // Сохраняем элемент
+
+        modalElement.classList.add('show');
+        modalElement.setAttribute('aria-hidden', 'false');
+
+        requestAnimationFrame(() => {
+            modalElement.classList.add('visible');
+
+            // Фокус на кнопку OK или Close, или первый элемент
+            const focusTarget =
+                modalElement.querySelector('#alert-ok-btn') || // OK в alert-modal
+                modalElement.querySelector('#info-close-btn') || // Close в info-modal
+                modalElement.querySelector('.btn') || // Любая кнопка
+                (getFocusableElements(modalElement).length > 0 ? getFocusableElements(modalElement)[0] : null);
+
+            if (focusTarget) {
+                focusTarget.focus();
+            }
+
+            // Добавляем слушатель для ловушки фокуса
+            modalElement.focusTrapListener = (e) => trapFocus(modalElement, e);
+            modalElement.addEventListener('keydown', modalElement.focusTrapListener);
+        });
+    }
+    
+    // Функция для закрытия модального окна с возвратом фокуса
+    function closeModal(modalElement) {
+        if (!modalElement) return;
+
+        modalElement.classList.remove('visible');
+        modalElement.setAttribute('aria-hidden', 'true');
+
+        // Удаляем слушатель ловушки фокуса
+        if (modalElement.focusTrapListener) {
+            modalElement.removeEventListener('keydown', modalElement.focusTrapListener);
+            delete modalElement.focusTrapListener;
+        }
+
+        setTimeout(() => {
+            modalElement.classList.remove('show');
+
+            // Возвращаем фокус
+            if (modalTriggerElement) {
+                // Добавляем проверку, существует ли элемент и виден ли он
+                if (document.body.contains(modalTriggerElement) && modalTriggerElement.offsetWidth > 0 && modalTriggerElement.offsetHeight > 0) {
+                     try {
+                        modalTriggerElement.focus();
+                     } catch (e) {
+                         console.warn('Could not focus trigger element:', e);
+                         // Fallback: focus on body or another suitable element if needed
+                         document.body.focus();
+                     }
+                } else {
+                    console.warn('Trigger element is no longer available or visible to focus.');
+                    document.body.focus(); // Фокусируемся на body как fallback
+                }
+                modalTriggerElement = null;
+            }
+        }, 200); // Соответствует времени анимации CSS
+    }
+    
     // Данные пользователя
     let userData = {
         goal: '',
@@ -36,10 +150,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Устанавливаем значение активности после инициализации Choices.js
+        // Перенесено в loadSavedData
+        /*
         if (userData.activityLevel) {
             choicesInstance.setChoiceByValue(String(userData.activityLevel));
             console.log('Активность установлена при инициализации Choices.js:', userData.activityLevel);
         }
+        */
     }
     
     // Загружаем тему
@@ -52,35 +169,16 @@ document.addEventListener('DOMContentLoaded', function() {
         window.translateUI();
     }
     
-    // Модальное окно для уведомлений
-    const alertModal = document.getElementById('alert-modal');
-    const alertMessage = document.getElementById('alert-message');
-    const alertOkBtn = document.getElementById('alert-ok-btn');
-    
-    // Секции
-    const characterCreation = document.getElementById('character-creation');
-    const calculationResults = document.getElementById('calculation-results');
-    
     // Функции для работы с модальным окном уведомлений
     function showAlert(message) {
         if (!alertModal || !alertMessage) return;
         alertMessage.textContent = message;
-        
-        alertModal.classList.add('show');
-        requestAnimationFrame(() => {
-            if (alertModal) alertModal.classList.add('visible');
-        });
+        openModal(alertModal); // Используем новую функцию
     }
     
     function hideAlert() {
         if (!alertModal) return;
-        alertModal.classList.remove('visible');
-        
-        setTimeout(() => {
-            if (alertModal) {
-                alertModal.classList.remove('show');
-            }
-        }, 200);
+        closeModal(alertModal); // Используем новую функцию
     }
     
     // Обработчики событий модального окна уведомлений
@@ -121,66 +219,81 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Обработчик для поля активности
-    document.getElementById('activity-level').addEventListener('change', function() {
-        userData.activityLevel = parseFloat(this.value);
-    });
+    if (activityLevelSelect) {
+        activityLevelSelect.addEventListener('change', function() {
+            userData.activityLevel = parseFloat(this.value);
+        });
+    }
     
     // Обработчик нажатия на кнопку расчета
-    calculateBtn.addEventListener('click', function() {
-        // Получаем данные из полей
-        const age = parseInt(document.getElementById('age').value) || 0;
-        const height = parseInt(document.getElementById('height').value) || 0;
-        const weight = parseFloat(document.getElementById('weight').value) || 0;
-        
-        // Получаем выбранную цель
-        const selectedGoalBtn = document.querySelector('.goal-btn.selected');
-        const goal = selectedGoalBtn ? selectedGoalBtn.getAttribute('data-goal') : '';
-        
-        // Получаем выбранный пол
-        const selectedGenderBtn = document.querySelector('.gender-btn.selected');
-        const gender = selectedGenderBtn ? selectedGenderBtn.getAttribute('data-gender') : '';
-        
-        // Получаем уровень активности
-        const activityLevel = parseFloat(document.getElementById('activity-level').value) || 1.55;
-        
-        // Проверяем, что все данные введены
-        if (!goal) {
-            showAlert('Выберите цель!');
-            return;
-        }
-        if (!gender) {
-            showAlert('Выберите пол!');
-            return;
-        }
-        if (age < 12 || age > 100) {
-            showAlert('Введите корректный возраст (от 12 до 100 лет)!');
-            return;
-        }
-        if (height < 100 || height > 250) {
-            showAlert('Введите корректный рост (от 100 до 250 см)!');
-            return;
-        }
-        if (weight < 30 || weight > 300) {
-            showAlert('Введите корректный вес (от 30 до 300 кг)!');
-            return;
-        }
-        
-        // Расчет калорий и БЖУ
-        const userData = {
-            goal: goal,
-            gender: gender,
-            age: age,
-            height: height,
-            weight: weight,
-            activityLevel: activityLevel
-        };
-        
-        calculateNutrition(userData);
-        
-        // Показываем результаты, скрываем форму ввода
-        document.getElementById('character-creation').classList.add('hidden');
-        document.getElementById('calculation-results').classList.remove('hidden');
-    });
+    if (calculateBtn) {
+        calculateBtn.addEventListener('click', function() {
+            // Получаем данные из полей
+            const ageInput = document.getElementById('age');
+            const heightInput = document.getElementById('height');
+            const weightInput = document.getElementById('weight');
+
+            const age = parseInt(ageInput?.value) || 0; // Добавляем ?. для безопасности
+            const height = parseInt(heightInput?.value) || 0;
+            const weight = parseFloat(weightInput?.value) || 0;
+
+            // Получаем выбранную цель
+            const selectedGoalBtn = document.querySelector('.goal-btn.selected');
+            const goal = selectedGoalBtn ? selectedGoalBtn.getAttribute('data-goal') : '';
+
+            // Получаем выбранный пол
+            const selectedGenderBtn = document.querySelector('.gender-btn.selected');
+            const gender = selectedGenderBtn ? selectedGenderBtn.getAttribute('data-gender') : '';
+
+            // Получаем уровень активности (берем из userData, т.к. он обновляется при change)
+            const activityLevel = userData.activityLevel || 1.55;
+
+            // Проверяем, что все данные введены
+            if (!goal) {
+                showAlert(getTranslation('Выберите цель!'));
+                return;
+            }
+            if (!gender) {
+                showAlert(getTranslation('Выберите пол!'));
+                return;
+            }
+            if (age < 12 || age > 100) {
+                showAlert(getTranslation('Введите корректный возраст (от 12 до 100 лет)!'));
+                return;
+            }
+            if (height < 100 || height > 250) {
+                showAlert(getTranslation('Введите корректный рост (от 100 до 250 см)!'));
+                return;
+            }
+            if (weight < 30 || weight > 300) {
+                showAlert(getTranslation('Введите корректный вес (от 30 до 300 кг)!'));
+                return;
+            }
+
+            // Расчет калорий и БЖУ
+            const currentUserData = {
+                goal: goal,
+                gender: gender,
+                age: age,
+                height: height,
+                weight: weight,
+                activityLevel: activityLevel
+            };
+
+            calculateNutrition(currentUserData);
+
+            // Показываем результаты, скрываем форму ввода
+            if (characterCreation) characterCreation.classList.add('hidden');
+            if (calculationResults) calculationResults.classList.remove('hidden');
+
+            // Устанавливаем фокус на заголовок результатов для скринридеров
+            const resultsHeader = calculationResults?.querySelector('h2');
+            if (resultsHeader) {
+                resultsHeader.setAttribute('tabindex', '-1'); // Делаем фокусируемым программно
+                resultsHeader.focus();
+            }
+        });
+    }
     
     // Обработчик для кнопки "Пересчитать"
     const recalculateHandler = function() {
@@ -217,15 +330,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Обработчики для информационного модального окна
-    document.getElementById('info-btn').addEventListener('click', function() {
-        // Показываем модальное окно с информацией
-        document.getElementById('info-modal').classList.remove('hidden');
-    });
+    if (infoBtn) {
+        infoBtn.addEventListener('click', function() {
+            if (infoModal) {
+                // Сначала убедимся, что контент переведен, если функция translateInfoModalStaticContent существует
+                if (typeof window.translateInfoModalStaticContent === 'function') {
+                     window.translateInfoModalStaticContent();
+                }
+                openModal(infoModal); // Используем новую функцию открытия
+            }
+        });
+    }
     
-    // Обработчик закрытия модального окна
-    document.getElementById('info-close-btn').addEventListener('click', function() {
-        // Скрываем модальное окно
-        document.getElementById('info-modal').classList.add('hidden');
+    // Обработчик закрытия информационного модального окна
+    if (infoCloseBtn) {
+        infoCloseBtn.addEventListener('click', function() {
+            if (infoModal) {
+                closeModal(infoModal); // Используем новую функцию закрытия
+            }
+        });
+    }
+    
+    // Закрытие информационного модального окна по клику вне его
+     if (infoModal) {
+        infoModal.addEventListener('click', (event) => {
+            if (event.target === infoModal) {
+                 closeModal(infoModal);
+            }
+        });
+    }
+    
+    // Закрытие модальных окон по нажатию Escape
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            if (alertModal && alertModal.classList.contains('show')) {
+                hideAlert();
+            }
+            if (infoModal && infoModal.classList.contains('show')) {
+                closeModal(infoModal);
+            }
+        }
     });
     
     // Функция расчета калорий и макронутриентов
@@ -327,24 +471,69 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let adviceHTML = '';
         
-        if (goal === 'lose') {
-            adviceHTML = `
-                <p data-translation-key="УПОТРЕБЛЯЙТЕ БОЛЬШЕ БЕЛКА ДЛЯ СОХРАНЕНИЯ МЫШЦ">УПОТРЕБЛЯЙТЕ БОЛЬШЕ БЕЛКА ДЛЯ СОХРАНЕНИЯ МЫШЦ</p>
-                <p data-translation-key="НЕ ГОЛОДАЙ - СНИЖАЙ КАЛОРИИ ПОСТЕПЕННО">НЕ ГОЛОДАЙ - СНИЖАЙ КАЛОРИИ ПОСТЕПЕННО</p>
-                <p data-translation-key="РЕГУЛЯРНО ЗАНИМАЙТЕСЬ СИЛОВЫМИ ТРЕНИРОВКАМИ">РЕГУЛЯРНО ЗАНИМАЙТЕСЬ СИЛОВЫМИ ТРЕНИРОВКАМИ</p>
-                <p data-translation-key="ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ">ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ</p>
-            `;
-        } else if (goal === 'gain') {
-            adviceHTML = `
-                <p data-translation-key="НЕ ЗАБЫВАЙ О ПОЛЕЗНЫХ ЖИРАХ (ОРЕХИ, АВОКАДО, РЫБА)">НЕ ЗАБЫВАЙ О ПОЛЕЗНЫХ ЖИРАХ (ОРЕХИ, АВОКАДО, РЫБА)</p>
-                <p data-translation-key="ТРЕНИРУЙТЕСЬ ИНТЕНСИВНО 3-5 РАЗ В НЕДЕЛЮ">ТРЕНИРУЙТЕСЬ ИНТЕНСИВНО 3-5 РАЗ В НЕДЕЛЮ</p>
-            `;
-        } else if (goal === 'maintain') {
-            adviceHTML = `
-                <p data-translation-key="СЛЕДИТЕ ЗА КАЧЕСТВОМ ПИТАНИЯ">СЛЕДИТЕ ЗА КАЧЕСТВОМ ПИТАНИЯ</p>
-                <p data-translation-key="РЕГУЛЯРНО КОНТРОЛИРУЙТЕ ВЕС И ЗАМЕРЫ">РЕГУЛЯРНО КОНТРОЛИРУЙТЕ ВЕС И ЗАМЕРЫ</p>
-                <p data-translation-key="СОВМЕЩАЙТЕ КАРДИО И СИЛОВЫЕ ТРЕНИРОВКИ">СОВМЕЩАЙТЕ КАРДИО И СИЛОВЫЕ ТРЕНИРОВКИ</p>
-            `;
+        // Получаем текущий язык из localStorage
+        const currentLang = localStorage.getItem('lang') || 'ru';
+        
+        if (currentLang === 'ru') {
+            // Советы на русском языке
+            if (goal === 'lose') {
+                adviceHTML = `
+                    <p data-translation-key="ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ">ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ</p>
+                    <p data-translation-key="НАЧНИТЕ С ДЕФИЦИТА 200-300 ККАЛ И ПОСТЕПЕННО УВЕЛИЧИВАЙТЕ ДО 500 ККАЛ">НАЧНИТЕ С ДЕФИЦИТА 200-300 ККАЛ И ПОСТЕПЕННО УВЕЛИЧИВАЙТЕ ДО 500 ККАЛ</p>
+                    <p data-translation-key="ПЕЙТЕ БОЛЬШЕ ВОДЫ - НЕ МЕНЕЕ 8 СТАКАНОВ В ДЕНЬ">ПЕЙТЕ БОЛЬШЕ ВОДЫ - НЕ МЕНЕЕ 8 СТАКАНОВ В ДЕНЬ</p>
+                    <p data-translation-key="ЕШЬТЕ БОЛЬШЕ КЛЕТЧАТКИ ИЗ ОВОЩЕЙ ДЛЯ ЛУЧШЕГО НАСЫЩЕНИЯ">ЕШЬТЕ БОЛЬШЕ КЛЕТЧАТКИ ИЗ ОВОЩЕЙ ДЛЯ ЛУЧШЕГО НАСЫЩЕНИЯ</p>
+                    <p data-translation-key="ОГРАНИЧЬТЕ ПОТРЕБЛЕНИЕ ПРОСТЫХ УГЛЕВОДОВ И САХАРА">ОГРАНИЧЬТЕ ПОТРЕБЛЕНИЕ ПРОСТЫХ УГЛЕВОДОВ И САХАРА</p>
+                    <p data-translation-key="СЛЕДИТЕ ЗА КАЧЕСТВОМ СНА - ЭТО ВЛИЯЕТ НА ГОРМОНЫ ГОЛОДА">СЛЕДИТЕ ЗА КАЧЕСТВОМ СНА - ЭТО ВЛИЯЕТ НА ГОРМОНЫ ГОЛОДА</p>
+                `;
+            } else if (goal === 'gain') {
+                adviceHTML = `
+                    <p data-translation-key="СОЗДАЙТЕ ПРОФИЦИТ КАЛОРИЙ ОКОЛО 300-500 ККАЛ">СОЗДАЙТЕ ПРОФИЦИТ КАЛОРИЙ ОКОЛО 300-500 ККАЛ</p>
+                    <p data-translation-key="УВЕЛИЧЬТЕ ПОТРЕБЛЕНИЕ БЕЛКА ДО 1.8-2.2Г НА КГ ВЕСА">УВЕЛИЧЬТЕ ПОТРЕБЛЕНИЕ БЕЛКА ДО 1.8-2.2Г НА КГ ВЕСА</p>
+                    <p data-translation-key="ИСПОЛЬЗУЙТЕ БАЗОВЫЕ УПРАЖНЕНИЯ - ПРИСЕДАНИЯ, ЖИМ, ТЯГА">ИСПОЛЬЗУЙТЕ БАЗОВЫЕ УПРАЖНЕНИЯ - ПРИСЕДАНИЯ, ЖИМ, ТЯГА</p>
+                    <p data-translation-key="ЕШЬТЕ 4-6 ПРИЕМОВ ПИЩИ В ДЕНЬ">ЕШЬТЕ 4-6 ПРИЕМОВ ПИЩИ В ДЕНЬ</p>
+                    <p data-translation-key="ДОБАВЬТЕ КОКТЕЙЛИ С ВЫСОКИМ СОДЕРЖАНИЕМ КАЛОРИЙ МЕЖДУ ПРИЕМАМИ ПИЩИ">ДОБАВЬТЕ КОКТЕЙЛИ С ВЫСОКИМ СОДЕРЖАНИЕМ КАЛОРИЙ МЕЖДУ ПРИЕМАМИ ПИЩИ</p>
+                    <p data-translation-key="ОБЕСПЕЧЬТЕ ДОСТАТОЧНЫЙ ОТДЫХ МЕЖДУ ТРЕНИРОВКАМИ">ОБЕСПЕЧЬТЕ ДОСТАТОЧНЫЙ ОТДЫХ МЕЖДУ ТРЕНИРОВКАМИ</p>
+                    <p data-translation-key="ПОСТЕПЕННО УВЕЛИЧИВАЙТЕ РАБОЧИЕ ВЕСА НА ТРЕНИРОВКАХ">ПОСТЕПЕННО УВЕЛИЧИВАЙТЕ РАБОЧИЕ ВЕСА НА ТРЕНИРОВКАХ</p>
+                `;
+            } else if (goal === 'maintain') {
+                adviceHTML = `
+                    <p data-translation-key="ПОДДЕРЖИВАЙТЕ БАЛАНС КАЛОРИЙ ДЛЯ СОХРАНЕНИЯ ТЕКУЩЕГО ВЕСА">ПОДДЕРЖИВАЙТЕ БАЛАНС КАЛОРИЙ ДЛЯ СОХРАНЕНИЯ ТЕКУЩЕГО ВЕСА</p>
+                    <p data-translation-key="ПОТРЕБЛЯЙТЕ ОКОЛО 1.5-1.8Г БЕЛКА НА КГ ВЕСА">ПОТРЕБЛЯЙТЕ ОКОЛО 1.5-1.8Г БЕЛКА НА КГ ВЕСА</p>
+                    <p data-translation-key="ВНИМАТЕЛЬНО ОТСЛЕЖИВАЙТЕ ИЗМЕНЕНИЯ ВЕСА, КОРРЕКТИРУЯ КАЛОРИИ">ВНИМАТЕЛЬНО ОТСЛЕЖИВАЙТЕ ИЗМЕНЕНИЯ ВЕСА, КОРРЕКТИРУЯ КАЛОРИИ</p>
+                    <p data-translation-key="ВВОДИТЕ РАЗНООБРАЗИЕ В РАЦИОН ДЛЯ ПОЛУЧЕНИЯ ВСЕХ НУТРИЕНТОВ">ВВОДИТЕ РАЗНООБРАЗИЕ В РАЦИОН ДЛЯ ПОЛУЧЕНИЯ ВСЕХ НУТРИЕНТОВ</p>
+                    <p data-translation-key="ПЛАНИРУЙТЕ ПРИЕМЫ ПИЩИ ЗАРАНЕЕ ДЛЯ ЛУЧШЕГО КОНТРОЛЯ">ПЛАНИРУЙТЕ ПРИЕМЫ ПИЩИ ЗАРАНЕЕ ДЛЯ ЛУЧШЕГО КОНТРОЛЯ</p>
+                `;
+            }
+        } else {
+            // Советы на английском языке
+            if (goal === 'lose') {
+                adviceHTML = `
+                    <p data-translation-key="ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ">ADD 30 MINUTES OF LIGHT CARDIO AFTER STRENGTH TRAINING OR ON SEPARATE DAYS</p>
+                    <p data-translation-key="НАЧНИТЕ С ДЕФИЦИТА 200-300 ККАЛ И ПОСТЕПЕННО УВЕЛИЧИВАЙТЕ ДО 500 ККАЛ">START WITH A 200-300 CALORIE DEFICIT AND GRADUALLY INCREASE TO 500</p>
+                    <p data-translation-key="ПЕЙТЕ БОЛЬШЕ ВОДЫ - НЕ МЕНЕЕ 8 СТАКАНОВ В ДЕНЬ">DRINK MORE WATER - AT LEAST 8 GLASSES A DAY</p>
+                    <p data-translation-key="ЕШЬТЕ БОЛЬШЕ КЛЕТЧАТКИ ИЗ ОВОЩЕЙ ДЛЯ ЛУЧШЕГО НАСЫЩЕНИЯ">EAT MORE FIBER FROM VEGETABLES FOR BETTER SATIETY</p>
+                    <p data-translation-key="ОГРАНИЧЬТЕ ПОТРЕБЛЕНИЕ ПРОСТЫХ УГЛЕВОДОВ И САХАРА">LIMIT SIMPLE CARBS AND SUGAR INTAKE</p>
+                    <p data-translation-key="СЛЕДИТЕ ЗА КАЧЕСТВОМ СНА - ЭТО ВЛИЯЕТ НА ГОРМОНЫ ГОЛОДА">MONITOR SLEEP QUALITY - IT AFFECTS HUNGER HORMONES</p>
+                `;
+            } else if (goal === 'gain') {
+                adviceHTML = `
+                    <p data-translation-key="СОЗДАЙТЕ ПРОФИЦИТ КАЛОРИЙ ОКОЛО 300-500 ККАЛ">CREATE A CALORIE SURPLUS OF ABOUT 300-500 KCAL</p>
+                    <p data-translation-key="УВЕЛИЧЬТЕ ПОТРЕБЛЕНИЕ БЕЛКА ДО 1.8-2.2Г НА КГ ВЕСА">INCREASE PROTEIN INTAKE TO 1.8-2.2G PER KG OF WEIGHT</p>
+                    <p data-translation-key="ИСПОЛЬЗУЙТЕ БАЗОВЫЕ УПРАЖНЕНИЯ - ПРИСЕДАНИЯ, ЖИМ, ТЯГА">USE COMPOUND EXERCISES - SQUATS, BENCH PRESS, DEADLIFTS</p>
+                    <p data-translation-key="ЕШЬТЕ 4-6 ПРИЕМОВ ПИЩИ В ДЕНЬ">EAT 4-6 MEALS PER DAY</p>
+                    <p data-translation-key="ДОБАВЬТЕ КОКТЕЙЛИ С ВЫСОКИМ СОДЕРЖАНИЕМ КАЛОРИЙ МЕЖДУ ПРИЕМАМИ ПИЩИ">ADD HIGH-CALORIE SHAKES BETWEEN MEALS</p>
+                    <p data-translation-key="ОБЕСПЕЧЬТЕ ДОСТАТОЧНЫЙ ОТДЫХ МЕЖДУ ТРЕНИРОВКАМИ">ENSURE ADEQUATE REST BETWEEN WORKOUTS</p>
+                    <p data-translation-key="ПОСТЕПЕННО УВЕЛИЧИВАЙТЕ РАБОЧИЕ ВЕСА НА ТРЕНИРОВКАХ">GRADUALLY INCREASE WORKING WEIGHTS IN YOUR TRAINING</p>
+                `;
+            } else if (goal === 'maintain') {
+                adviceHTML = `
+                    <p data-translation-key="ПОДДЕРЖИВАЙТЕ БАЛАНС КАЛОРИЙ ДЛЯ СОХРАНЕНИЯ ТЕКУЩЕГО ВЕСА">MAINTAIN CALORIE BALANCE TO PRESERVE CURRENT WEIGHT</p>
+                    <p data-translation-key="ПОТРЕБЛЯЙТЕ ОКОЛО 1.5-1.8Г БЕЛКА НА КГ ВЕСА">CONSUME ABOUT 1.5-1.8G OF PROTEIN PER KG OF WEIGHT</p>
+                    <p data-translation-key="ВНИМАТЕЛЬНО ОТСЛЕЖИВАЙТЕ ИЗМЕНЕНИЯ ВЕСА, КОРРЕКТИРУЯ КАЛОРИИ">CAREFULLY TRACK WEIGHT CHANGES, ADJUSTING CALORIES AS NEEDED</p>
+                    <p data-translation-key="ВВОДИТЕ РАЗНООБРАЗИЕ В РАЦИОН ДЛЯ ПОЛУЧЕНИЯ ВСЕХ НУТРИЕНТОВ">INTRODUCE VARIETY IN YOUR DIET TO GET ALL NUTRIENTS</p>
+                    <p data-translation-key="ПЛАНИРУЙТЕ ПРИЕМЫ ПИЩИ ЗАРАНЕЕ ДЛЯ ЛУЧШЕГО КОНТРОЛЯ">PLAN YOUR MEALS IN ADVANCE FOR BETTER CONTROL</p>
+                `;
+            }
         }
         
         adviceEl.innerHTML = adviceHTML;
@@ -353,6 +542,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof window.translateUI === 'function') {
             window.translateUI();
         }
+        
+        console.log(`[welcome.js] showAdviceForGoal: Set advice HTML for goal '${goal}'.`);
     }
     
     // Восстановление сохраненных данных
@@ -437,6 +628,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Загружаем сохраненные данные при загрузке страницы
     loadSavedData();
+
+    // Убеждаемся, что модальные окна изначально скрыты для скринридеров
+    if (infoModal) infoModal.setAttribute('aria-hidden', 'true');
+    if (alertModal) alertModal.setAttribute('aria-hidden', 'true');
+
+    // Инициализация при загрузке
+    loadSavedData();
+    if (typeof window.loadTheme === 'function') window.loadTheme();
+    if (typeof window.translateUI === 'function') window.translateUI();
+    displaySavedResults(); // Отображаем сохраненные результаты, если есть
 });
 
 /***
@@ -486,58 +687,5 @@ function displaySavedResults() {
         }
     } else {
          console.log('[welcome.js] displaySavedResults: No saved data or results section not visible. Skipping update.');
-    }
-}
-
-/***
- * Отображает советы в зависимости от выбранной цели.
- * @param {string} goal - Выбранная цель ('lose', 'gain', 'maintain').
- */
-function showAdviceForGoal(goal) {
-    const adviceEl = document.getElementById('advice-content');
-    if (!adviceEl) return; // Проверка наличия элемента
-
-    let adviceHTML = '';
-
-    if (goal === 'lose') {
-        adviceHTML = `
-            <p data-translation-key="УПОТРЕБЛЯЙТЕ БОЛЬШЕ БЕЛКА ДЛЯ СОХРАНЕНИЯ МЫШЦ">УПОТРЕБЛЯЙТЕ БОЛЬШЕ БЕЛКА ДЛЯ СОХРАНЕНИЯ МЫШЦ</p>
-            <p data-translation-key="НЕ ГОЛОДАЙ - СНИЖАЙ КАЛОРИИ ПОСТЕПЕННО">НЕ ГОЛОДАЙ - СНИЖАЙ КАЛОРИИ ПОСТЕПЕННО</p>
-            <p data-translation-key="РЕГУЛЯРНО ЗАНИМАЙТЕСЬ СИЛОВЫМИ ТРЕНИРОВКАМИ">РЕГУЛЯРНО ЗАНИМАЙТЕСЬ СИЛОВЫМИ ТРЕНИРОВКАМИ</p>
-            <p data-translation-key="ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ">ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ</p>
-        `;
-    } else if (goal === 'gain') {
-        adviceHTML = `
-            <p data-translation-key="НЕ ЗАБЫВАЙ О ПОЛЕЗНЫХ ЖИРАХ (ОРЕХИ, АВОКАДО, РЫБА)">НЕ ЗАБЫВАЙ О ПОЛЕЗНЫХ ЖИРАХ (ОРЕХИ, АВОКАДО, РЫБА)</p>
-            <p data-translation-key="ТРЕНИРУЙТЕСЬ ИНТЕНСИВНО 3-5 РАЗ В НЕДЕЛЮ">ТРЕНИРУЙТЕСЬ ИНТЕНСИВНО 3-5 РАЗ В НЕДЕЛЮ</p>
-        `;
-    } else if (goal === 'maintain') {
-        adviceHTML = `
-            <p data-translation-key="СЛЕДИТЕ ЗА КАЧЕСТВОМ ПИТАНИЯ">СЛЕДИТЕ ЗА КАЧЕСТВОМ ПИТАНИЯ</p>
-            <p data-translation-key="РЕГУЛЯРНО КОНТРОЛИРУЙТЕ ВЕС И ЗАМЕРЫ">РЕГУЛЯРНО КОНТРОЛИРУЙТЕ ВЕС И ЗАМЕРЫ</p>
-            <p data-translation-key="СОВМЕЩАЙТЕ КАРДИО И СИЛОВЫЕ ТРЕНИРОВКИ">СОВМЕЩАЙТЕ КАРДИО И СИЛОВЫЕ ТРЕНИРОВКИ</p>
-        `;
-    }
-
-    adviceEl.innerHTML = adviceHTML;
-    console.log(`[welcome.js] showAdviceForGoal: Set advice HTML for goal '${goal}'.`);
-
-    // Если страница уже переведена, применим переводы к новым элементам
-    if (typeof window.getTranslation === 'function') {
-        console.log('[welcome.js] showAdviceForGoal: Translating generated advice content...');
-        adviceEl.querySelectorAll('p[data-translation-key]').forEach((pElement, index) => {
-            const key = pElement.dataset.translationKey;
-            if (key) {
-                const currentText = pElement.textContent.trim();
-                const translatedText = window.getTranslation(key, currentText); // Используем глобальную функцию
-                console.log(`  -> Translating advice #${index + 1}, Key: '${key}', Current: '${currentText}', Target: '${translatedText}'`);
-                if (currentText !== translatedText) {
-                    pElement.textContent = translatedText;
-                }
-            }
-        });
-        console.log('[welcome.js] showAdviceForGoal: Translation finished.');
-    } else {
-        console.warn('[welcome.js] showAdviceForGoal: window.getTranslation function not found, cannot translate advice.');
     }
 } 

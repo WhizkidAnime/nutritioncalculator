@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Подключаем ПИКСЕЛЬНЫЙ шрифт Press Start 2P -->
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styles/main.css">
 <!-- Подключаем стили Choices.js -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"/>
 <!-- Дополнительные стили для страницы приветствия -->
@@ -192,10 +192,10 @@
 </section>
 
 <!-- Модальное окно с информацией -->
-<div id="info-modal" class="modal">
+<div id="info-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
     <div class="modal-content info-modal-content card">
-        <h3 data-translation-key="ИНФОРМАЦИЯ">ИНФОРМАЦИЯ</h3>
-        <div class="info-text">
+        <h3 id="info-modal-title" data-translation-key="ИНФОРМАЦИЯ">ИНФОРМАЦИЯ</h3>
+        <div class="info-text" id="info-modal-text">
             <p data-translation-key="СОЗДАЙТЕ ПЕРСОНАЖА, ЧТОБЫ РАССЧИТАТЬ ВАШУ ДНЕВНУЮ НОРМУ КАЛОРИЙ И ПОЛУЧИТЬ РЕКОМЕНДАЦИИ ПО ПИТАНИЮ.">СОЗДАЙТЕ ПЕРСОНАЖА, ЧТОБЫ РАССЧИТАТЬ ВАШУ ДНЕВНУЮ НОРМУ КАЛОРИЙ И ПОЛУЧИТЬ РЕКОМЕНДАЦИИ ПО ПИТАНИЮ.</p>
             
             <p data-translation-key="ВВЕДИТЕ ВАШИ ДАННЫЕ И ВЫБЕРИТЕ ЦЕЛЬ - ПОХУДЕНИЕ, ПОДДЕРЖАНИЕ ИЛИ НАБОР МАССЫ.">ВВЕДИТЕ ВАШИ ДАННЫЕ И ВЫБЕРИТЕ ЦЕЛЬ - ПОХУДЕНИЕ, ПОДДЕРЖАНИЕ ИЛИ НАБОР МАССЫ.</p>
@@ -207,7 +207,7 @@
 </div>
 
 <!-- Модальное окно для уведомлений -->
-<div id="alert-modal" class="modal">
+<div id="alert-modal" class="modal" role="dialog" aria-modal="true" aria-describedby="alert-message">
     <div class="modal-content card">
         <p id="alert-message"></p>
         <div class="modal-actions">

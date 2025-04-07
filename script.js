@@ -4,13 +4,103 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightThemeBtn = document.getElementById('light-theme-btn');
     const darkThemeBtn = document.getElementById('dark-theme-btn');
     
-    // Добавляем обработчик для кнопки советов
-    const tipButton = document.getElementById('goal-tips-trigger');
-    if (tipButton) {
-        console.log('[DEBUG] Нашли кнопку советов, добавляем обработчик');
-        tipButton.addEventListener('click', showGoalTips);
-    } else {
-        console.log('[DEBUG] Кнопка советов не найдена');
+    // --- Переменная для хранения элемента, открывшего модальное окно ---
+    let modalTriggerElement = null;
+
+    // --- Вспомогательные функции для управления фокусом в модальных окнах ---
+
+    // Получить все фокусируемые элементы внутри контейнера
+    function getFocusableElements(container) {
+      return Array.from(
+        container.querySelectorAll(
+          'button, [href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter(el => !el.disabled && el.offsetWidth > 0 && el.offsetHeight > 0); // Check visibility and enabled
+    }
+
+    // Ловушка фокуса внутри модального окна
+    function trapFocus(modalElement, event) {
+      if (event.key !== 'Tab') return;
+
+      const focusableElements = getFocusableElements(modalElement);
+      if (focusableElements.length === 0) {
+          event.preventDefault(); // Prevent tabbing out if nothing focusable
+          return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) { // Shift + Tab
+        // Если фокус на первом элементе, переместить на последний
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          event.preventDefault();
+        }
+      } else { // Tab
+        // Если фокус на последнем элементе, переместить на первый
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          event.preventDefault();
+        }
+      }
+    }
+
+    // Функция для открытия модального окна с управлением фокусом
+    function openModal(modalElement) {
+        if (!modalElement) return;
+        modalTriggerElement = document.activeElement; // Сохраняем элемент, который вызвал модалку
+
+        modalElement.classList.add('show');
+        // Устанавливаем aria-атрибуты для доступности
+        modalElement.setAttribute('aria-hidden', 'false');
+
+        requestAnimationFrame(() => {
+            modalElement.classList.add('visible');
+
+            // Находим первый фокусируемый элемент или кнопку закрытия/действия
+            const focusableElements = getFocusableElements(modalElement);
+            // Приоритет: кнопка подтверждения (danger), OK (primary), Отмена (secondary), любая другая кнопка, первый фокусируемый
+            const focusTarget =
+                modalElement.querySelector('.btn-danger') ||
+                modalElement.querySelector('#modal-ok-btn') || // Кнопка OK в модалке уведомления
+                modalElement.querySelector('.btn-primary') || // Кнопки OK, Info Close
+                modalElement.querySelector('.btn-secondary') || // Кнопка Cancel
+                modalElement.querySelector('.btn') || // Любая другая кнопка
+                (focusableElements.length > 0 ? focusableElements[0] : null); // Первый интерактивный элемент
+
+            if (focusTarget) {
+                focusTarget.focus();
+            }
+
+            // Добавляем слушатель для ловушки фокуса
+            modalElement.focusTrapListener = (e) => trapFocus(modalElement, e);
+            modalElement.addEventListener('keydown', modalElement.focusTrapListener);
+        });
+    }
+
+    // Функция для закрытия модального окна с возвратом фокуса
+    function closeModal(modalElement) {
+        if (!modalElement) return;
+
+        modalElement.classList.remove('visible');
+        modalElement.setAttribute('aria-hidden', 'true');
+
+        // Удаляем слушатель ловушки фокуса
+        if (modalElement.focusTrapListener) {
+            modalElement.removeEventListener('keydown', modalElement.focusTrapListener);
+            delete modalElement.focusTrapListener; // Удаляем ссылку на функцию
+        }
+
+        setTimeout(() => {
+            modalElement.classList.remove('show');
+
+            // Возвращаем фокус на элемент, который открыл модальное окно
+            if (modalTriggerElement) {
+                modalTriggerElement.focus();
+                modalTriggerElement = null; // Очищаем сохраненный элемент
+            }
+        }, 200); // Соответствует времени анимации CSS
     }
 
     // --- Обработка скролла для title-container ---
@@ -1183,21 +1273,25 @@ document.addEventListener('DOMContentLoaded', () => {
              }
          }
 
+        // Вызываем feather.replace() ПОСЛЕ добавления всех строк истории
+        feather.replace(); 
+
         // Сохраняем текущее состояние (лимиты, ВСЯ ИСТОРИЯ) в localStorage
         try {
              localStorage.setItem('dailyLimits', JSON.stringify(dailyLimits));
              localStorage.setItem('fullHistory', JSON.stringify(fullHistory)); // Храним всю историю
         } catch (e) {
-             alert(getTranslation('Не удалось сохранить данные. Возможно, хранилище переполнено.'));
+             // Используем кастомную модалку вместо alert
+             showInfoModalAlert(getTranslation('Не удалось сохранить данные. Возможно, хранилище переполнено.'));
         }
         
         // Обновляем отображение текущей даты в навигации
         updateDateDisplay();
 
-        // --- Добавляем рендер истории веса ---
-        renderWeightHistory();
+        // --- Добавляем рендер истории веса --- (вызывается в конце updateSummary)
+        renderWeightHistory(); // Убедимся, что feather.replace() в renderWeightHistory тоже вызывается
     }
-    
+
     // Вспомогательная функция для добавления строки истории в таблицу
     function addHistoryRow(item, gUnit, kcalUnit) {
         if (!historyTbody) return; // Проверка на существование tbody
@@ -1217,7 +1311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Форматирование даты --- Используем formatDateDisplay
         // --- ИСПОЛЬЗУЕМ НОВУЮ ФУНКЦИЮ ВМЕСТО ПРЯМОЙ ПРОВЕРКИ ---
         const formattedDate = getDateFormatter(false)(item.date);
-        const kgUnit = getTranslation('кг');
+        // const kgUnit = getTranslation('кг'); // kgUnit не используется здесь
 
         // --- Заполнение ячеек --- 
         nameCell.textContent = item.name;
@@ -1231,10 +1325,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Создание кнопки удаления для текущей строки
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '❌'; // Иконка удаления
-        deleteBtn.classList.add('delete-btn'); // Класс для стилизации и обработчика
+        // deleteBtn.textContent = '❌'; // Старый вариант: Иконка удаления
+        deleteBtn.innerHTML = '<i data-feather="trash-2"></i>'; // Новый вариант: Feather иконка
+        // deleteBtn.classList.add('delete-btn'); // Старый вариант: Класс для стилизации и обработчика
+        deleteBtn.classList.add('btn', 'btn-danger', 'delete-btn'); // Новый вариант: Добавляем классы для стиля кнопки
         deleteBtn.dataset.id = item.id; // Используем УНИКАЛЬНЫЙ ID элемента для удаления
         deleteBtn.title = getTranslation('ПРЕДМЕТ УНИЧТОЖЕН!');
+        deleteBtn.setAttribute('aria-label', getTranslation('Удалить запись о еде')); // Добавляем aria-label
         actionCell.appendChild(deleteBtn); // Добавляем кнопку в ячейку
     }
 
@@ -1514,15 +1611,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Функция для скрытия модального окна
     function hideConfirmationModal() {
          if (!confirmationModal) return;
-        confirmationModal.classList.remove('visible'); // Убираем класс анимации
-        // Используем setTimeout, чтобы дать анимации завершиться перед скрытием
-        setTimeout(() => {
-            if (confirmationModal) {
-                 confirmationModal.classList.remove('show');    // Убираем display: flex
-                 confirmationModal.classList.remove('is-notice');
-            }
-             confirmCallback = null; // Сбрасываем колбэк после скрытия
-        }, 200); // Время должно совпадать с transition duration в CSS
+        closeModal(confirmationModal); // Используем новую функцию закрытия
+        confirmCallback = null; // Сбрасываем колбэк
     }
 
     // --- Обработчики событий модального окна --- //
@@ -1539,11 +1629,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (modalCancelBtn) {
-        modalCancelBtn.addEventListener('click', hideConfirmationModal);
+        modalCancelBtn.addEventListener('click', hideConfirmationModal); // Просто закрываем окно
     }
 
     if (modalOkBtn) {
-        modalOkBtn.addEventListener('click', hideConfirmationModal);
+        modalOkBtn.addEventListener('click', hideConfirmationModal); // Просто закрываем окно
     }
 
     if (confirmationModal) {
@@ -1884,11 +1974,7 @@ document.addEventListener('DOMContentLoaded', () => {
             translateInfoModalStaticContent(); // Переводим контент при открытии
 
              if (infoModal) {
-                 infoModal.classList.add('show');
-                 requestAnimationFrame(() => {
-                      if (infoModal) infoModal.classList.add('visible');
-                     updateInfoFade();
-                 });
+                 openModal(infoModal); // Используем новую функцию открытия
              }
         });
     }
@@ -1896,21 +1982,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (infoCloseBtn) {
         infoCloseBtn.addEventListener('click', () => {
              if (infoModal) {
-                infoModal.classList.remove('visible');
-                setTimeout(() => {
-                     if (infoModal) infoModal.classList.remove('show');
-                }, 200);
-             }
+                closeModal(infoModal); // Закрываем через новую функцию
+            }
         });
     }
 
     if (infoModal) {
         infoModal.addEventListener('click', (event) => {
             if (event.target === infoModal) {
-                infoModal.classList.remove('visible');
-                 setTimeout(() => {
-                     if (infoModal) infoModal.classList.remove('show');
-                 }, 200);
+                closeModal(infoModal); // Закрываем через новую функцию
             }
         });
     }
@@ -2099,10 +2179,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (storedWeightHistory) {
                 const parsedHistory = JSON.parse(storedWeightHistory);
                 if (Array.isArray(parsedHistory)) {
-                    // Простая валидация записей
-                    weightHistory = parsedHistory.filter(item =>
-                        typeof item === 'object' && item !== null && item.id && item.date && typeof item.weight === 'number'
-                    );
+                    // Простая валидация записей + добавление ID если отсутствует для старых записей
+                    weightHistory = parsedHistory.map((item, index) => ({
+                        id: item.id || Date.now().toString() + index, // Гарантируем наличие ID
+                        date: item.date,
+                        weight: typeof item.weight === 'number' ? item.weight : 0
+                    })).filter(item => item.date && typeof item.weight === 'number');
                 } else {
                     weightHistory = [];
                 }
@@ -2114,58 +2196,56 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('weightHistory');
         }
     }
-
     // Сохранение истории веса в localStorage
     function saveWeightHistory() {
         try {
             localStorage.setItem('weightHistory', JSON.stringify(weightHistory));
         } catch (e) {
-            alert(getTranslation('Не удалось сохранить данные. Возможно, хранилище переполнено.'));
+            // Используем кастомную модалку вместо alert
+            showInfoModalAlert(getTranslation('Не удалось сохранить данные. Возможно, хранилище переполнено.'));
         }
     }
 
-    // Добавление строки в таблицу истории веса
-    function addWeightHistoryRow(item) {
-        if (!weightHistoryTbody) return;
-        const row = weightHistoryTbody.insertRow();
-
-        const dateCell = row.insertCell();
-        const weightCell = row.insertCell();
-        const actionCell = row.insertCell();
-
-        // Используем существующие функции форматирования даты
-        // --- ИСПОЛЬЗУЕМ НОВУЮ ФУНКЦИЮ ВМЕСТО ПРЯМОЙ ПРОВЕРКИ ---
-        const formattedDate = getDateFormatter(false)(item.date);
-        const kgUnit = getTranslation('кг');
-
-        dateCell.textContent = formattedDate;
-        weightCell.textContent = `${item.weight.toFixed(1)} ${kgUnit}`; // Отображаем с 1 знаком после запятой
-
-        // Кнопка удаления
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '❌';
-        deleteBtn.classList.add('delete-btn', 'delete-weight-btn'); // Добавляем специфичный класс
-        deleteBtn.dataset.id = item.id; // Используем ID для удаления
-        deleteBtn.title = getTranslation('Удалить запись о весе'); // TODO: Add translation
-        actionCell.appendChild(deleteBtn);
-    }
+    // Удаляем старую функцию addWeightHistoryRow, так как рендеринг будет внутри renderWeightHistory
+    /*
+    function addWeightHistoryRow(item) { ... }
+    */
 
     // Рендер (перерисовка) таблицы истории веса
     function renderWeightHistory() {
         if (!weightHistoryTbody) return;
         weightHistoryTbody.innerHTML = ''; // Очищаем таблицу
 
-        // Сортируем по дате (сначала новые)
-        const sortedHistory = [...weightHistory].sort((a, b) => {
-            const dateA = new Date(a.date).getTime();
-            const dateB = new Date(b.date).getTime();
-            if (isNaN(dateA) || isNaN(dateB)) return 0;
-            return dateB - dateA;
+        // УБИРАЕМ СОРТИРОВКУ, записи будут рендериться в порядке массива
+
+        // Если история пуста, показываем сообщение
+        if (weightHistory.length === 0) {
+            const emptyMessage = getTranslation('История веса пуста.', 'История веса пуста.');
+            weightHistoryTbody.innerHTML = `<tr><td colspan="3">${emptyMessage}</td></tr>`;
+            return;
+        }
+
+        // Добавляем строки в таблицу (теперь в НАЧАЛО)
+        weightHistory.forEach(item => {
+            const row = weightHistoryTbody.insertRow(0); // Вставляем в НАЧАЛО (индекс 0)!
+            row.dataset.id = item.id;
+
+            const dateCell = row.insertCell();
+            dateCell.textContent = getDateFormatter(false)(item.date);
+
+            const weightCell = row.insertCell();
+            weightCell.textContent = `${item.weight.toFixed(1)} ${getTranslation('кг')}`;
+
+            const actionCell = row.insertCell();
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = '<i data-feather="trash-2"></i>';
+            deleteButton.classList.add('btn', 'btn-danger', 'delete-weight-btn');
+            deleteButton.title = getTranslation('Удалить запись о весе');
+            deleteButton.setAttribute('aria-label', getTranslation('Удалить запись о весе'));
+            actionCell.appendChild(deleteButton);
         });
 
-        sortedHistory.forEach(item => {
-            addWeightHistoryRow(item);
-        });
+        feather.replace(); // Обновляем иконки Feather ОДИН раз после цикла
     }
 
     // Обработчик сохранения веса
@@ -2175,13 +2255,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Валидация
         if (isNaN(weightValue) || weightValue <= 0) {
-            // Заменяем стандартный alert на кастомный диалог
-            showInfoModal(getTranslation('Пожалуйста, введите корректный вес (положительное число).'));
+            showInfoModalAlert(getTranslation('Пожалуйста, введите корректный вес (положительное число).'));
             return;
         }
         if (!dateValue) {
-            // Заменяем стандартный alert на кастомный диалог
-            showInfoModal(getTranslation('Пожалуйста, выберите дату замера.'));
+            showInfoModalAlert(getTranslation('Пожалуйста, выберите дату замера.'));
             return;
         }
 
@@ -2191,9 +2269,7 @@ document.addEventListener('DOMContentLoaded', () => {
             weight: parseFloat(weightValue.toFixed(1)) // Сохраняем с 1 знаком после запятой
         };
 
-        // Добавляем новую запись или обновляем существующую для этой даты?
-        // Пока просто добавляем новую запись.
-        weightHistory.push(weightEntry);
+        weightHistory.push(weightEntry); // Добавляем в конец массива
 
         saveWeightHistory(); // Сохраняем в localStorage
         renderWeightHistory(); // Обновляем таблицу
@@ -2201,195 +2277,93 @@ document.addEventListener('DOMContentLoaded', () => {
         // Очищаем поля
         if (currentWeightInput) currentWeightInput.value = '';
         // Не очищаем дату, чтобы было удобнее вводить замеры подряд
-        // if (measurementDateInput) measurementDateInput.value = '';
 
-        showInfoModal(getTranslation('Вес успешно сохранен!'));
+        showInfoModalAlert(getTranslation('Вес успешно сохранен!')); // Используем кастомную модалку
     }
 
-    // Обработчик удаления записи веса (делегирование)
-    function handleDeleteWeight(event) {
-        const targetButton = event.target.closest('.delete-weight-btn');
-        if (!targetButton) return; // Клик не по кнопке удаления веса
+    // Функция обработки клика на кнопку удаления веса (вызывается из делегирования)
+    function handleDeleteWeightClick(button) {
+        const row = button.closest('tr'); // Находим ближайшую строку
+        if (!row) return;
+        const entryId = row.dataset.id;
 
-        const idToRemove = targetButton.dataset.id;
-        const indexToRemove = weightHistory.findIndex(item => item.id === idToRemove);
-
-        if (indexToRemove !== -1) {
-            showConfirmationModal(
-                getTranslation('Вы уверены, что хотите удалить эту запись о весе?'),
-                () => {
-                    weightHistory.splice(indexToRemove, 1);
-                    saveWeightHistory();
-                    renderWeightHistory();
-                    // showInfoModal(getTranslation('Запись о весе удалена.')); // Опционально
-                }
-            );
+        if (!entryId) {
+            console.error('Не удалось найти ID записи для удаления');
+            return;
         }
+
+        const entryIndex = weightHistory.findIndex(entry => entry.id === entryId);
+
+        if (entryIndex === -1) {
+            console.error('Не удалось найти запись о весе для удаления в массиве:', entryId);
+            return;
+        }
+
+        const message = getTranslation('Вы уверены, что хотите удалить эту запись о весе?');
+        showConfirmationModal(message, () => {
+            // Удаляем запись из массива
+            weightHistory.splice(entryIndex, 1);
+            // Сохраняем обновленную историю
+            saveWeightHistory();
+            // Удаляем строку из таблицы DOM
+            row.remove();
+            // Показываем уведомление
+            showInfoModalAlert(getTranslation('Запись о весе удалена.'));
+            // Если история стала пуста, отображаем сообщение
+            if (weightHistory.length === 0 && weightHistoryTbody) {
+                const emptyMessage = getTranslation('История веса пуста.', 'История веса пуста.'); // Добавляем fallback
+                weightHistoryTbody.innerHTML = `<tr><td colspan="3">${emptyMessage}</td></tr>`;
+            }
+        });
     }
+
+    // Удаляем старую функцию handleDeleteWeight(event), если она еще где-то осталась
+    /*
+    function handleDeleteWeight(event) { ... }
+    */
 
     // --- Инициализация при загрузке страницы --- //
-    loadTheme();     // Загружаем и применяем тему ПЕРЕД остальной инициализацией
-    loadData();      // Загружаем данные (включая историю еды и лимиты)
-    loadWeightHistory(); // Загружаем историю веса
-    translateUI();   // Применяем переводы (должно быть после загрузки темы, чтобы title кнопок темы перевелись)
-    updateSummary(); // Первоначальное обновление интерфейса (включая рендер истории еды и веса)
+    // ... (пропускаем неизмененный код инициализации: loadTheme, loadData и т.д.) ...
+    loadTheme();
+    loadData();
+    loadWeightHistory();
+    // Устанавливаем язык до перевода
+    currentLang = localStorage.getItem('appLanguage') || 'ru';
+    document.documentElement.lang = currentLang;
+    updateLangControlState();
 
-    // --- Добавляем обработчики для секции веса ---
+    translateUI();
+    updateSummary(); // Включает renderWeightHistory
+
+    // --- Добавляем обработчики для секции веса --- (ИСПРАВЛЕНО)
     if (saveWeightBtn) {
         saveWeightBtn.addEventListener('click', handleSaveWeight);
     }
 
-    // Делегирование событий для кнопки удаления веса
+    // Делегирование событий для кнопки удаления веса (ИСПРАВЛЕНО)
     if (weightTrackingSection) {
-        weightTrackingSection.addEventListener('click', handleDeleteWeight);
+        weightTrackingSection.addEventListener('click', (event) => {
+            // Ищем кнопку удаления, по которой кликнули
+            const deleteButton = event.target.closest('.delete-weight-btn');
+            if (deleteButton) {
+                // Вызываем новую функцию обработки клика
+                handleDeleteWeightClick(deleteButton);
+            }
+        });
     }
 
-    // Установка сегодняшней даты по умолчанию для замера веса
-    if (measurementDateInput && !measurementDateInput.value) {
+    // Устанавливаем сегодняшнюю дату по умолчанию для поля замера веса
+    if (measurementDateInput) {
         measurementDateInput.value = getTodayDateString();
     }
 
-    // Обработчики для навигации по дням
-     if (prevDayBtn) {
-        prevDayBtn.addEventListener('click', goToPrevDay);
-     }
-     if (nextDayBtn) {
-        nextDayBtn.addEventListener('click', goToNextDay);
-     }
-     if (allDaysBtn) {
-        allDaysBtn.addEventListener('click', () => setSelectedDate(null));
-     }
+    // ... (остальной код файла: feather.replace, document.title)
 
-    // Инициализируем selectedDate СЕГОДНЯШНИМ днем по умолчанию
-    setSelectedDate(getTodayDateString());
-
-    /**
-     * Загружает советы в тултип на основе сохраненной цели пользователя
-     */
-    // Удаляем старую функцию loadGoalTips
-    // function loadGoalTips() {
-    //    console.log('[DEBUG] Функция loadGoalTips запущена');
-    //    
-    //    // Добавляем обработчик на кнопку с советами
-    //    const tipButton = document.getElementById('goal-tips-trigger');
-    //    if (tipButton) {
-    //        tipButton.addEventListener('click', showGoalTips);
-    //    }
-    // }
-
-    // Функция для отображения советов в алерте при клике на иконку
-    function showGoalTips() {
-        console.log('[DEBUG] Показываем советы в модальном окне');
-        
-        try {
-            // Получаем сохраненные данные пользователя
-            let userData = localStorage.getItem('userData');
-            if (!userData) {
-                // Пробуем получить данные из savedUserData (с welcome страницы)
-                userData = localStorage.getItem('savedUserData');
-            }
-            
-            // Определяем цель пользователя
-            let goal = 'поддержание'; // По умолчанию
-            
-            if (userData) {
-                const parsedData = JSON.parse(userData);
-                // Проверяем оба возможных формата данных
-                if (parsedData.goal) {
-                    goal = parsedData.goal;
-                }
-            }
-            
-            // Формируем советы в зависимости от цели
-            let title = '';
-            let tipsArray = [];
-            
-            if (goal === 'похудение' || goal === 'lose') {
-                title = 'СОВЕТЫ ДЛЯ ПОХУДЕНИЯ';
-                tipsArray = [
-                    'УПОТРЕБЛЯЙТЕ БОЛЬШЕ БЕЛКА ДЛЯ СОХРАНЕНИЯ МЫШЦ',
-                    'НЕ ГОЛОДАЙ - СНИЖАЙ КАЛОРИИ ПОСТЕПЕННО',
-                    'РЕГУЛЯРНО ЗАНИМАЙТЕСЬ СИЛОВЫМИ ТРЕНИРОВКАМИ',
-                    'ДОБАВЬТЕ КАРДИО ПОСЛЕ СИЛОВОЙ ТРЕНИРОВКИ ИЛИ В ОТДЕЛЬНЫЙ ДЕНЬ НА ЛЕГКОМ ПУЛЬСЕ 30 МИНУТ'
-                ];
-            } else if (goal === 'набор' || goal === 'gain') {
-                title = 'СОВЕТЫ ДЛЯ НАБОРА МАССЫ';
-                tipsArray = [
-                    'НЕ ЗАБЫВАЙ О ПОЛЕЗНЫХ ЖИРАХ (ОРЕХИ, АВОКАДО, РЫБА)',
-                    'ТРЕНИРУЙТЕСЬ ИНТЕНСИВНО 3-5 РАЗ В НЕДЕЛЮ'
-                ];
-            } else {
-                title = 'СОВЕТЫ ДЛЯ ПОДДЕРЖАНИЯ ВЕСА';
-                tipsArray = [
-                    'СЛЕДИТЕ ЗА КАЧЕСТВОМ ПИТАНИЯ',
-                    'РЕГУЛЯРНО КОНТРОЛИРУЙТЕ ВЕС И ЗАМЕРЫ',
-                    'СОВМЕЩАЙТЕ КАРДИО И СИЛОВЫЕ ТРЕНИРОВКИ'
-                ];
-            }
-            
-            // Находим элементы модального окна
-            const tipsModal = document.getElementById('tips-modal');
-            const tipsTitle = document.getElementById('tips-title');
-            const tipsList = document.getElementById('tips-list');
-            const tipsCloseBtn = document.getElementById('tips-close-btn');
-            
-            // Устанавливаем заголовок
-            tipsTitle.textContent = `✧ ${title} ✧`;
-            
-            // Очищаем предыдущие советы
-            tipsList.innerHTML = '';
-            
-            // Добавляем советы в список
-            tipsArray.forEach(tip => {
-                const listItem = document.createElement('li');
-                const highlightSpan = document.createElement('span');
-                highlightSpan.className = 'info-highlight';
-                highlightSpan.textContent = tip;
-                listItem.appendChild(highlightSpan);
-                tipsList.appendChild(listItem);
-            });
-            
-            // Показываем модальное окно
-            tipsModal.classList.add('show');
-            requestAnimationFrame(() => {
-                if (tipsModal) tipsModal.classList.add('visible');
-            });
-            
-            // Обработчик для кнопки закрытия
-            tipsCloseBtn.addEventListener('click', function closeTipsModal() {
-                tipsModal.classList.remove('visible');
-                setTimeout(() => {
-                    if (tipsModal) tipsModal.classList.remove('show');
-                }, 200);
-                // Удаляем обработчик после использования чтобы избежать дублирования
-                tipsCloseBtn.removeEventListener('click', closeTipsModal);
-            });
-            
-            // Добавляем возможность закрыть модальное окно при клике на фон
-            tipsModal.addEventListener('click', function closeTipsModalOnBg(event) {
-                if (event.target === tipsModal) {
-                    tipsModal.classList.remove('visible');
-                    setTimeout(() => {
-                        if (tipsModal) tipsModal.classList.remove('show');
-                    }, 200);
-                    // Удаляем обработчик после использования
-                    tipsModal.removeEventListener('click', closeTipsModalOnBg);
-                }
-            });
-            
-        } catch (error) {
-            console.error('[DEBUG] Ошибка при показе советов:', error);
-            alert('Не удалось загрузить советы. Пожалуйста, выберите цель на странице создания персонажа.');
-        }
+    // Инициализация кнопки советов
+    const goalTipsBtn = document.getElementById('goal-tips-trigger');
+    if (goalTipsBtn) {
+        goalTipsBtn.addEventListener('click', showGoalTips);
+        console.log('Обработчик для кнопки советов добавлен');
     }
+}); // Конец addEventListener('DOMContentLoaded')
 
-    // Вызываем функцию при загрузке страницы
-    document.addEventListener('DOMContentLoaded', function() {
-        // ... existing code ...
-        
-        // Удаляем вызов loadGoalTips
-        // loadGoalTips();
-        
-        // ... existing code ...
-    });
-});

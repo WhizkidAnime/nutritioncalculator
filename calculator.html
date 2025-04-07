@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GAMEBOY NUTRITION TRACKER</title>
-<!-- Добавляем иконку вкладки (фавикон) -->
+<title data-translate-key="calculatorTitle"></title>
+<!-- <link rel="stylesheet" href="style.css"> -->
+<link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
 <link rel="icon" type="image/png" href="favicon.png">
-<!-- Подключаем шрифты Google Fonts -->
+<!-- Подключаем Feather Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Убираем старый шрифт Inter -->
 <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> -->
 <!-- Подключаем ПИКСЕЛЬНЫЙ шрифт Press Start 2P -->
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<!-- Подключаем стили Choices.js -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"/>
 </head>
 <body class="theme-light">
 
@@ -300,7 +299,7 @@
 </section>
 
 <!-- Модальное окно подтверждения -->
-<div id="confirmation-modal" class="modal">
+<div id="confirmation-modal" class="modal" role="dialog" aria-modal="true" aria-describedby="modal-message">
     <div class="modal-content card">
         <p id="modal-message">Вы уверены?</p>
         <div class="modal-actions">
@@ -312,10 +311,10 @@
 </div>
 
 <!-- Модальное окно с информацией -->
-<div id="info-modal" class="modal">
+<div id="info-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="info-modal-title" aria-describedby="info-modal-text">
     <div class="modal-content info-modal-content card">
-        <h3>✧ РУКОВОДСТВО ПРИКЛЮЧЕНЦА ✧</h3>
-        <div class="info-text">
+        <h3 id="info-modal-title">✧ РУКОВОДСТВО ПРИКЛЮЧЕНЦА ✧</h3>
+        <div class="info-text" id="info-modal-text">
             <p class="info-paragraph"><span class="info-title">Цель:</span> Отслеживай еду и вес в стиле RPG. Балансируй КБЖУ, контролируй вес.</p>
             
             <p class="info-paragraph"><span class="info-title">Секции:</span></p>
@@ -350,7 +349,7 @@
 </div>
 
 <!-- Модальное окно для советов -->
-<div id="tips-modal" class="modal">
+<div id="tips-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="tips-title" aria-describedby="tips-list">
     <div class="modal-content info-modal-content card">
         <h3 id="tips-title">✧ СОВЕТЫ ✧</h3>
         <div class="info-text">
@@ -369,6 +368,141 @@
 <!-- Инициализируем Feather Icons -->
 <script>
   feather.replace()
+</script>
+
+<!-- Простой inline-скрипт для кнопки советов -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Ссылки на элементы, которые нам понадобятся
+    const goalTipsBtn = document.getElementById('goal-tips-trigger');
+    const tipsModal = document.getElementById('tips-modal');
+    const tipsList = document.getElementById('tips-list');
+    const tipsCloseBtn = document.getElementById('tips-close-btn');
+    
+    // Проверяем, что все элементы найдены
+    if (!goalTipsBtn || !tipsModal || !tipsList || !tipsCloseBtn) {
+      console.error('Не найдены необходимые элементы для модального окна советов');
+      return;
+    }
+    
+    // Обработчик закрытия модального окна
+    tipsCloseBtn.addEventListener('click', function() {
+      if (typeof closeModal === 'function') {
+        closeModal(tipsModal);
+      } else {
+        tipsModal.classList.remove('visible');
+        setTimeout(() => {
+          tipsModal.classList.remove('show');
+        }, 300);
+      }
+    });
+    
+    // Закрытие по клику вне модального окна
+    tipsModal.addEventListener('click', function(event) {
+      if (event.target === tipsModal) {
+        if (typeof closeModal === 'function') {
+          closeModal(tipsModal);
+        } else {
+          tipsModal.classList.remove('visible');
+          setTimeout(() => {
+            tipsModal.classList.remove('show');
+          }, 300);
+        }
+      }
+    });
+    
+    // Обработчик клика на кнопку советов
+    goalTipsBtn.addEventListener('click', function() {
+      // Получаем цель пользователя из localStorage
+      const savedData = localStorage.getItem('savedUserData');
+      let userGoal = 'maintain'; // По умолчанию - поддержание
+      
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          userGoal = parsedData.goal || 'maintain';
+        } catch (e) {
+          console.error('Ошибка при чтении данных пользователя:', e);
+        }
+      }
+      
+      // Получаем текущий язык
+      const currentLang = localStorage.getItem('lang') || 'ru';
+      
+      // Очищаем список советов
+      tipsList.innerHTML = '';
+      
+      // Добавляем советы в зависимости от цели и языка
+      if (currentLang === 'ru') {
+        if (userGoal === 'lose') {
+          addAdviceTip("Добавьте кардио после силовой тренировки или в отдельный день на легком пульсе 30 минут");
+          addAdviceTip("Начните с дефицита 200-300 ккал и постепенно увеличивайте до 500 ккал");
+          addAdviceTip("Пейте больше воды - не менее 8 стаканов в день");
+          addAdviceTip("Ешьте больше клетчатки из овощей для лучшего насыщения");
+          addAdviceTip("Ограничьте потребление простых углеводов и сахара");
+          addAdviceTip("Следите за качеством сна - это влияет на гормоны голода");
+        } else if (userGoal === 'gain') {
+          addAdviceTip("Создайте профицит калорий около 300-500 ккал");
+          addAdviceTip("Увеличьте потребление белка до 1.8-2.2г на кг веса");
+          addAdviceTip("Используйте базовые упражнения - приседания, жим, тяга");
+          addAdviceTip("Ешьте 4-6 приемов пищи в день");
+          addAdviceTip("Добавьте коктейли с высоким содержанием калорий между приемами пищи");
+          addAdviceTip("Обеспечьте достаточный отдых между тренировками");
+          addAdviceTip("Постепенно увеличивайте рабочие веса на тренировках");
+        } else { // maintain
+          addAdviceTip("Поддерживайте баланс калорий для сохранения текущего веса");
+          addAdviceTip("Потребляйте около 1.5-1.8г белка на кг веса");
+          addAdviceTip("Внимательно отслеживайте изменения веса, корректируя калории");
+          addAdviceTip("Вводите разнообразие в рацион для получения всех нутриентов");
+          addAdviceTip("Планируйте приемы пищи заранее для лучшего контроля");
+        }
+      } else {
+        // Английские советы
+        if (userGoal === 'lose') {
+          addAdviceTip("Add 30 minutes of light cardio after strength training or on separate days");
+          addAdviceTip("Start with a 200-300 calorie deficit and gradually increase to 500");
+          addAdviceTip("Drink more water - at least 8 glasses a day");
+          addAdviceTip("Eat more fiber from vegetables for better satiety");
+          addAdviceTip("Limit simple carbs and sugar intake");
+          addAdviceTip("Monitor sleep quality - it affects hunger hormones");
+        } else if (userGoal === 'gain') {
+          addAdviceTip("Create a calorie surplus of about 300-500 kcal");
+          addAdviceTip("Increase protein intake to 1.8-2.2g per kg of weight");
+          addAdviceTip("Use compound exercises - squats, bench press, deadlifts");
+          addAdviceTip("Eat 4-6 meals per day");
+          addAdviceTip("Add high-calorie shakes between meals");
+          addAdviceTip("Ensure adequate rest between workouts");
+          addAdviceTip("Gradually increase working weights in your training");
+        } else { // maintain
+          addAdviceTip("Maintain calorie balance to preserve current weight");
+          addAdviceTip("Consume about 1.5-1.8g of protein per kg of weight");
+          addAdviceTip("Carefully track weight changes, adjusting calories as needed");
+          addAdviceTip("Introduce variety in your diet to get all nutrients");
+          addAdviceTip("Plan your meals in advance for better control");
+        }
+      }
+      
+      // Функция для добавления совета в список
+      function addAdviceTip(text) {
+        const li = document.createElement('li');
+        li.textContent = text;
+        tipsList.appendChild(li);
+      }
+      
+      // Открываем модальное окно, используя правильный механизм
+      if (typeof openModal === 'function') {
+        // Используем функцию из script.js, которая правильно добавляет классы
+        openModal(tipsModal);
+      } else {
+        // Простой запасной вариант, если функция недоступна
+        tipsModal.classList.add('show');
+        // Нужно добавить класс visible для правильной анимации
+        setTimeout(() => {
+          tipsModal.classList.add('visible');
+        }, 10);
+      }
+    });
+  });
 </script>
 </body>
 </html> 

@@ -343,7 +343,7 @@ body.theme-dark .advice-content p::before {
     box-shadow: 
         0 0 0 2px var(--darkest),
         inset 0 0 0 2px var(--light);
-    transition: all 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, color 0.15s ease-in-out;
     cursor: pointer;
     line-height: 30px;
     min-height: auto;
@@ -366,9 +366,9 @@ body.theme-dark .advice-content p::before {
     padding-right: 0;
 }
 
-.activity-select-wrapper .choices.is-open .choices__inner {
+.activity-select-wrapper .choices__inner.is-open {
     background-color: var(--secondary-hover);
-    box-shadow: 
+    box-shadow:
         0 0 0 2px var(--darkest),
         inset 0 0 0 2px var(--darkest);
 }
@@ -388,7 +388,7 @@ body.theme-dark .advice-content p::before {
     transition: border-color 0.15s ease-in-out;
 }
 
-.activity-select-wrapper .choices.is-open .choices__inner::after {
+.activity-select-wrapper .choices__inner.is-open::after {
      border-color: var(--darkest) transparent transparent transparent;
 }
 
@@ -454,14 +454,14 @@ body.theme-dark .advice-content p::before {
 body.theme-dark .activity-select-wrapper .choices__inner {
     background-color: var(--secondary);
     color: var(--lightest);
-    box-shadow: 
+    box-shadow:
         0 0 0 2px var(--darkest),
         inset 0 0 0 2px var(--light);
 }
 
-body.theme-dark .activity-select-wrapper .choices.is-open .choices__inner {
+body.theme-dark .activity-select-wrapper .choices__inner.is-open {
     background-color: var(--secondary-hover);
-    box-shadow: 
+    box-shadow:
         0 0 0 2px var(--darkest),
         inset 0 0 0 2px var(--darkest);
 }
@@ -470,7 +470,7 @@ body.theme-dark .activity-select-wrapper .choices__inner::after {
     border-color: var(--lightest) transparent transparent transparent;
 }
 
-body.theme-dark .activity-select-wrapper .choices.is-open .choices__inner::after {
+body.theme-dark .activity-select-wrapper .choices__inner.is-open::after {
      border-color: var(--lightest) transparent transparent transparent;
 }
 
@@ -501,12 +501,12 @@ body.theme-dark .activity-select-wrapper .choices__list--dropdown .choices__item
 }
 
 /* Исправление: Предотвращаем перекрытие текста при открытии списка */
-.activity-select-wrapper .choices.is-open .choices__inner .choices__list--single .choices__item {
+.activity-select-wrapper .choices__inner.is-open .choices__list--single .choices__item {
     background-color: transparent !important; /* Делаем фон текста прозрачным */
     color: var(--lightest) !important; /* Явно указываем цвет текста для светлой темы */
 }
 
-body.theme-dark .activity-select-wrapper .choices.is-open .choices__inner .choices__list--single .choices__item {
+body.theme-dark .activity-select-wrapper .choices__inner.is-open .choices__list--single .choices__item {
     color: var(--lightest) !important; /* Явно указываем цвет текста для темной темы */
 }
 
@@ -538,7 +538,7 @@ body.theme-dark .activity-select-wrapper .choices.is-open .choices__inner .choic
     text-align: center;
     text-decoration: none;
     user-select: none;
-    transition: all 0.1s ease; /* Как у .btn */
+    transition: background-color 0.1s ease, box-shadow 0.1s ease, transform 0.1s ease;
     white-space: nowrap;
     line-height: 1; /* Для центрирования иконки */
     
@@ -603,7 +603,7 @@ body.theme-dark .recalculate-header:active {
     padding: 10px var(--base-padding); /* Отступы сверху/снизу и по бокам */
     position: relative; /* Base position */
     z-index: 100;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), top 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.5s cubic-bezier(0.23, 1, 0.32, 1), color 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     will-change: transform, opacity, position, top, box-shadow;
     background-color: var(--light);
     color: var(--darkest);
